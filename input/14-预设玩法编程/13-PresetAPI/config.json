@@ -1,0 +1,73 @@
+{
+    "children": [
+        {
+            "children": [
+                "/mcdocs/3-PresetAPI/预设管理/PresetApi"
+            ], 
+            "title": "预设管理"
+        }, 
+        {
+            "children": [
+                {
+                    "children": [
+                        "/mcdocs/3-PresetAPI/预设对象/通用/游戏对象GameObject", 
+                        "/mcdocs/3-PresetAPI/预设对象/通用/坐标变换Transform", 
+                        "/mcdocs/3-PresetAPI/预设对象/通用/变换对象TransformObject", 
+                        "/mcdocs/3-PresetAPI/预设对象/通用/素材数据BoxData", 
+                        "/mcdocs/3-PresetAPI/预设对象/通用/SDK接口封装SdkInterface"
+                    ], 
+                    "title": "通用"
+                }, 
+                {
+                    "children": [
+                        "/mcdocs/3-PresetAPI/预设对象/预设/预设基类PresetBase", 
+                        "/mcdocs/3-PresetAPI/预设对象/预设/实体对象EntityObject", 
+                        "/mcdocs/3-PresetAPI/预设对象/预设/实体预设EntityPreset", 
+                        "/mcdocs/3-PresetAPI/预设对象/预设/特效对象EffectObject", 
+                        "/mcdocs/3-PresetAPI/预设对象/预设/特效预设EffectPreset", 
+                        "/mcdocs/3-PresetAPI/预设对象/预设/玩家对象PlayerObject", 
+                        "/mcdocs/3-PresetAPI/预设对象/预设/玩家预设PlayerPreset", 
+                        "/mcdocs/3-PresetAPI/预设对象/预设/方块预设BlockPreset", 
+                        "/mcdocs/3-PresetAPI/预设对象/预设/界面预设UIPreset", 
+                        "/mcdocs/3-PresetAPI/预设对象/预设/文字面板对象TextboardObject", 
+                        "/mcdocs/3-PresetAPI/预设对象/预设/文字面板预设TextboardPreset"
+                    ], 
+                    "title": "预设"
+                }, 
+                {
+                    "children": [
+                        "/mcdocs/3-PresetAPI/预设对象/零件/零件PartBase", 
+                        "/mcdocs/3-PresetAPI/预设对象/零件/零件事件PartEvent", 
+                        "/mcdocs/3-PresetAPI/预设对象/零件/触发器零件TriggerPart", 
+                        "/mcdocs/3-PresetAPI/预设对象/零件/世界属性零件WorldPart", 
+                        "/mcdocs/3-PresetAPI/预设对象/零件/玩家基础属性零件PlayerBasicPart", 
+                        "/mcdocs/3-PresetAPI/预设对象/零件/实体零件EntityBasePart", 
+                        "/mcdocs/3-PresetAPI/预设对象/零件/相机轨迹CameraTrackPart", 
+                        "/mcdocs/3-PresetAPI/预设对象/零件/导航路径零件NavPointsPart"
+                    ], 
+                    "title": "零件"
+                }
+            ], 
+            "title": "预设对象"
+        }, 
+        {
+            "children": [
+                "/mcdocs/3-PresetAPI/更新信息/1.23.0", 
+                "/mcdocs/3-PresetAPI/更新信息/1.23.1", 
+                "/mcdocs/3-PresetAPI/更新信息/1.23.2", 
+                "/mcdocs/3-PresetAPI/更新信息/1.23.3", 
+                "/mcdocs/3-PresetAPI/更新信息/1.23.4", 
+                "/mcdocs/3-PresetAPI/更新信息/1.24.0", 
+                "/mcdocs/3-PresetAPI/更新信息/1.24.1", 
+                "/mcdocs/3-PresetAPI/更新信息/1.25.0", 
+                "/mcdocs/3-PresetAPI/更新信息/2.0.1", 
+                "/mcdocs/3-PresetAPI/更新信息/2.0.2", 
+                "/mcdocs/3-PresetAPI/更新信息/2.0.3", 
+                "/mcdocs/3-PresetAPI/更新信息/2.2.0", 
+                "/mcdocs/3-PresetAPI/更新信息/2.4.0"
+            ], 
+            "title": "更新信息"
+        }
+    ], 
+    "title": "PresetAPI"
+}

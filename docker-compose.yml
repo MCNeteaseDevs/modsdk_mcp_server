@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  modsdk-mcp:
+    build: .
+    container_name: netease-modsdk-mcp
+    ports:
+      - "8000:8000"
+    volumes:
+      # 挂载文档目录，方便更新
+      - ./docs:/app/docs:ro
+      # 挂载 skills 目录（MCP Resources）
+      - ./skills:/app/skills:ro
+      # 挂载 standard 目录（MCP Resources）
+      - ./standard:/app/standard:ro
+    environment:
+      - MCP_HOST=0.0.0.0
+      - MCP_PORT=8000
+      - MODSDK_DOCS_PATH=/app/docs
+      - MODSDK_SKILLS_PATH=/app/skills
+      - MODSDK_STANDARD_PATH=/app/standard
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  # 可选：使用 Nginx 作为反向代理
+  # nginx:
+  #   image: nginx:alpine
+  #   ports:
+  #     - "443:443"
+  #     - "80:80"
+  #   volumes:
+  #     - ./nginx.conf:/etc/nginx/nginx.conf:ro
+  #     - ./certs:/etc/nginx/certs:ro
+  #   depends_on:
+  #     - modsdk-mcp
+  #   restart: unless-stopped

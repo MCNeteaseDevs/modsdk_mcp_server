@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "ModSDK MCP Server": {
+      "type": "stdio",
+      "name": "ModSDK MCP Server",
+      "command": "D:/Python312/python.exe",
+      "args": [
+        "-m",
+        "modsdk_mcp"
+      ],
+      "cwd": "D:/ModSDK MCP Server",
+      "env": {}
+    }
+  }
+}
