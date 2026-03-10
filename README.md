@@ -193,8 +193,8 @@ ModSDK MCP Server/
 │   └── 更新信息/                   #   版本更新日志
 ├── standard/                       # 官方开发规范文档
 ├── skills/                         # Claude Skills 文件
-├── start_mcp.py                    # CodeMaker 专用启动入口
-├── .mcp.json                       # CodeMaker MCP 配置
+├── start_mcp.py                    # 老版本mcp 专用启动入口
+├── .mcp.json                       # 老版本mcp 配置
 ├── requirements.txt                # Python 依赖
 ├── Dockerfile                      # Docker 镜像配置
 ├── docker-compose.yml              # Docker Compose 配置
