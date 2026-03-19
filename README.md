@@ -74,6 +74,41 @@ pip install -r requirements.txt
   }
 }
 ```
+> ⚠️ **常见问题（VS Code / Cursor）**
+>
+> 如果在 VS Code 或 Cursor 中启动 MCP 时出现以下错误：
+>
+> ```
+> Error: tool parameters array type must have items
+> ```
+>
+> **原因：**
+>
+> MCP 工具的参数 schema 中，某些字段声明为 `"type": "array"`，但没有提供 `"items"` 字段。
+>
+> 根据 JSON Schema 规范，所有数组类型必须定义 `"items"`，否则在严格校验环境（如 VS Code / Cursor）中会报错。
+>
+> **解决方法：**
+>
+> 修改对应工具的参数定义，例如：
+>
+> ❌ 错误写法：
+> ```json
+> {
+>   "type": "array"
+> }
+> ```
+>
+> ✅ 正确写法：
+> ```json
+> {
+>   "type": "array",
+>   "items": {
+>     "type": "object"
+>   }
+> }
+> ```
+
 </details>
 
 <details>
