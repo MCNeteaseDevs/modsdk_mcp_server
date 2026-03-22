@@ -1,11 +1,12 @@
 """
 文档读取器模块
 从 docs 目录读取 Markdown 文档并解析
-支持模糊搜索、拼音搜索
+支持模糊搜索、结构化 API/事件索引
 """
 
-import os
 import re
+import json
+import bisect
 from pathlib import Path
 from typing import Dict, List, Any, Optional, Set, Tuple
 from dataclasses import dataclass
@@ -32,6 +33,19 @@ class Document:
     metadata: Dict[str, Any]
 
 
+@dataclass
+class ApiEntry:
+    """结构化 API 条目（来自 interface.json / events.json）"""
+    name: str
+    desc: str
+    side: str  # 客户端 / 服务端
+    category: str  # doc_class_path 分类
+    params: List[Dict[str, str]]
+    return_info: Dict[str, str]
+    entry_type: str  # "api" 或 "event"
+    class_path: str  # 完整类路径
+
+
 class DocsReader:
     """文档读取器"""
     
@@ -48,7 +62,14 @@ class DocsReader:
             self.docs_path = Path(__file__).parent.parent / docs_path
         
         self._documents: Dict[str, Document] = {}
-        self._index: Dict[str, List[str]] = {}  # 关键词索引
+        self._index: Dict[str, List[str]] = {}  # 关键词 -> 文档路径列表
+        self._sorted_keywords: List[str] = []  # 排序后的关键词列表，用于前缀二分查找
+        
+        # 结构化 API/事件索引
+        self._api_entries: Dict[str, ApiEntry] = {}  # unique_key -> ApiEntry
+        self._api_name_lower_map: Dict[str, List[str]] = {}  # name.lower() -> [unique_keys]
+        self._api_keywords: Dict[str, List[str]] = {}  # keyword.lower() -> [unique_keys]
+        self._sorted_api_keywords: List[str] = []  # 排序后的 API 关键词列表
         
     def load_all_docs(self) -> None:
         """加载所有文档"""
@@ -59,6 +80,7 @@ class DocsReader:
             self._load_document(md_file)
         
         self._build_index()
+        self._load_structured_data()
     
     def _load_document(self, filepath: Path) -> Optional[Document]:
         """加载单个文档"""
@@ -162,6 +184,9 @@ class DocsReader:
             for word in set(words):
                 if len(word) > 2:  # 忽略太短的词
                     self._add_to_index(word, doc_path)
+        
+        # 构建排序后的关键词列表，用于前缀二分查找
+        self._sorted_keywords = sorted(self._index.keys())
     
     def _add_to_index(self, keyword: str, doc_path: str) -> None:
         """添加关键词到索引"""
@@ -169,6 +194,212 @@ class DocsReader:
             self._index[keyword] = []
         if doc_path not in self._index[keyword]:
             self._index[keyword].append(doc_path)
+    
+    def _load_structured_data(self) -> None:
+        """加载 JSON 结构化数据（events.json, interface.json）构建精确索引"""
+        self._api_entries.clear()
+        self._api_name_lower_map.clear()
+        self._api_keywords.clear()
+        self._sorted_api_keywords.clear()
+        
+        # 加载 interface.json
+        interface_path = self.docs_path / "interface.json"
+        if interface_path.exists():
+            try:
+                with open(interface_path, "r", encoding="utf-8") as f:
+                    data = json.load(f)
+                for class_path, methods in data.items():
+                    for method in methods:
+                        entry = ApiEntry(
+                            name=method["name"],
+                            desc=method.get("desc", ""),
+                            side=method.get("side", ""),
+                            category="/".join(method.get("doc_class_path", [])),
+                            params=method.get("param", []),
+                            return_info=method.get("return", {}),
+                            entry_type="api",
+                            class_path=class_path,
+                        )
+                        # 用 class_path::name 作为唯一 key，避免同名覆盖
+                        unique_key = f"{class_path}::{entry.name}"
+                        self._api_entries[unique_key] = entry
+                        self._api_name_lower_map.setdefault(entry.name.lower(), []).append(unique_key)
+                        # 建立关键词索引：API名拆词、中文描述
+                        self._index_api_entry(entry, unique_key)
+            except Exception as e:
+                print(f"加载 interface.json 失败: {e}")
+        
+        # 加载 events.json
+        events_path = self.docs_path / "events.json"
+        if events_path.exists():
+            try:
+                with open(events_path, "r", encoding="utf-8") as f:
+                    data = json.load(f)
+                for event_path, events in data.items():
+                    for event in events:
+                        entry = ApiEntry(
+                            name=event["name"],
+                            desc=event.get("desc", ""),
+                            side=event.get("side", ""),
+                            category="/".join(event.get("doc_class_path", [])),
+                            params=event.get("param", []),
+                            return_info=event.get("return", {}),
+                            entry_type="event",
+                            class_path=event_path,
+                        )
+                        unique_key = f"{event_path}::{entry.name}"
+                        self._api_entries[unique_key] = entry
+                        self._api_name_lower_map.setdefault(entry.name.lower(), []).append(unique_key)
+                        self._index_api_entry(entry, unique_key)
+            except Exception as e:
+                print(f"加载 events.json 失败: {e}")
+        
+        # 构建排序后的 API 关键词列表，用于前缀二分查找
+        self._sorted_api_keywords = sorted(self._api_keywords.keys())
+    
+    def _index_api_entry(self, entry: ApiEntry, unique_key: str) -> None:
+        """为 API/事件条目建立关键词索引"""
+        # 1. 完整名称
+        self._add_api_keyword(entry.name.lower(), unique_key)
+        
+        # 2. 驼峰拆词: GetPlayerPos -> get, player, pos
+        camel_parts = re.findall(r'[A-Z][a-z]+|[a-z]+|[A-Z]+(?![a-z])', entry.name)
+        for part in camel_parts:
+            self._add_api_keyword(part.lower(), unique_key)
+        
+        # 3. 中文描述关键词
+        chinese_phrases = re.findall(r'[\u4e00-\u9fff]+', entry.desc)
+        for phrase in chinese_phrases:
+            self._add_api_keyword(phrase, unique_key)
+        
+        # 4. 分类关键词
+        if entry.category:
+            for cat in entry.category.split("/"):
+                if cat:
+                    self._add_api_keyword(cat.lower(), unique_key)
+        
+        # 5. 端侧关键词
+        if entry.side:
+            self._add_api_keyword(entry.side, unique_key)
+    
+    def _add_api_keyword(self, keyword: str, unique_key: str) -> None:
+        """添加 API 关键词映射"""
+        if keyword not in self._api_keywords:
+            self._api_keywords[keyword] = []
+        if unique_key not in self._api_keywords[keyword]:
+            self._api_keywords[keyword].append(unique_key)
+    
+    # ========================================================================
+    # 结构化 API/事件搜索
+    # ========================================================================
+    
+    def search_api(self, query: str, limit: int = 10, entry_type: str = "all") -> List[Dict[str, Any]]:
+        """
+        精确搜索 API/事件（利用结构化 JSON 数据）
+        
+        Args:
+            query: 搜索关键词（API名、中文描述等）
+            limit: 返回结果数量限制
+            entry_type: "api" / "event" / "all"
+            
+        Returns:
+            匹配的 API/事件列表，按相关度排序
+        """
+        query_lower = query.lower()
+        scores: Dict[str, float] = {}  # unique_key -> score
+        
+        # 1. 精确名称匹配（最高优先级）
+        if query_lower in self._api_name_lower_map:
+            for uk in self._api_name_lower_map[query_lower]:
+                scores[uk] = 100.0
+        
+        # 2. 名称前缀/子串匹配
+        for name_lower, unique_keys in self._api_name_lower_map.items():
+            if query_lower in name_lower:
+                for uk in unique_keys:
+                    scores.setdefault(uk, 0)
+                    scores[uk] = max(scores[uk], 20.0)
+            elif name_lower in query_lower:
+                for uk in unique_keys:
+                    scores.setdefault(uk, 0)
+                    scores[uk] = max(scores[uk], 15.0)
+        
+        # 3. 关键词索引匹配（使用二分查找优化前缀匹配）
+        query_tokens = self._tokenize(query)
+        for token in query_tokens:
+            token_lower = token.lower()
+            # 精确关键词匹配
+            if token_lower in self._api_keywords:
+                for uk in self._api_keywords[token_lower]:
+                    scores.setdefault(uk, 0)
+                    scores[uk] += 5.0
+            # 前缀匹配（仅对长度>=3的token，使用二分查找）
+            if len(token_lower) >= 3:
+                candidates = self._find_api_prefix_candidates(token_lower)
+                for kw in candidates:
+                    if kw == token_lower:
+                        continue  # 已在精确匹配中处理
+                    for uk in self._api_keywords.get(kw, []):
+                        scores.setdefault(uk, 0)
+                        scores[uk] += 2.0
+        
+        # 4. 描述子串匹配
+        for unique_key, entry in self._api_entries.items():
+            if query_lower in entry.desc.lower():
+                scores.setdefault(unique_key, 0)
+                scores[unique_key] += 8.0
+        
+        # 过滤类型
+        if entry_type != "all":
+            scores = {
+                uk: score for uk, score in scores.items()
+                if self._api_entries[uk].entry_type == entry_type
+            }
+        
+        # 排序并返回
+        sorted_results = sorted(scores.items(), key=lambda x: x[1], reverse=True)[:limit]
+        
+        results = []
+        for unique_key, score in sorted_results:
+            entry = self._api_entries[unique_key]
+            results.append({
+                "name": entry.name,
+                "type": entry.entry_type,
+                "side": entry.side,
+                "category": entry.category,
+                "desc": entry.desc,
+                "params": entry.params,
+                "return": entry.return_info,
+                "class_path": entry.class_path,
+                "score": round(score, 2),
+            })
+        
+        return results
+    
+    def _find_api_prefix_candidates(self, token: str, max_candidates: int = 50) -> List[str]:
+        """
+        从排序后的 API 关键词列表中，用前缀二分查找快速筛选候选。
+        """
+        token_lower = token.lower()
+        if len(token_lower) < 2:
+            return []
+        
+        prefix = token_lower[:2]
+        prefix_end = prefix[:-1] + chr(ord(prefix[-1]) + 1)
+        
+        start = bisect.bisect_left(self._sorted_api_keywords, prefix)
+        end = bisect.bisect_left(self._sorted_api_keywords, prefix_end)
+        
+        candidates = self._sorted_api_keywords[start:end]
+        
+        if len(candidates) > max_candidates and len(token_lower) >= 3:
+            prefix3 = token_lower[:3]
+            prefix3_end = prefix3[:-1] + chr(ord(prefix3[-1]) + 1)
+            start = bisect.bisect_left(self._sorted_api_keywords, prefix3)
+            end = bisect.bisect_left(self._sorted_api_keywords, prefix3_end)
+            candidates = self._sorted_api_keywords[start:end]
+        
+        return candidates[:max_candidates]
     
     # ========================================================================
     # 模糊搜索辅助方法
@@ -216,24 +447,61 @@ class DocsReader:
         if target in query:
             return True, 0.9
         
+        # 长度差异过大时跳过（早退出优化）
+        len_ratio = min(len(query), len(target)) / max(len(query), len(target), 1)
+        if len_ratio < 0.3:
+            return False, 0.0
+        
         # 相似度匹配
         similarity = self._similarity(query, target)
         if similarity >= threshold:
             return True, similarity
         
-        # 编辑距离匹配（允许少量拼写错误）
-        max_distance = max(1, len(query) // 3)  # 允许 1/3 的错误
-        distance = self._edit_distance(query, target)
-        if distance <= max_distance:
-            # 转换为分数
-            score = 1.0 - (distance / max(len(query), len(target)))
-            return True, score
+        # 编辑距离匹配（仅对英文、长度>=3 的 token 使用）
+        if len(query) >= 3 and query.isascii():
+            max_distance = max(1, len(query) // 3)  # 允许 1/3 的错误
+            distance = self._edit_distance(query, target)
+            if distance <= max_distance:
+                score = 1.0 - (distance / max(len(query), len(target)))
+                return True, score
         
         return False, 0.0
     
+    def _find_prefix_candidates(self, token: str, max_candidates: int = 50) -> List[str]:
+        """
+        从排序后的关键词列表中，用前缀匹配快速筛选候选关键词。
+        利用二分查找 O(log N) 定位前缀起始位置。
+        """
+        token_lower = token.lower()
+        if len(token_lower) < 2:
+            return []
+        
+        # 取前2个字符作为前缀进行范围搜索
+        prefix = token_lower[:2]
+        # 计算前缀的上界
+        prefix_end = prefix[:-1] + chr(ord(prefix[-1]) + 1)
+        
+        start = bisect.bisect_left(self._sorted_keywords, prefix)
+        end = bisect.bisect_left(self._sorted_keywords, prefix_end)
+        
+        candidates = self._sorted_keywords[start:end]
+        
+        # 如果候选太多，进一步用更长前缀过滤
+        if len(candidates) > max_candidates and len(token_lower) >= 3:
+            prefix3 = token_lower[:3]
+            prefix3_end = prefix3[:-1] + chr(ord(prefix3[-1]) + 1)
+            start = bisect.bisect_left(self._sorted_keywords, prefix3)
+            end = bisect.bisect_left(self._sorted_keywords, prefix3_end)
+            candidates = self._sorted_keywords[start:end]
+        
+        return candidates[:max_candidates]
+    
     def _tokenize(self, text: str) -> List[str]:
         """
-        分词：支持中文和英文
+        分词：支持中文和英文。
+        
+        优化：不再将中文词拆成单字，避免 "玩家事件" -> ["玩","家","事","件"] 产生大量噪音匹配。
+        保留完整中文词组，仅对长度>=4 的中文词额外做 2-gram 拆分。
         """
         tokens = []
         
@@ -241,13 +509,14 @@ class DocsReader:
         english_tokens = re.findall(r'[a-zA-Z_][a-zA-Z0-9_]*', text)
         tokens.extend(english_tokens)
         
-        # 提取中文词（按字符，因为没有分词库）
-        chinese_chars = re.findall(r'[\u4e00-\u9fff]+', text)
-        for chars in chinese_chars:
-            tokens.append(chars)
-            # 也添加单个字
-            if len(chars) > 1:
-                tokens.extend(list(chars))
+        # 提取中文词组（保持完整，不拆单字）
+        chinese_phrases = re.findall(r'[\u4e00-\u9fff]+', text)
+        for phrase in chinese_phrases:
+            tokens.append(phrase)
+            # 对长度>=4 的中文词做 2-gram 拆分，提供适度的子串匹配能力
+            if len(phrase) >= 4:
+                for i in range(len(phrase) - 1):
+                    tokens.append(phrase[i:i+2])
         
         # 提取驼峰命名的子词
         for token in english_tokens:
@@ -329,13 +598,13 @@ class DocsReader:
     
     def fuzzy_search(self, query: str, limit: int = 10, threshold: float = 0.5) -> List[Dict[str, Any]]:
         """
-        模糊搜索文档
+        模糊搜索文档（优化版）
         
-        支持：
-        - 拼写容错（typo tolerance）
-        - 部分匹配（partial matching）
-        - 驼峰命名分词（camelCase tokenization）
-        - 中文字符匹配
+        优化策略：
+        1. 先通过标题精确/前缀匹配产生候选集，避免全量遍历
+        2. 索引关键词匹配改为：精确查找 + 前缀二分查找候选 + 少量模糊匹配
+        3. 中文 token 不拆单字，减少噪音
+        4. 增加长度比例早退出，跳过不可能匹配的对
         
         Args:
             query: 搜索关键词
@@ -362,37 +631,71 @@ class DocsReader:
                 doc_score += title_score * 10
                 matched_terms.append(f"标题: {doc.title}")
             
-            # 2. 章节标题匹配
+            # 2. 章节标题匹配（限制最多记录 3 个匹配章节）
+            section_matches = 0
             for section in doc.sections:
+                if section_matches >= 3:
+                    break
                 section_match, section_score = self._fuzzy_match(query_lower, section.title.lower(), threshold)
                 if section_match:
                     doc_score += section_score * 5
                     matched_terms.append(f"章节: {section.title}")
+                    section_matches += 1
             
-            # 3. 索引关键词模糊匹配
-            for keyword in self._index:
-                if doc_path in self._index[keyword]:
-                    for token in query_tokens:
-                        kw_match, kw_score = self._fuzzy_match(token.lower(), keyword, threshold)
-                        if kw_match:
-                            doc_score += kw_score * 2
-                            if keyword not in matched_terms:
-                                matched_terms.append(f"关键词: {keyword}")
+            # 3. 索引关键词匹配（优化：避免暴力遍历全部关键词）
+            matched_keywords: Set[str] = set()
+            for token in query_tokens:
+                token_lower = token.lower()
+                
+                if token_lower.isascii():
+                    # 3a. 英文 token：精确匹配索引
+                    if token_lower in self._index:
+                        if doc_path in self._index[token_lower]:
+                            doc_score += 2.0
+                            matched_keywords.add(token_lower)
+                    
+                    # 3b. 英文 token：前缀候选匹配（用二分查找代替全量遍历）
+                    if len(token_lower) >= 3:
+                        candidates = self._find_prefix_candidates(token_lower)
+                        for keyword in candidates:
+                            if keyword == token_lower:
+                                continue  # 已在 3a 处理
+                            if doc_path in self._index.get(keyword, []):
+                                kw_match, kw_score = self._fuzzy_match(token_lower, keyword, threshold)
+                                if kw_match:
+                                    doc_score += kw_score * 1.5
+                                    matched_keywords.add(keyword)
+                else:
+                    # 3c. 中文 token：精确索引匹配 + 子串匹配（不做模糊匹配）
+                    if len(token_lower) >= 2:
+                        if token_lower in self._index and doc_path in self._index[token_lower]:
+                            doc_score += 2.0
+                            matched_keywords.add(token_lower)
+                        # 检查 token 作为子串出现在哪些关键词中（限制搜索范围）
+                        for keyword in self._index:
+                            if not keyword.isascii() and token_lower in keyword and keyword != token_lower:
+                                if doc_path in self._index[keyword]:
+                                    doc_score += 1.0
+                                    matched_keywords.add(keyword)
+                                    break  # 每个 token 最多额外匹配 1 个
             
-            # 4. 内容全文模糊匹配
+            if matched_keywords:
+                matched_terms.extend([f"关键词: {kw}" for kw in list(matched_keywords)[:2]])
+            
+            # 4. 内容全文精确子串匹配（去掉模糊，只做精确子串）
             content_lower = doc.content.lower()
             for token in query_tokens:
-                if token.lower() in content_lower:
+                tl = token.lower()
+                if len(tl) >= 2 and tl in content_lower:
                     doc_score += 1.5
-                    # 计算出现次数加权
-                    count = content_lower.count(token.lower())
-                    doc_score += min(count * 0.1, 1.0)  # 最多额外加 1 分
+                    count = content_lower.count(tl)
+                    doc_score += min(count * 0.1, 1.0)
             
-            # 5. 驼峰命名特殊处理（如 GetEngineCompFactory）
+            # 5. 驼峰命名特殊处理
             camel_matches = self._match_camel_case(query, doc.content)
             if camel_matches:
                 doc_score += len(camel_matches) * 3
-                matched_terms.extend([f"API: {m}" for m in camel_matches[:3]])
+                matched_terms.extend([f"API: {m}" for m in camel_matches[:2]])
             
             if doc_score > 0:
                 scores[doc_path] = doc_score
@@ -404,31 +707,34 @@ class DocsReader:
         results = []
         for doc_path, score in sorted_docs:
             doc = self._documents[doc_path]
-            snippet = self._extract_fuzzy_snippet(doc.content, query_tokens)
+            snippet = self._extract_fuzzy_snippet(doc.content, query_tokens, context_length=120)
             results.append({
                 "filepath": doc.filepath,
                 "title": doc.title,
                 "score": round(score, 2),
                 "snippet": snippet,
                 "match_type": "fuzzy",
-                "matched_terms": match_details.get(doc_path, [])[:5]  # 最多显示 5 个匹配项
+                "matched_terms": match_details.get(doc_path, [])[:3]  # 最多显示 3 个匹配项
             })
         
         return results
     
     def _match_camel_case(self, query: str, content: str) -> List[str]:
         """
-        匹配驼峰命名的 API 名称
-        例如：搜索 "comp factory" 可以匹配 "GetEngineCompFactory"
+        匹配驼峰命名的 API 名称（优化版）
+        限制最多返回 3 个匹配，避免大文档中产生过多结果
         """
         matches = []
         query_parts = query.lower().split()
         
-        # 查找所有驼峰命名
+        # 查找所有驼峰命名（去重后限制数量）
         camel_pattern = r'\b[A-Z][a-z]+(?:[A-Z][a-z]+)+\b'
-        camel_names = re.findall(camel_pattern, content)
+        camel_names = set(re.findall(camel_pattern, content))
         
-        for name in set(camel_names):
+        for name in camel_names:
+            if len(matches) >= 3:
+                break
+            
             # 拆分驼峰命名
             parts = re.findall(r'[A-Z][a-z]+', name)
             parts_lower = [p.lower() for p in parts]
@@ -440,47 +746,45 @@ class DocsReader:
                     if qp in pl or pl in qp:
                         match_count += 1
                         break
-                    # 模糊匹配
-                    matched, _ = self._fuzzy_match(qp, pl, 0.7)
-                    if matched:
-                        match_count += 1
-                        break
+                    # 仅对长度>=3 的英文词做模糊匹配
+                    if len(qp) >= 3 and qp.isascii():
+                        matched, _ = self._fuzzy_match(qp, pl, 0.7)
+                        if matched:
+                            match_count += 1
+                            break
             
             if match_count >= len(query_parts) * 0.5:  # 至少匹配一半的查询词
                 matches.append(name)
         
         return matches
     
-    def _extract_fuzzy_snippet(self, content: str, tokens: List[str], context_length: int = 200) -> str:
-        """提取模糊匹配的文本片段"""
+    def _extract_fuzzy_snippet(self, content: str, tokens: List[str], context_length: int = 120) -> str:
+        """提取模糊匹配的文本片段（精简版，默认 120 字符）"""
         content_lower = content.lower()
         best_pos = -1
         best_score = 0
         
-        # 找到匹配度最高的位置
-        for i in range(0, len(content) - 50, 50):
-            window = content_lower[i:i + 100]
-            score = sum(1 for t in tokens if t.lower() in window)
+        # 用更大步长扫描，减少计算量
+        step = 80
+        window = 120
+        for i in range(0, max(1, len(content) - step), step):
+            w = content_lower[i:i + window]
+            score = sum(1 for t in tokens if len(t) >= 2 and t.lower() in w)
             if score > best_score:
                 best_score = score
                 best_pos = i
         
         if best_pos >= 0:
-            start = max(0, best_pos - 50)
+            start = max(0, best_pos - 30)
             end = min(len(content), best_pos + context_length)
             snippet = content[start:end]
-            
-            # 清理片段
             snippet = re.sub(r'\s+', ' ', snippet).strip()
-            
             if start > 0:
                 snippet = "..." + snippet
             if end < len(content):
                 snippet = snippet + "..."
-            
             return snippet
         
-        # 默认返回开头
         return content[:context_length].strip() + "..." if len(content) > context_length else content
     
     def _extract_snippet(self, content: str, keywords: List[str], context_length: int = 150) -> str:
@@ -552,6 +856,11 @@ class DocsReader:
         """重新加载所有文档"""
         self._documents.clear()
         self._index.clear()
+        self._sorted_keywords.clear()
+        self._api_entries.clear()
+        self._api_name_lower_map.clear()
+        self._api_keywords.clear()
+        self._sorted_api_keywords.clear()
         self.load_all_docs()
 
 

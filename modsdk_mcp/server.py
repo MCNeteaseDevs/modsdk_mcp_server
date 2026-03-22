@@ -84,16 +84,17 @@ server = Server(
 ⚠️ 在编写任何代码之前，必须先查阅文档！这是强制性要求。
 
 1. **事件参数必须查文档**
-   - 使用任何事件前，必须先调用 search_docs 或 search_event 查询该事件的参数定义
+   - 使用任何事件前，必须先调用 search_api (entry_type="event") 查询该事件的参数定义
    - 不同事件的参数名不一致！例如：
      * ServerPlayerTryDestroyBlockEvent 使用 "playerId" 和 "cancel"
      * ServerItemUseOnEvent 使用 "entityId" 和 "ret"
    - 禁止假设参数名，必须查证后再使用
 
 2. **API 接口必须查文档**
-   - 使用任何 API 前，必须先调用 search_api 查询接口定义
+   - 使用任何 API 前，必须先调用 search_api (entry_type="api") 查询接口定义
    - 确认参数类型、返回值、是否存在该接口
    - 禁止凭记忆或假设编写 API 调用
+   - search_api 基于结构化数据精确匹配，比 search_docs 更精准且节省上下文
 
 3. **组件和 JSON 格式必须查文档**
    - 使用 search_component 查询组件的正确格式
@@ -471,19 +472,19 @@ async def list_tools() -> List[Tool]:
         Tool(
             name="search_docs",
             description="""搜索 ModSDK 文档（支持模糊搜索）。
-            
-功能特性：
-- 模糊匹配：允许拼写错误，如 "getBlok" 可匹配 "getBlock"
-- 驼峰分词：搜索 "comp factory" 可匹配 "GetEngineCompFactory"
-- 中文搜索：支持中文关键词搜索
-- 相关度排序：按匹配度自动排序结果
 
-搜索示例：
-- "玩家事件" - 查找玩家相关的事件
-- "GetEngineCompFactory" - 查找组件工厂 API
-- "背包 物品" - 查找背包和物品相关内容
-- "tick 优化" - 查找 tick 相关的优化方法
-""",
+注意：如果要查找具体的 API 接口或事件，优先使用 search_api 工具，更精准且消耗更少上下文。
+本工具适合搜索教程、概念说明、最佳实践等文档内容。
+
+支持特性：
+- 模糊匹配（允许拼写错误）
+- 驼峰分词（"comp factory" 匹配 "GetEngineCompFactory"）
+- 中文搜索
+
+示例：
+- "tick 优化" - 查找优化方法
+- "自定义UI" - 查找 UI 相关文档
+- "背包 物品" - 查找背包相关内容""",
             inputSchema={
                 "type": "object",
                 "properties": {
@@ -500,6 +501,41 @@ async def list_tools() -> List[Tool]:
                         "type": "boolean",
                         "description": "是否启用模糊搜索，默认 true。关闭后使用精确匹配。",
                         "default": True
+                    }
+                },
+                "required": ["query"]
+            }
+        ),
+        Tool(
+            name="search_api",
+            description="""精确搜索 ModSDK 的 API 接口或事件（利用结构化数据索引）。
+
+比 search_docs 更精准、更节省上下文。适合查找具体的 API 函数或事件名。
+
+搜索示例：
+- "GetPlayerPos" - 查找获取玩家位置的 API
+- "玩家死亡" - 查找玩家死亡相关事件
+- "背包" - 查找背包相关的 API 和事件
+- "SetBlock" - 查找方块放置相关的 API
+
+返回结果包含：API/事件名、描述、参数列表、返回值、所属端侧。""",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "query": {
+                        "type": "string",
+                        "description": "搜索关键词（API 名、事件名、或中文描述）"
+                    },
+                    "entry_type": {
+                        "type": "string",
+                        "description": "搜索类型: api（仅接口）、event（仅事件）、all（全部）",
+                        "enum": ["all", "api", "event"],
+                        "default": "all"
+                    },
+                    "limit": {
+                        "type": "integer",
+                        "description": "返回结果数量限制，默认 5",
+                        "default": 5
                     }
                 },
                 "required": ["query"]
@@ -1463,23 +1499,47 @@ async def call_tool(name: str, arguments: Dict[str, Any]) -> List[TextContent]:
         
         if not results:
             search_mode = "模糊搜索" if fuzzy else "精确搜索"
-            return [TextContent(type="text", text=f"未找到与 '{query}' 相关的文档（{search_mode}模式）。\n\n**提示**：\n- 尝试更换关键词\n- 使用英文 API 名称如 'getBlock'\n- 使用中文描述如 '玩家背包'")]
+            return [TextContent(type="text", text=f"未找到与 '{query}' 相关的文档（{search_mode}模式）。\n\n提示：尝试更换关键词，或使用 search_api 工具精确搜索 API/事件。")]
         
-        search_mode = "🔍 模糊搜索" if fuzzy else "📌 精确搜索"
-        output = f"## {search_mode}结果: {query}\n\n"
-        output += f"找到 **{len(results)}** 个相关文档\n\n"
+        output = f"## 搜索结果: {query} ({len(results)} 个)\n\n"
         
         for i, result in enumerate(results, 1):
-            output += f"### {i}. {result['title']}\n"
-            output += f"- 📄 文件: `{result['filepath']}`\n"
-            output += f"- ⭐ 相关度: {result['score']}\n"
+            output += f"{i}. **{result['title']}** `{result['filepath']}` (分数:{result['score']})\n"
             
-            # 显示匹配的术语（仅模糊搜索）
+            # 匹配项精简为一行
             if fuzzy and result.get('matched_terms'):
-                matched = ', '.join(result['matched_terms'][:3])
-                output += f"- 🎯 匹配: {matched}\n"
+                output += f"   匹配: {', '.join(result['matched_terms'])}\n"
             
-            output += f"- 📝 片段: {result['snippet']}\n\n"
+            output += f"   {result['snippet']}\n\n"
+        
+        return [TextContent(type="text", text=output)]
+    
+    elif name == "search_api":
+        query = arguments.get("query", "")
+        entry_type = arguments.get("entry_type", "all")
+        limit = arguments.get("limit", 5)
+        results = docs_reader.search_api(query, limit=limit, entry_type=entry_type)
+        
+        if not results:
+            return [TextContent(type="text", text=f"未找到与 '{query}' 相关的 API/事件。\n\n提示：尝试使用英文 API 名（如 'GetBlock'）或中文描述（如 '玩家背包'）。")]
+        
+        type_label = {"api": "接口", "event": "事件", "all": "API/事件"}.get(entry_type, "API/事件")
+        output = f"## {type_label}搜索结果: {query}\n\n"
+        
+        for i, r in enumerate(results, 1):
+            output += f"### {i}. `{r['name']}` ({r['side']})\n"
+            output += f"- 类型: {r['type']} | 分类: {r['category']}\n"
+            output += f"- 描述: {r['desc']}\n"
+            if r['params']:
+                params_str = ", ".join(
+                    f"`{p['param_name']}`({p.get('param_type','')}) {p.get('param_comment','')}"
+                    for p in r['params']
+                )
+                output += f"- 参数: {params_str}\n"
+            ret = r.get('return', {})
+            if ret and ret.get('return_type'):
+                output += f"- 返回: {ret['return_type']} - {ret.get('return_comment', '')}\n"
+            output += "\n"
         
         return [TextContent(type="text", text=output)]
     
