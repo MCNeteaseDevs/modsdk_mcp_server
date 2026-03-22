@@ -77,7 +77,27 @@ pip install -r requirements.txt
 </details>
 
 <details>
+<summary><b>🟡 CodeMaker</b></summary>
 
+在项目根目录创建 `.mcp.json`：
+
+```json
+{
+  "servers": {
+    "ModSDK MCP Server": {
+      "command": "python",
+      "args": ["start_mcp.py"],
+      "cwd": "D:/ModSDK MCP Server"
+    }
+  }
+}
+```
+
+> **说明**: CodeMaker 不支持 `python -m` 的 `cwd` 传参方式，因此使用 `start_mcp.py` 包装入口。
+</details>
+
+<details>
+<summary><b>🔴 SSE 模式（远程 / Docker）</b></summary>
 
 启动 SSE 服务：
 
@@ -193,8 +213,8 @@ ModSDK MCP Server/
 │   └── 更新信息/                   #   版本更新日志
 ├── standard/                       # 官方开发规范文档
 ├── skills/                         # Claude Skills 文件
-├── start_mcp.py                    # 老版本mcp 专用启动入口
-├── .mcp.json                       # 老版本mcp 配置
+├── start_mcp.py                    # CodeMaker 专用启动入口
+├── .mcp.json                       # CodeMaker MCP 配置
 ├── requirements.txt                # Python 依赖
 ├── Dockerfile                      # Docker 镜像配置
 ├── docker-compose.yml              # Docker Compose 配置
@@ -266,3 +286,7 @@ def OnTick(self):
 ```
 
 ---
+
+## 📄 许可证
+
+MIT License
