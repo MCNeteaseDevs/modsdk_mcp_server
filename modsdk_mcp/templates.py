@@ -1371,6 +1371,69 @@ class EntityJsonGenerator:
     - 支持 component_groups 和 events
     """
     
+    # 实体预设组件（按玩法场景自动添加相关行为组件）
+    ENTITY_PRESETS = {
+        "mount": {
+            "minecraft:rideable": {
+                "seat_count": 1,
+                "family_types": ["player"],
+                "interact_text": "action.interact.ride"
+            },
+            "minecraft:tameable": {
+                "probability": 0.33
+            },
+            "minecraft:behavior.follow_owner": {
+                "priority": 4,
+                "speed_multiplier": 1.0,
+                "start_distance": 10,
+                "stop_distance": 2
+            },
+            "minecraft:input_ground_controlled": {}
+        },
+        "pet": {
+            "minecraft:behavior.follow_owner": {
+                "priority": 4,
+                "speed_multiplier": 1.0,
+                "start_distance": 10,
+                "stop_distance": 2
+            },
+            "minecraft:behavior.owner_hurt_by_target": {
+                "priority": 1
+            },
+            "minecraft:behavior.owner_hurt_target": {
+                "priority": 2
+            },
+            "minecraft:tameable": {
+                "probability": 1.0
+            },
+            "minecraft:is_tamed": {}
+        },
+        "npc": {
+            "minecraft:damage_sensor": {
+                "triggers": [{"deals_damage": False}]
+            },
+            "minecraft:pushable": {
+                "is_pushable": False,
+                "is_pushable_by_piston": False
+            }
+        },
+        "hostile": {
+            "minecraft:behavior.melee_attack": {
+                "priority": 3,
+                "speed_multiplier": 1.2,
+                "track_target": True
+            },
+            "minecraft:behavior.nearest_attackable_target": {
+                "priority": 2,
+                "within_radius": 25.0,
+                "entity_types": [{"filters": {"test": "is_family", "subject": "other", "value": "player"}}]
+            },
+            "minecraft:behavior.hurt_by_target": {
+                "priority": 1
+            }
+        }
+    }
+
     @staticmethod
     def generate_entity_behavior_json(
         namespace: str,
@@ -1383,10 +1446,11 @@ class EntityJsonGenerator:
         is_spawnable: bool = True,
         is_summonable: bool = True,
         runtime_identifier: str = None,
-        components: Optional[Dict[str, Any]] = None
+        components: Optional[Dict[str, Any]] = None,
+        preset: str = None
     ) -> str:
         """生成实体行为包 JSON
-        
+
         Args:
             namespace: 命名空间
             entity_id: 实体ID
@@ -1399,9 +1463,20 @@ class EntityJsonGenerator:
             is_summonable: 是否可用命令召唤
             runtime_identifier: 基于哪个原版实体构建（如 minecraft:pig）
             components: 额外组件字典
+            preset: 实体预设(mount/pet/npc/hostile)，自动添加相关行为组件
         """
         import json
-        
+
+        # 合并预设组件和用户指定组件
+        merged_components = {}
+        if preset and preset in EntityJsonGenerator.ENTITY_PRESETS:
+            merged_components.update(EntityJsonGenerator.ENTITY_PRESETS[preset])
+            # NPC预设：移动速度设为0
+            if preset == "npc":
+                movement_speed = 0
+        if components:
+            merged_components.update(components)  # 用户指定的优先级更高
+
         if family is None:
             family = [entity_id]
         family_str = ", ".join(['"{}"'.format(f) for f in family])
@@ -1411,17 +1486,17 @@ class EntityJsonGenerator:
             runtime_identifier = "minecraft:{}".format(entity_id.lower())
         
         additional = ""
-        if components:
-            for key, value in components.items():
+        if merged_components:
+            for key, value in merged_components.items():
                 if isinstance(value, bool):
                     additional += ',\n            "{}": {}'.format(key, str(value).lower())
-                elif isinstance(value, dict):
+                elif isinstance(value, (dict, list)):
                     additional += ',\n            "{}": {}'.format(key, json.dumps(value, ensure_ascii=False))
                 elif isinstance(value, str):
                     additional += ',\n            "{}": "{}"'.format(key, value)
                 else:
                     additional += ',\n            "{}": {}'.format(key, value)
-        
+
         return ENTITY_BEHAVIOR_JSON_TEMPLATE.format(
             namespace=namespace.lower(),
             entity_id=entity_id.lower(),
@@ -1532,8 +1607,8 @@ def generate_entity_json(namespace: str, entity_id: str, **kwargs) -> Dict[str, 
     resource_kwargs = {}
     
     # 行为包参数
-    behavior_keys = ['health', 'movement_speed', 'collision_width', 'collision_height', 
-                     'family', 'is_spawnable', 'is_summonable', 'runtime_identifier', 'components']
+    behavior_keys = ['health', 'movement_speed', 'collision_width', 'collision_height',
+                     'family', 'is_spawnable', 'is_summonable', 'runtime_identifier', 'components', 'preset']
     # 资源包参数
     resource_keys = ['spawn_egg_base_color', 'spawn_egg_overlay_color']
     
