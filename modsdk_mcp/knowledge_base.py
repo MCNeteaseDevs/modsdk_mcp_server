@@ -771,7 +771,7 @@ BEST_PRACTICES = {
         "name": "Python 2.7 兼容性",
         "rules": [
             "禁止使用 f-string（f\"...\"），使用 \"{}\".format() 或 % 格式化",
-            "禁止使用 print() 函数，使用 print 语句",
+            "推荐使用 print() 函数形式（文件顶部添加 from __future__ import print_function 确保兼容），也可使用 print 语句",
             "禁止使用 type hints（类型注解）",
             "禁止使用 async/await 语法",
             "文件顶部添加: # -*- coding: utf-8 -*-"

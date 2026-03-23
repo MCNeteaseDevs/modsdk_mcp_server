@@ -71,6 +71,7 @@ from .templates import (
     generate_throwable_item_json,
     generate_bow_item_json,
 )
+from ._ui_and_manifest import generate_ui_json, generate_manifest_json
 
 
 # 创建 MCP Server 实例
@@ -358,7 +359,45 @@ async def list_resources() -> List[Resource]:
                 )
             )
 
+    # 网易官方教程 Resource — 高频使用的教程文档可直接加载
+    GUIDE_RESOURCES = [
+        ("guide://json-ui", "JSON UI 完整说明文档",
+         "网易官方JSON UI教程（2741行），含控件类型、属性、数据绑定、动画、_ui_defs等完整参考",
+         "mcguide/18-界面与交互/30-UI说明文档.md"),
+        ("guide://custom-dimension", "自定义维度教程合集",
+         "网易官方自定义维度教程（7篇），含维度配置、群系地貌、生物生成、自定义特征、传送门等",
+         "mcguide/20-玩法开发/15-自定义游戏内容/4-自定义维度"),
+        ("guide://custom-block", "自定义方块教程合集",
+         "网易官方自定义方块教程，含JSON组件（675行）、方块功能、特殊方块等",
+         "mcguide/20-玩法开发/15-自定义游戏内容/2-自定义方块"),
+        ("guide://custom-entity", "自定义实体教程合集",
+         "网易官方自定义实体教程，含实体组件、AI行为、动画、渲染等",
+         "mcguide/20-玩法开发/15-自定义游戏内容/1-自定义实体"),
+        ("guide://custom-item", "自定义物品教程合集",
+         "网易官方自定义物品教程，含物品组件、物品事件等",
+         "mcguide/20-玩法开发/15-自定义游戏内容/3-自定义物品"),
+        ("guide://particle-effect", "粒子特效教程合集",
+         "网易官方特效教程（8篇），含原版粒子、中国版粒子/序列帧配置文件解析等",
+         "mcguide/16-美术/9-特效"),
+    ]
+
+    for uri_str, name, desc, _ in GUIDE_RESOURCES:
+        resources.append(
+            Resource(uri=uri_str, name=name, description=desc, mimeType="text/markdown")
+        )
+
     return resources
+
+
+# 教程 Resource 路径映射（用于 read_resource）
+_GUIDE_RESOURCE_PATHS = {
+    "json-ui": "mcguide/18-界面与交互/30-UI说明文档.md",
+    "custom-dimension": "mcguide/20-玩法开发/15-自定义游戏内容/4-自定义维度",
+    "custom-block": "mcguide/20-玩法开发/15-自定义游戏内容/2-自定义方块",
+    "custom-entity": "mcguide/20-玩法开发/15-自定义游戏内容/1-自定义实体",
+    "custom-item": "mcguide/20-玩法开发/15-自定义游戏内容/3-自定义物品",
+    "particle-effect": "mcguide/16-美术/9-特效",
+}
 
 
 @server.read_resource()
@@ -420,6 +459,39 @@ async def read_resource(uri) -> str:
                 return "\n".join(result_lines)
             else:
                 return f"分类 '{key}' 不存在。可用分类请查看 api-index://full"
+
+    elif uri.startswith("guide://"):
+        from urllib.parse import unquote
+        key = unquote(uri[8:])
+        docs_reader = get_docs_reader()
+
+        if key not in _GUIDE_RESOURCE_PATHS:
+            return f"教程 '{key}' 不存在。可用教程: {', '.join(_GUIDE_RESOURCE_PATHS.keys())}"
+
+        rel_path = _GUIDE_RESOURCE_PATHS[key]
+
+        if not docs_reader.guide_root:
+            return "未找到网易官方教程文档目录。请设置 MODSDK_WIKI_PATH 环境变量。"
+
+        target = Path(docs_reader.guide_root) / rel_path
+
+        if target.is_file():
+            # 单文件教程（如 JSON UI 说明文档）
+            with open(target, "r", encoding="utf-8") as f:
+                return f.read()
+        elif target.is_dir():
+            # 目录教程（合并多个 md 文件）
+            parts = []
+            for md_file in sorted(target.rglob("*.md")):
+                with open(md_file, "r", encoding="utf-8") as f:
+                    content = f.read().strip()
+                if content:
+                    # 添加文件名作为分隔
+                    rel_name = str(md_file.relative_to(target))
+                    parts.append(f"---\n## 📄 {rel_name}\n---\n\n{content}")
+            return "\n\n".join(parts) if parts else f"目录 '{rel_path}' 下没有 md 文件"
+        else:
+            return f"路径不存在: {rel_path}"
 
     else:
         return f"未知的资源 URI: {uri}"
@@ -1403,6 +1475,46 @@ behavior_pack_<namespace>/spawn_rules/<namespace>_<entity_id>.json
             }
         ),
         
+        # JSON UI 模板生成工具
+        Tool(
+            name="generate_ui_json",
+            description="""生成 JSON UI 文件模板。
+
+【模板类型】
+- screen: 基础空白屏幕（含标题+关闭按钮）
+- shop_grid: 商品网格列表（grid + scroll_view）
+- dialog: 确认/取消弹窗对话框
+- hud: HUD叠加元素（数值+图标+进度条）
+- tab_panel: 多页签面板（toggle切换+内容区域）
+
+【输出】JSON UI 文件内容 + _ui_defs.json 注册条目 + 使用说明""",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "template": {"type": "string", "description": "模板类型: screen/shop_grid/dialog/hud/tab_panel", "enum": ["screen", "shop_grid", "dialog", "hud", "tab_panel"]},
+                    "namespace": {"type": "string", "description": "命名空间（全局唯一，如 'my_shop'）"},
+                    "title": {"type": "string", "description": "标题文本（可选）"},
+                    "columns": {"type": "integer", "description": "商品网格列数（shop_grid专用，默认4）"},
+                    "tabs": {"type": "array", "items": {"type": "string"}, "description": "页签名称列表（tab_panel专用）"},
+                    "message": {"type": "string", "description": "提示消息（dialog专用）"}
+                },
+                "required": ["template", "namespace"]
+            }
+        ),
+        Tool(
+            name="generate_manifest_json",
+            description="生成行为包+资源包的 manifest.json（UUID自动生成，行为包自动关联资源包）。",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "mod_name": {"type": "string", "description": "MOD名称"},
+                    "description": {"type": "string", "description": "描述（可选）"},
+                    "version": {"type": "string", "description": "版本号（如 '1.0.0'，可选）", "default": "1.0.0"}
+                },
+                "required": ["mod_name"]
+            }
+        ),
+
         # 代码审查工具
         Tool(
             name="review_code",
@@ -2244,6 +2356,35 @@ async def call_tool(name: str, arguments: Dict[str, Any]) -> List[TextContent]:
         output += f"### 📝 本地化条目 (texts/zh_CN.lang)\n\n```\nitem.{namespace}:{item_id}.name=自定义投掷物\n```"
         return [TextContent(type="text", text=output)]
     
+    # JSON UI 模板生成
+    elif name == "generate_ui_json":
+        template = arguments.get("template", "screen")
+        namespace = arguments.get("namespace", "my_ui")
+        kwargs = {k: v for k, v in arguments.items() if k not in ("template", "namespace")}
+        result = generate_ui_json(template, namespace, **kwargs)
+
+        if "error" in result:
+            return [TextContent(type="text", text=result["error"])]
+
+        output = "## JSON UI 模板: {} ({})\n\n".format(namespace, template)
+        output += "### UI JSON 文件\n\n路径: `resource_pack/ui/{}.json`\n\n```json\n{}\n```\n\n".format(namespace, result["ui_json"])
+        output += "### _ui_defs.json 条目\n\n```json\n{}\n```\n\n".format(result["ui_defs_entry"])
+        output += "### 使用说明\n\n{}\n".format(result["usage_hint"])
+        return [TextContent(type="text", text=output)]
+
+    # manifest.json 生成
+    elif name == "generate_manifest_json":
+        mod_name = arguments.get("mod_name", "MyMod")
+        description = arguments.get("description", "")
+        version = arguments.get("version", "1.0.0")
+        result = generate_manifest_json(mod_name, description, version)
+
+        output = "## manifest.json: {}\n\n".format(mod_name)
+        output += "### 行为包 manifest.json\n\n```json\n{}\n```\n\n".format(result["behavior_manifest"])
+        output += "### 资源包 manifest.json\n\n```json\n{}\n```\n\n".format(result["resource_manifest"])
+        output += "**{}**\n".format(result["note"])
+        return [TextContent(type="text", text=output)]
+
     # 代码审查工具
     elif name == "review_code":
         code = arguments.get("code", "")

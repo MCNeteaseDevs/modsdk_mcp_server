@@ -4,6 +4,7 @@
 支持模糊搜索、结构化 API/事件索引
 """
 
+import os
 import re
 import json
 import math
@@ -166,18 +167,33 @@ CN_SYNONYM_MAP: Dict[str, List[str]] = {
 
 class DocsReader:
     """文档读取器"""
-    
-    def __init__(self, docs_path: str = "docs"):
+
+    # 网易官方教程文档的高优先级子目录（相对于 netease-modsdk-wiki/docs/）
+    # 这些目录包含 JSON UI、自定义维度/方块/实体、粒子特效等关键教程
+    # 开闭原则：新增子目录即可扩展，不改核心逻辑
+    GUIDE_SUBDIRS = [
+        "mcguide/18-界面与交互",                     # JSON UI 完整说明（2741行）
+        "mcguide/20-玩法开发/15-自定义游戏内容",       # 维度/群系/方块/实体/物品教程
+        "mcguide/20-玩法开发/10-基本概念",            # 基础概念
+        "mcguide/16-美术/9-特效",                    # 粒子/序列帧特效 JSON 配置
+        "mcguide/16-美术/6-模型和动作",               # 模型动画教程
+        "mconline/10-addon教程",                     # addon 开发课程（17章）
+    ]
+
+    def __init__(self, docs_path: str = "docs", guide_root: str = ""):
         """
         初始化文档读取器
-        
+
         Args:
             docs_path: docs 目录路径，相对于项目根目录或绝对路径
+            guide_root: 网易官方教程文档根目录（netease-modsdk-wiki/docs/），为空则不加载教程
         """
         self.docs_path = Path(docs_path)
         if not self.docs_path.is_absolute():
             # 如果是相对路径，基于当前文件位置计算
             self.docs_path = Path(__file__).parent.parent / docs_path
+
+        self.guide_root = Path(guide_root) if guide_root else None
         
         self._documents: Dict[str, Document] = {}
         self._index: Dict[str, List[str]] = {}  # 关键词 -> 文档路径列表
@@ -200,23 +216,41 @@ class DocsReader:
         self._enum_data: Dict[str, List[tuple]] = {}  # enum_name -> [(NAME, VALUE, COMMENT), ...]
 
     def load_all_docs(self) -> None:
-        """加载所有文档"""
+        """加载所有文档（API参考 + 官方教程）"""
         if not self.docs_path.exists():
             return
 
+        # 1. 加载 API 参考文档（接口/事件/枚举值）
         for md_file in self.docs_path.rglob("*.md"):
             self._load_document(md_file)
+
+        # 2. 加载网易官方教程文档（mcguide/mconline 的高优先级子目录）
+        if self.guide_root and self.guide_root.exists():
+            guide_count = 0
+            for subdir in self.GUIDE_SUBDIRS:
+                guide_dir = self.guide_root / subdir
+                if guide_dir.exists():
+                    for md_file in guide_dir.rglob("*.md"):
+                        self._load_document(md_file, source_tag="guide")
+                        guide_count += 1
+            if guide_count > 0:
+                print("[DocsReader] 已加载 {} 篇官方教程文档".format(guide_count))
 
         self._build_index()
         self._load_structured_data()
         self._load_enum_data()
     
-    def _load_document(self, filepath: Path) -> Optional[Document]:
-        """加载单个文档"""
+    def _load_document(self, filepath: Path, source_tag: str = "") -> Optional[Document]:
+        """加载单个文档
+
+        Args:
+            filepath: 文档文件路径
+            source_tag: 来源标签，如 "guide" 表示教程文档
+        """
         try:
             with open(filepath, "r", encoding="utf-8") as f:
                 content = f.read()
-            
+
             # 解析元数据（YAML front matter）
             metadata = {}
             if content.startswith("---"):
@@ -228,15 +262,28 @@ class DocsReader:
                             key, value = line.split(":", 1)
                             metadata[key.strip()] = value.strip()
                     content = content[end_idx + 3:].strip()
-            
+
+            if source_tag:
+                metadata["source"] = source_tag
+
             # 解析标题
             title = self._extract_title(content) or filepath.stem
-            
+
             # 解析章节
             sections = self._parse_sections(content)
-            
-            # 计算相对路径
-            rel_path = str(filepath.relative_to(self.docs_path))
+
+            # 计算相对路径（教程文档用 guide_root，API文档用 docs_path）
+            try:
+                rel_path = str(filepath.relative_to(self.docs_path))
+            except ValueError:
+                # 教程文档不在 docs_path 下，用 guide_root 计算
+                if self.guide_root:
+                    try:
+                        rel_path = "guide/" + str(filepath.relative_to(self.guide_root))
+                    except ValueError:
+                        rel_path = filepath.name
+                else:
+                    rel_path = filepath.name
             
             doc = Document(
                 filename=filepath.name,
@@ -1327,9 +1374,36 @@ def get_docs_reader(docs_path: str = "docs") -> DocsReader:
     """获取文档读取器实例（单例模式）"""
     global _docs_reader
     if _docs_reader is None:
-        _docs_reader = DocsReader(docs_path)
+        # 自动检测网易官方教程文档路径
+        guide_root = _find_guide_root()
+        _docs_reader = DocsReader(docs_path, guide_root=guide_root)
         _docs_reader.load_all_docs()
     return _docs_reader
+
+
+def _find_guide_root() -> str:
+    """自动检测网易官方教程文档根目录（netease-modsdk-wiki/docs/）"""
+    project_root = Path(__file__).parent.parent
+
+    # 候选路径列表（按优先级）
+    candidates = [
+        # 环境变量指定
+        os.environ.get("MODSDK_WIKI_PATH", ""),
+        # MCP Server 项目内
+        str(project_root / "external" / "netease-modsdk-wiki" / "docs"),
+        # 常见的兄弟目录布局
+        str(project_root.parent / "netease-modsdk-wiki" / "docs"),
+        # new-mg 项目中的路径
+        str(project_root.parent / "new-mg" / "external" / "netease-modsdk-wiki" / "docs"),
+    ]
+
+    for path in candidates:
+        if path and Path(path).exists() and (Path(path) / "mcguide").exists():
+            print("[DocsReader] 找到官方教程文档: {}".format(path))
+            return path
+
+    print("[DocsReader] 未找到官方教程文档，跳过教程加载")
+    return ""
 
 
 def reload_docs() -> None:
