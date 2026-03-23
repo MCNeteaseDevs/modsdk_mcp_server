@@ -471,20 +471,12 @@ async def list_tools() -> List[Tool]:
         # 文档查询工具
         Tool(
             name="search_docs",
-            description="""搜索 ModSDK 文档（支持模糊搜索）。
+            description="""搜索 ModSDK API 参考文档的详细说明、备注、代码示例和枚举值。
 
-注意：如果要查找具体的 API 接口或事件，优先使用 search_api 工具，更精准且消耗更少上下文。
-本工具适合搜索教程、概念说明、最佳实践等文档内容。
+⚠️ 查找具体 API/事件请优先用 search_api（更精准、更省上下文）。
+本工具适合搜索：API 的详细用法说明、参数备注、代码示例、枚举值定义。
 
-支持特性：
-- 模糊匹配（允许拼写错误）
-- 驼峰分词（"comp factory" 匹配 "GetEngineCompFactory"）
-- 中文搜索
-
-示例：
-- "tick 优化" - 查找优化方法
-- "自定义UI" - 查找 UI 相关文档
-- "背包 物品" - 查找背包相关内容""",
+支持：模糊匹配、驼峰分词、中文搜索。""",
             inputSchema={
                 "type": "object",
                 "properties": {
@@ -511,14 +503,13 @@ async def list_tools() -> List[Tool]:
             description="""精确搜索 ModSDK 的 API 接口或事件（利用结构化数据索引）。
 
 比 search_docs 更精准、更节省上下文。适合查找具体的 API 函数或事件名。
+返回紧凑的签名信息。如需代码示例或详细参数说明，可进一步使用 get_document_section。
 
 搜索示例：
 - "GetPlayerPos" - 查找获取玩家位置的 API
 - "玩家死亡" - 查找玩家死亡相关事件
-- "背包" - 查找背包相关的 API 和事件
-- "SetBlock" - 查找方块放置相关的 API
-
-返回结果包含：API/事件名、描述、参数列表、返回值、所属端侧。""",
+- "按钮" / "button" - 查找 UI 按钮相关 API
+- "SetBlock" - 查找方块放置相关的 API""",
             inputSchema={
                 "type": "object",
                 "properties": {
@@ -543,7 +534,7 @@ async def list_tools() -> List[Tool]:
         ),
         Tool(
             name="get_document",
-            description="获取指定文档的完整内容。需要提供文档的文件路径。",
+            description="获取指定文档内容。大文档（>8000字符）会自动返回目录结构，建议优先使用 get_document_section 获取具体章节。",
             inputSchema={
                 "type": "object",
                 "properties": {
@@ -1504,13 +1495,17 @@ async def call_tool(name: str, arguments: Dict[str, Any]) -> List[TextContent]:
         output = f"## 搜索结果: {query} ({len(results)} 个)\n\n"
         
         for i, result in enumerate(results, 1):
-            output += f"{i}. **{result['title']}** `{result['filepath']}` (分数:{result['score']})\n"
-            
-            # 匹配项精简为一行
+            output += f"{i}. **{result['title']}** `{result['filepath']}`\n"
+
+            # 匹配项最多 2 个
             if fuzzy and result.get('matched_terms'):
-                output += f"   匹配: {', '.join(result['matched_terms'])}\n"
-            
-            output += f"   {result['snippet']}\n\n"
+                output += f"   匹配: {', '.join(result['matched_terms'][:2])}\n"
+
+            # snippet 截短到 80 字符
+            snippet = result.get('snippet', '')
+            if len(snippet) > 80:
+                snippet = snippet[:80] + "..."
+            output += f"   {snippet}\n\n"
         
         return [TextContent(type="text", text=output)]
     
@@ -1527,18 +1522,24 @@ async def call_tool(name: str, arguments: Dict[str, Any]) -> List[TextContent]:
         output = f"## {type_label}搜索结果: {query}\n\n"
         
         for i, r in enumerate(results, 1):
+            # 紧凑签名格式，节省 ~50% tokens
+            if r['params']:
+                sig = ", ".join(f"{p['param_name']}:{p.get('param_type','')}" for p in r['params'])
+            else:
+                sig = ""
+            ret = r.get('return', {})
+            ret_str = ret.get('return_type', '') if ret else ''
+
             output += f"### {i}. `{r['name']}` ({r['side']})\n"
             output += f"- 类型: {r['type']} | 分类: {r['category']}\n"
             output += f"- 描述: {r['desc']}\n"
-            if r['params']:
-                params_str = ", ".join(
-                    f"`{p['param_name']}`({p.get('param_type','')}) {p.get('param_comment','')}"
-                    for p in r['params']
-                )
-                output += f"- 参数: {params_str}\n"
-            ret = r.get('return', {})
-            if ret and ret.get('return_type'):
-                output += f"- 返回: {ret['return_type']} - {ret.get('return_comment', '')}\n"
+            if sig:
+                output += f"- 签名: ({sig})"
+                if ret_str:
+                    output += f" -> {ret_str}"
+                output += "\n"
+            elif ret_str:
+                output += f"- 返回: {ret_str}\n"
             output += "\n"
         
         return [TextContent(type="text", text=output)]
@@ -1546,11 +1547,23 @@ async def call_tool(name: str, arguments: Dict[str, Any]) -> List[TextContent]:
     elif name == "get_document":
         filepath = arguments.get("filepath", "")
         doc = docs_reader.get_document(filepath)
-        
+
         if not doc:
             return [TextContent(type="text", text=f"文档 '{filepath}' 不存在。")]
-        
-        return [TextContent(type="text", text=f"# {doc.title}\n\n{doc.content}")]
+
+        content = doc.content
+        # 截断保护：超过 8000 字符时只返回目录 + 提示，避免灾难性上下文消耗
+        if len(content) > 8000:
+            structure = docs_reader.get_document_structure(filepath)
+            if structure:
+                toc = "\n".join(f"{'  ' * (s['level']-1)}- {s['title']}" for s in structure)
+                return [TextContent(type="text", text=(
+                    f"# {doc.title}\n\n"
+                    f"⚠️ 文档较长（{len(content)}字符），已返回目录结构。"
+                    f"请使用 get_document_section 获取具体章节内容。\n\n"
+                    f"## 目录\n{toc}"
+                ))]
+        return [TextContent(type="text", text=f"# {doc.title}\n\n{content}")]
     
     elif name == "get_document_section":
         filepath = arguments.get("filepath", "")

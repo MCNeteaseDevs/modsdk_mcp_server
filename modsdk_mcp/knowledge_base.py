@@ -665,10 +665,10 @@ def _open_my_ui(self, data):
 # ============================================================================
 
 def search_component(query: str, component_type: str = "all") -> List[Dict]:
-    """搜索组件"""
-    results = []
+    """搜索组件（带评分排序：精确ID > ID子串 > 名称匹配 > 描述匹配）"""
+    scored_results = []
     query_lower = query.lower()
-    
+
     sources = []
     if component_type in ["all", "item"]:
         sources.append(("item", ITEM_COMPONENTS))
@@ -679,17 +679,37 @@ def search_component(query: str, component_type: str = "all") -> List[Dict]:
     if component_type in ["all", "netease"]:
         sources.append(("netease_item", NETEASE_ITEM_COMPONENTS))
         sources.append(("netease_block", NETEASE_BLOCK_COMPONENTS))
-    
+
     for source_type, components in sources:
         for comp_id, comp_data in components.items():
-            if query_lower in comp_id.lower() or query_lower in comp_data.get("name", "").lower():
-                results.append({
+            score = 0
+            comp_id_lower = comp_id.lower()
+            comp_name_lower = comp_data.get("name", "").lower()
+            comp_desc_lower = comp_data.get("description", "").lower()
+
+            # 精确 ID 匹配
+            if query_lower == comp_id_lower:
+                score = 100
+            # ID 子串匹配
+            elif query_lower in comp_id_lower:
+                score = 20
+            # 名称匹配
+            elif query_lower in comp_name_lower:
+                score = 15
+            # 描述匹配
+            elif query_lower in comp_desc_lower:
+                score = 10
+
+            if score > 0:
+                scored_results.append((score, {
                     "id": comp_id,
                     "type": source_type,
                     **comp_data
-                })
-    
-    return results
+                }))
+
+    # 按分数降序排序
+    scored_results.sort(key=lambda x: x[0], reverse=True)
+    return [r[1] for r in scored_results]
 
 
 def get_component_info(component_id: str) -> Dict:

@@ -6,6 +6,7 @@
 
 import re
 import json
+import math
 import bisect
 from pathlib import Path
 from typing import Dict, List, Any, Optional, Set, Tuple
@@ -70,7 +71,11 @@ class DocsReader:
         self._api_name_lower_map: Dict[str, List[str]] = {}  # name.lower() -> [unique_keys]
         self._api_keywords: Dict[str, List[str]] = {}  # keyword.lower() -> [unique_keys]
         self._sorted_api_keywords: List[str] = []  # 排序后的 API 关键词列表
-        
+
+        # IDF 权重数据
+        self._api_keyword_doc_freq: Dict[str, int] = {}  # keyword -> 关联 API 数量
+        self._total_api_entries: int = 0
+
     def load_all_docs(self) -> None:
         """加载所有文档"""
         if not self.docs_path.exists():
@@ -254,6 +259,10 @@ class DocsReader:
             except Exception as e:
                 print(f"加载 events.json 失败: {e}")
         
+        # 构建 IDF 权重数据
+        self._total_api_entries = len(self._api_entries)
+        self._api_keyword_doc_freq = {kw: len(uks) for kw, uks in self._api_keywords.items()}
+
         # 构建排序后的 API 关键词列表，用于前缀二分查找
         self._sorted_api_keywords = sorted(self._api_keywords.keys())
     
@@ -267,20 +276,31 @@ class DocsReader:
         for part in camel_parts:
             self._add_api_keyword(part.lower(), unique_key)
         
-        # 3. 中文描述关键词
+        # 3. 中文描述关键词（完整词组 + 2-gram 拆分）
         chinese_phrases = re.findall(r'[\u4e00-\u9fff]+', entry.desc)
         for phrase in chinese_phrases:
             self._add_api_keyword(phrase, unique_key)
-        
+            # 2-gram 拆分：索引端与查询端对齐，确保搜 "位置" 可匹配 "获取实体位置"
+            if len(phrase) >= 2:
+                for i in range(len(phrase) - 1):
+                    self._add_api_keyword(phrase[i:i+2], unique_key)
+
         # 4. 分类关键词
         if entry.category:
             for cat in entry.category.split("/"):
                 if cat:
                     self._add_api_keyword(cat.lower(), unique_key)
-        
+
         # 5. 端侧关键词
         if entry.side:
             self._add_api_keyword(entry.side, unique_key)
+
+        # 6. 类名关键词（补充无 doc_class_path 的 UI 控件等 190 个 API 盲区）
+        if entry.class_path:
+            class_name = entry.class_path.rsplit(".", 1)[-1]
+            class_parts = re.findall(r'[A-Z][a-z]+|[a-z]+|[A-Z]+(?![a-z])', class_name)
+            for part in class_parts:
+                self._add_api_keyword(part.lower(), unique_key)
     
     def _add_api_keyword(self, keyword: str, unique_key: str) -> None:
         """添加 API 关键词映射"""
@@ -289,6 +309,15 @@ class DocsReader:
         if unique_key not in self._api_keywords[keyword]:
             self._api_keywords[keyword].append(unique_key)
     
+    def _idf_weight(self, keyword: str) -> float:
+        """IDF 权重：稀有词权重高，高频词权重低"""
+        doc_freq = self._api_keyword_doc_freq.get(keyword, 0)
+        if doc_freq == 0:
+            return 1.0
+        total = max(self._total_api_entries, 1)
+        raw_idf = math.log(float(total) / doc_freq)
+        return max(0.2, min(3.0, raw_idf))
+
     # ========================================================================
     # 结构化 API/事件搜索
     # ========================================================================
@@ -324,30 +353,48 @@ class DocsReader:
                     scores.setdefault(uk, 0)
                     scores[uk] = max(scores[uk], 15.0)
         
-        # 3. 关键词索引匹配（使用二分查找优化前缀匹配）
+        # 3. 关键词索引匹配（IDF 加权 + 覆盖率追踪）
         query_tokens = self._tokenize(query)
+        token_hits: Dict[str, set] = {}  # unique_key -> 匹配到的 token 集合
+
         for token in query_tokens:
             token_lower = token.lower()
+            idf = self._idf_weight(token_lower)
             # 精确关键词匹配
             if token_lower in self._api_keywords:
                 for uk in self._api_keywords[token_lower]:
                     scores.setdefault(uk, 0)
-                    scores[uk] += 5.0
+                    scores[uk] += 5.0 * idf
+                    token_hits.setdefault(uk, set()).add(token_lower)
             # 前缀匹配（仅对长度>=3的token，使用二分查找）
             if len(token_lower) >= 3:
                 candidates = self._find_api_prefix_candidates(token_lower)
                 for kw in candidates:
                     if kw == token_lower:
-                        continue  # 已在精确匹配中处理
+                        continue
                     for uk in self._api_keywords.get(kw, []):
                         scores.setdefault(uk, 0)
-                        scores[uk] += 2.0
-        
-        # 4. 描述子串匹配
+                        scores[uk] += 2.0 * self._idf_weight(kw)
+                        token_hits.setdefault(uk, set()).add(token_lower)
+
+        # 3b. 覆盖率奖励：匹配越多 query token 的 API 额外加分
+        if len(query_tokens) >= 2:
+            for uk, matched in token_hits.items():
+                coverage = len(matched) / float(len(query_tokens))
+                if coverage >= 0.5:
+                    scores[uk] += coverage * 10.0
+
+        # 4. 描述子串匹配（逐 token，解决 "玩家位置" 不是 "获取实体位置" 子串的问题）
         for unique_key, entry in self._api_entries.items():
-            if query_lower in entry.desc.lower():
+            desc_lower = entry.desc.lower()
+            if query_lower in desc_lower:
                 scores.setdefault(unique_key, 0)
                 scores[unique_key] += 8.0
+            else:
+                desc_hits = sum(1 for t in query_tokens if len(t) >= 2 and t.lower() in desc_lower)
+                if desc_hits > 0:
+                    scores.setdefault(unique_key, 0)
+                    scores[unique_key] += min(desc_hits * 3.0, 8.0)
         
         # 过滤类型
         if entry_type != "all":
@@ -861,6 +908,8 @@ class DocsReader:
         self._api_name_lower_map.clear()
         self._api_keywords.clear()
         self._sorted_api_keywords.clear()
+        self._api_keyword_doc_freq.clear()
+        self._total_api_entries = 0
         self.load_all_docs()
 
 
