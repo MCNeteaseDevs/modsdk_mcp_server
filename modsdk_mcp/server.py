@@ -3,7 +3,6 @@
 提供 API 文档查询、代码生成、事件系统查询等功能
 """
 
-import json
 import asyncio
 import os
 from pathlib import Path
@@ -13,23 +12,19 @@ from mcp.server.stdio import stdio_server
 from mcp.types import (
     Tool,
     TextContent,
-    CallToolResult,
     GetPromptResult,
     PromptMessage,
     Prompt,
     PromptArgument,
     Resource,
-    ResourceTemplate,
 )
-from .docs_reader import get_docs_reader, reload_docs, DocsReader
+from .docs_reader import get_docs_reader, reload_docs
 from .knowledge_base import (
     ITEM_COMPONENTS,
     BLOCK_COMPONENTS,
     ENTITY_COMPONENTS,
     NETEASE_ITEM_COMPONENTS,
     NETEASE_BLOCK_COMPONENTS,
-    MODSDK_SERVER_API,
-    MODSDK_EVENTS,
     BEST_PRACTICES,
     search_component,
     get_component_info,
@@ -37,7 +32,6 @@ from .knowledge_base import (
     get_architecture_pattern,
 )
 from .templates import (
-    TemplateGenerator,
     generate_mod_project,
     generate_server_system,
     generate_client_system,
@@ -46,9 +40,6 @@ from .templates import (
     generate_custom_item,
     generate_custom_block,
     # Bedrock JSON 生成器
-    BedrockJsonGenerator,
-    EntityJsonGenerator,
-    LootTableGenerator,
     generate_item_json,
     generate_block_json,
     generate_recipe_json,
@@ -56,29 +47,9 @@ from .templates import (
     generate_loot_table_json,
     generate_simple_loot_table,
     generate_spawn_rules_json,
-    # 组件生成器
-    BedrockComponentsGenerator,
-    NeteaseComponentsGenerator,
-    BedrockBlockComponentsGenerator,
-    # 高级物品生成函数
-    generate_sword_item_json,
-    generate_pickaxe_item_json,
-    generate_axe_item_json,
-    generate_shovel_item_json,
-    generate_hoe_item_json,
-    generate_food_item_json,
-    generate_armor_item_json,
-    generate_throwable_item_json,
-    generate_bow_item_json,
+    # 统一高级物品生成函数
+    generate_typed_item_json,
 )
-try:
-    from ._ui_and_manifest import generate_ui_json, generate_manifest_json
-except (ImportError, SyntaxError):
-    # _ui_and_manifest.py 可能存在语法问题，提供降级实现
-    def generate_ui_json(**kwargs):
-        return {"error": "UI生成模块未加载"}
-    def generate_manifest_json(**kwargs):
-        return {"error": "Manifest生成模块未加载"}
 
 
 # 创建 MCP Server 实例
@@ -121,70 +92,19 @@ server = Server(
 
 【强制遵循的代码规范】
 
-在生成任何 ModSDK Python 代码时，你必须遵循以下规则：
-
-0. **Python 2.7 兼容性（最重要）**
-   - 禁止使用 f-string（f"..."），使用 "{}".format() 或 % 格式化
-   - 禁止使用 print() 函数，使用 print 语句
-   - 禁止使用 type hints（类型注解）
-   - 禁止使用 async/await 语法
-   - 文件顶部添加: # -*- coding: utf-8 -*-
-   - 字典使用 .iteritems() 而非 .items()（大数据时）
-   - 使用 xrange 代替 range（大范围时）
-
-1. **客户端/服务端严格分离**
-   - ServerSystem 禁止 import clientApi
-   - ClientSystem 禁止 import serverApi
-   - 跨端通信只能使用事件系统
-
-2. **GetEngineCompFactory 必须缓存**
-   在文件顶部缓存：
-   CF = serverApi.GetEngineCompFactory()
-   levelId = serverApi.GetLevelId()
-   禁止在函数内重复调用 GetEngineCompFactory()
-
-3. **import 必须在文件顶部**
-   禁止在函数/方法内部 import
-
-4. **Tick 逻辑必须降帧**
-   使用质数间隔：if self.tick % 7 == 0:
-   避免每帧执行耗时操作
-
-5. **ServerBlockEntityTickEvent 必须加盐**
-   使用坐标计算 salt 错开执行时机：
-   salt = (x * 31 + y * 17 + z * 13) % 20
-
-6. **点对点通信优先**
-   优先使用 NotifyToClient(playerId, ...)
-   谨慎使用 BroadcastToAllClient(...)
+生成代码时必须遵循以下核心规则（完整规范可通过 get_best_practices 工具获取）：
+- Python 2.7 兼容：禁止 f-string、type hints、async/await、print()函数
+- 客户端/服务端严格分离，跨端只用事件通信
+- GetEngineCompFactory 必须文件顶部缓存
+- Tick 逻辑必须降帧（质数间隔）
+- 点对点通信优先于广播
 
 【UI 界面开发规范】
 
-1. **_ui_defs.json 文件规范**
-   - 必须放在 resource_pack/ui/ 目录下
-   - 必须使用对象格式: {"ui_defs": ["ui/xxx.json"]}
-   - 不能是纯数组格式
-
-2. **UI 注册时机**
-   - RegisterUI 必须在 UiInitFinished 事件回调中调用
-   - 不能在 __init__ 或系统初始化时直接调用
-
-3. **控件类型转换**
-   - GetBaseUIControl() 返回 BaseUIControl
-   - 按钮操作需要: asButton() 转换后调用 AddTouchEventParams/SetButtonTouchUpCallback
-   - 文本操作需要: asLabel() 转换后调用 SetText()
-
-4. **从 UI 发送事件到服务端**
-   - 不能用 clientApi.BroadcastEvent()
-   - 应该用: clientApi.GetSystem().NotifyToServer()
-
-5. **关闭 UI 界面**
-   - 使用 self.SetRemove()，不要用 clientApi.PopScreen()
-   - PopScreen 可能影响原版 UI
-
-6. **防止点击穿透**
-   - 使用 input_panel + modal:true
-   - 不要设置 is_swallow:true，否则子控件按钮无法点击
+- _ui_defs.json 必须用对象格式 {"ui_defs": [...]}，不能是纯数组
+- RegisterUI 必须在 UiInitFinished 事件回调中调用
+- 控件操作需类型转换：asButton()、asLabel() 等
+- 关闭 UI 用 self.SetRemove()，不要用 PopScreen
 
 请在生成代码时自动应用这些规范，无需用户额外提醒。
 
@@ -532,62 +452,6 @@ def _try_inline_enum(docs_reader, text: str) -> Optional[str]:
 # 工具定义
 # ============================================================================
 
-# 代码生成强制规范（嵌入到工具描述中）
-CODE_GENERATION_RULES = """
-【NetEase ModSDK 代码生成强制规范】
-
-生成代码时必须遵循以下规则：
-
-1. **客户端/服务端严格分离**
-   - ServerSystem 禁止 import clientApi
-   - ClientSystem 禁止 import serverApi
-   - 跨端通信只能使用事件系统
-
-2. **GetEngineCompFactory 必须缓存**
-   ```python
-   # ✅ 正确：模块级缓存
-   CF = serverApi.GetEngineCompFactory()
-   levelId = serverApi.GetLevelId()
-   
-   # ❌ 错误：每次调用都创建
-   def func():
-       comp = serverApi.GetEngineCompFactory().CreateXxx()
-   ```
-
-3. **import 必须在文件顶部**
-   - 禁止在函数/方法内部 import
-   - 所有依赖必须在文件开头声明
-
-4. **Tick 逻辑必须降帧**
-   ```python
-   # ✅ 正确：使用质数降帧
-   def OnTickServer(self):
-       self.tick += 1
-       if self.tick % 7 == 0:  # 每7帧执行一次
-           self.DoExpensiveWork()
-   ```
-
-5. **ServerBlockEntityTickEvent 必须加盐**
-   ```python
-   # ✅ 正确：使用坐标加盐错开执行
-   def OnBlockTick(self, args):
-       x, y, z = args['posX'], args['posY'], args['posZ']
-       salt = (x * 31 + y * 17 + z * 13) % 20
-       if self.tick % 20 == salt:
-           self.DoBlockLogic(args)
-   ```
-
-6. **点对点通信优先**
-   ```python
-   # ✅ 优先使用
-   self.NotifyToClient(playerId, "EventName", data)
-   
-   # ⚠️ 谨慎使用（仅全服广播时）
-   self.BroadcastToAllClient("EventName", data)
-   ```
-""".strip()
-
-
 @server.list_tools()
 async def list_tools() -> List[Tool]:
     """列出所有可用的工具"""
@@ -736,49 +600,26 @@ async def list_tools() -> List[Tool]:
             }
         ),
         
-        # 代码生成工具（描述中包含强制规范）
+        # 代码生成工具
         Tool(
             name="generate_mod_project",
-            description=f"""生成一个完整的 Mod 项目模板，包含入口文件、服务端系统、客户端系统。
+            description="""生成一个完整的 Mod 项目模板，包含入口文件、服务端系统、客户端系统。
 
 【重要：脚本目录必须直接放在 behavior_pack 下面】
 脚本文件夹直接放在行为包根目录下，这是网易 ModSDK 的强制要求！
 
 【项目结构规范】
-1. 脚本文件夹命名：{{mod_id}}_Script（如 myMod_Script）
-2. 脚本文件夹必须位于：behavior_pack_{{mod_id}}/{{mod_id}}_Script/（直接在行为包根目录下）
+1. 脚本文件夹命名：{mod_id}_Script（如 myMod_Script）
+2. 脚本文件夹必须位于：behavior_pack_{mod_id}/{mod_id}_Script/（直接在行为包根目录下）
 3. 每个 Python 文件夹包含 __init__.py
 4. modMain.py 的 @Mod.Binding(name=...) 与脚本文件夹名同步
 
-【完整部署结构】
-behavior_pack_{{mod_id}}/              # 行为包根目录
-├── {{mod_id}}_Script/                 # 脚本根目录（直接在行为包下，使用 _Script 后缀）
-│   ├── __init__.py                    # Python 包标识（根目录）
-│   ├── modMain.py                     # Mod 入口文件
-│   └── scripts/
-│       ├── __init__.py                # Python 包标识
-│       └── {{mod_id}}/                # 脚本子目录（不加 _Script）
-│           ├── __init__.py            # Python 包标识
-│           ├── server.py              # 服务端系统
-│           └── client.py              # 客户端系统
-├── netease_items_beh/                 # 自定义物品行为 JSON
-├── netease_blocks/                    # 自定义方块 JSON
-├── netease_recipes/                   # 合成配方 JSON
-├── entities/                          # 自定义实体 JSON
-└── loot_tables/                       # 战利品表 JSON
-
-resource_pack_{{mod_id}}/              # 资源包根目录
-├── netease_items_res/                 # 自定义物品资源 JSON
-├── entity/                            # 自定义实体资源 JSON
-└── texts/                             # 本地化文件
-    └── zh_CN.lang
-
 【RegisterSystem 路径规范】
 路径必须从脚本根目录开始：
-- 服务端: "{{mod_id}}_Script.scripts.{{mod_id}}.server.XxxServerSystem"
-- 客户端: "{{mod_id}}_Script.scripts.{{mod_id}}.client.XxxClientSystem"
+- 服务端: "{mod_id}_Script.scripts.{mod_id}.server.XxxServerSystem"
+- 客户端: "{mod_id}_Script.scripts.{mod_id}.client.XxxClientSystem"
 
-{CODE_GENERATION_RULES}""",
+代码遵循 ModSDK 编码规范（详见系统指令或 get_best_practices 工具）""",
             inputSchema={
                 "type": "object",
                 "properties": {
@@ -1446,46 +1287,6 @@ behavior_pack_<namespace>/spawn_rules/<namespace>_<entity_id>.json
             }
         ),
         
-        # JSON UI 模板生成工具
-        Tool(
-            name="generate_ui_json",
-            description="""生成 JSON UI 文件模板。
-
-【模板类型】
-- screen: 基础空白屏幕（含标题+关闭按钮）
-- shop_grid: 商品网格列表（grid + scroll_view）
-- dialog: 确认/取消弹窗对话框
-- hud: HUD叠加元素（数值+图标+进度条）
-- tab_panel: 多页签面板（toggle切换+内容区域）
-
-【输出】JSON UI 文件内容 + _ui_defs.json 注册条目 + 使用说明""",
-            inputSchema={
-                "type": "object",
-                "properties": {
-                    "template": {"type": "string", "description": "模板类型: screen/shop_grid/dialog/hud/tab_panel", "enum": ["screen", "shop_grid", "dialog", "hud", "tab_panel"]},
-                    "namespace": {"type": "string", "description": "命名空间（全局唯一，如 'my_shop'）"},
-                    "title": {"type": "string", "description": "标题文本（可选）"},
-                    "columns": {"type": "integer", "description": "商品网格列数（shop_grid专用，默认4）"},
-                    "tabs": {"type": "array", "items": {"type": "string"}, "description": "页签名称列表（tab_panel专用）"},
-                    "message": {"type": "string", "description": "提示消息（dialog专用）"}
-                },
-                "required": ["template", "namespace"]
-            }
-        ),
-        Tool(
-            name="generate_manifest_json",
-            description="生成行为包+资源包的 manifest.json（UUID自动生成，行为包自动关联资源包）。",
-            inputSchema={
-                "type": "object",
-                "properties": {
-                    "mod_name": {"type": "string", "description": "MOD名称"},
-                    "description": {"type": "string", "description": "描述（可选）"},
-                    "version": {"type": "string", "description": "版本号（如 '1.0.0'，可选）", "default": "1.0.0"}
-                },
-                "required": ["mod_name"]
-            }
-        ),
-
         # 代码审查工具
         Tool(
             name="review_code",
@@ -1655,29 +1456,6 @@ behavior_pack_<namespace>/spawn_rules/<namespace>_<entity_id>.json
             }
         ),
         Tool(
-            name="list_modsdk_events",
-            description="""列出 ModSDK 常用事件。
-
-提供服务端和客户端事件列表，包含：
-- 事件名称
-- 触发时机
-- 参数列表
-- 是否可取消
-- 重要提示""",
-            inputSchema={
-                "type": "object",
-                "properties": {
-                    "side": {
-                        "type": "string",
-                        "description": "事件所属端",
-                        "enum": ["all", "server", "client"],
-                        "default": "all"
-                    }
-                },
-                "required": []
-            }
-        ),
-        Tool(
             name="browse_api_category",
             description="""按分类浏览API/事件列表。当 search_api 搜索不到时，用此工具按分类逐步缩小范围。
 
@@ -1702,6 +1480,43 @@ behavior_pack_<namespace>/spawn_rules/<namespace>_<entity_id>.json
             }
         )
     ]
+
+
+# ============================================================================
+# 高级物品工具 - 统一查找表与格式化
+# ============================================================================
+
+ADVANCED_ITEM_TOOLS = {
+    "generate_sword_json":     ("sword",     "⚔️ 自定义剑类武器",  "自定义剑"),
+    "generate_pickaxe_json":   ("pickaxe",   "⛏️ 自定义镐类工具",  "自定义镐"),
+    "generate_axe_json":       ("axe",       "🪓 自定义斧类工具",  "自定义斧"),
+    "generate_shovel_json":    ("shovel",    "🥄 自定义锹类工具",  "自定义锹"),
+    "generate_hoe_json":       ("hoe",       "🌾 自定义锄类工具",  "自定义锄"),
+    "generate_food_json":      ("food",      "🍎 自定义食物",      "自定义食物"),
+    "generate_armor_json":     ("armor",     "🛡️ 自定义盔甲",     "自定义盔甲"),
+    "generate_bow_json":       ("bow",       "🏹 自定义弓",        "自定义弓"),
+    "generate_throwable_json": ("throwable", "🎯 自定义投掷物",    "自定义投掷物"),
+}
+
+# 盔甲槽位名称映射（用于盔甲类型的个性化显示）
+_ARMOR_SLOT_NAMES = {
+    "slot.armor.head": "头盔",
+    "slot.armor.chest": "胸甲",
+    "slot.armor.legs": "护腿",
+    "slot.armor.feet": "靴子",
+}
+
+
+def _format_item_result(result: Dict[str, str], namespace: str, item_id: str, display_label: str, lang_name: str) -> str:
+    """格式化高级物品生成结果为统一的 Markdown 输出"""
+    pack_id = namespace
+    output = f"## {display_label}: {namespace}:{item_id}\n\n"
+    output += f"### 行为包文件: `behavior_pack_{pack_id}/netease_items_beh/{namespace}_{item_id}.json`\n\n"
+    output += f"```json\n{result['behavior']}\n```\n\n"
+    output += f"### 资源包文件: `resource_pack_{pack_id}/netease_items_res/{namespace}_{item_id}.json`\n\n"
+    output += f"```json\n{result['resource']}\n```\n\n"
+    output += f"### 📝 本地化条目 (texts/zh_CN.lang)\n\n```\nitem.{namespace}:{item_id}.name={lang_name}\n```"
+    return output
 
 
 @server.call_tool()
@@ -2137,225 +1952,23 @@ async def call_tool(name: str, arguments: Dict[str, Any]) -> List[TextContent]:
         return [TextContent(type="text", text=output)]
     
     # ============================================================
-    # 高级物品生成工具处理
+    # 高级物品生成工具处理（统一处理 9 种物品类型）
     # ============================================================
     
-    elif name == "generate_sword_json":
+    elif name in ADVANCED_ITEM_TOOLS:
+        item_type, display_label, default_lang_name = ADVANCED_ITEM_TOOLS[name]
         namespace = arguments.get("namespace")
         item_id = arguments.get("item_id")
-        result = generate_sword_item_json(
-            namespace=namespace,
-            item_id=item_id,
-            damage=arguments.get("damage", 5),
-            durability=arguments.get("durability", 131),
-            enchantability=arguments.get("enchantability", 15),
-            repair_material=arguments.get("repair_material")
-        )
-        pack_id = namespace
-        output = f"## ⚔️ 自定义剑类武器: {namespace}:{item_id}\n\n"
-        output += f"### 行为包文件: `behavior_pack_{pack_id}/netease_items_beh/{namespace}_{item_id}.json`\n\n"
-        output += f"```json\n{result['behavior']}\n```\n\n"
-        output += f"### 资源包文件: `resource_pack_{pack_id}/netease_items_res/{namespace}_{item_id}.json`\n\n"
-        output += f"```json\n{result['resource']}\n```\n\n"
-        output += f"### 📝 本地化条目 (texts/zh_CN.lang)\n\n```\nitem.{namespace}:{item_id}.name=自定义剑\n```"
+        kwargs = {k: v for k, v in arguments.items() if k not in ("namespace", "item_id")}
+        result = generate_typed_item_json(item_type, namespace, item_id, **kwargs)
+        # 盔甲类型：根据槽位个性化显示标签和本地化名称
+        if item_type == "armor":
+            slot_name = _ARMOR_SLOT_NAMES.get(arguments.get("slot", "slot.armor.chest"), "盔甲")
+            display_label = f"🛡️ 自定义{slot_name}"
+            default_lang_name = f"自定义{slot_name}"
+        output = _format_item_result(result, namespace, item_id, display_label, default_lang_name)
         return [TextContent(type="text", text=output)]
     
-    elif name == "generate_pickaxe_json":
-        namespace = arguments.get("namespace")
-        item_id = arguments.get("item_id")
-        result = generate_pickaxe_item_json(
-            namespace=namespace,
-            item_id=item_id,
-            durability=arguments.get("durability", 131),
-            mining_speed=arguments.get("mining_speed", 4),
-            enchantability=arguments.get("enchantability", 15),
-            repair_material=arguments.get("repair_material")
-        )
-        pack_id = namespace
-        output = f"## ⛏️ 自定义镐类工具: {namespace}:{item_id}\n\n"
-        output += f"### 行为包文件: `behavior_pack_{pack_id}/netease_items_beh/{namespace}_{item_id}.json`\n\n"
-        output += f"```json\n{result['behavior']}\n```\n\n"
-        output += f"### 资源包文件: `resource_pack_{pack_id}/netease_items_res/{namespace}_{item_id}.json`\n\n"
-        output += f"```json\n{result['resource']}\n```\n\n"
-        output += f"### 📝 本地化条目 (texts/zh_CN.lang)\n\n```\nitem.{namespace}:{item_id}.name=自定义镐\n```"
-        return [TextContent(type="text", text=output)]
-    
-    elif name == "generate_axe_json":
-        namespace = arguments.get("namespace")
-        item_id = arguments.get("item_id")
-        result = generate_axe_item_json(
-            namespace=namespace,
-            item_id=item_id,
-            damage=arguments.get("damage", 4),
-            durability=arguments.get("durability", 131),
-            mining_speed=arguments.get("mining_speed", 4),
-            enchantability=arguments.get("enchantability", 15),
-            repair_material=arguments.get("repair_material")
-        )
-        pack_id = namespace
-        output = f"## 🪓 自定义斧类工具: {namespace}:{item_id}\n\n"
-        output += f"### 行为包文件: `behavior_pack_{pack_id}/netease_items_beh/{namespace}_{item_id}.json`\n\n"
-        output += f"```json\n{result['behavior']}\n```\n\n"
-        output += f"### 资源包文件: `resource_pack_{pack_id}/netease_items_res/{namespace}_{item_id}.json`\n\n"
-        output += f"```json\n{result['resource']}\n```\n\n"
-        output += f"### 📝 本地化条目 (texts/zh_CN.lang)\n\n```\nitem.{namespace}:{item_id}.name=自定义斧\n```"
-        return [TextContent(type="text", text=output)]
-    
-    elif name == "generate_shovel_json":
-        namespace = arguments.get("namespace")
-        item_id = arguments.get("item_id")
-        result = generate_shovel_item_json(
-            namespace=namespace,
-            item_id=item_id,
-            durability=arguments.get("durability", 131),
-            mining_speed=arguments.get("mining_speed", 4),
-            enchantability=arguments.get("enchantability", 15),
-            repair_material=arguments.get("repair_material")
-        )
-        pack_id = namespace
-        output = f"## 🥄 自定义锹类工具: {namespace}:{item_id}\n\n"
-        output += f"### 行为包文件: `behavior_pack_{pack_id}/netease_items_beh/{namespace}_{item_id}.json`\n\n"
-        output += f"```json\n{result['behavior']}\n```\n\n"
-        output += f"### 资源包文件: `resource_pack_{pack_id}/netease_items_res/{namespace}_{item_id}.json`\n\n"
-        output += f"```json\n{result['resource']}\n```\n\n"
-        output += f"### 📝 本地化条目 (texts/zh_CN.lang)\n\n```\nitem.{namespace}:{item_id}.name=自定义锹\n```"
-        return [TextContent(type="text", text=output)]
-    
-    elif name == "generate_hoe_json":
-        namespace = arguments.get("namespace")
-        item_id = arguments.get("item_id")
-        result = generate_hoe_item_json(
-            namespace=namespace,
-            item_id=item_id,
-            durability=arguments.get("durability", 131),
-            enchantability=arguments.get("enchantability", 15),
-            repair_material=arguments.get("repair_material")
-        )
-        pack_id = namespace
-        output = f"## 🌾 自定义锄类工具: {namespace}:{item_id}\n\n"
-        output += f"### 行为包文件: `behavior_pack_{pack_id}/netease_items_beh/{namespace}_{item_id}.json`\n\n"
-        output += f"```json\n{result['behavior']}\n```\n\n"
-        output += f"### 资源包文件: `resource_pack_{pack_id}/netease_items_res/{namespace}_{item_id}.json`\n\n"
-        output += f"```json\n{result['resource']}\n```\n\n"
-        output += f"### 📝 本地化条目 (texts/zh_CN.lang)\n\n```\nitem.{namespace}:{item_id}.name=自定义锄\n```"
-        return [TextContent(type="text", text=output)]
-    
-    elif name == "generate_food_json":
-        namespace = arguments.get("namespace")
-        item_id = arguments.get("item_id")
-        result = generate_food_item_json(
-            namespace=namespace,
-            item_id=item_id,
-            nutrition=arguments.get("nutrition", 4),
-            saturation=arguments.get("saturation", "normal"),
-            can_always_eat=arguments.get("can_always_eat", False),
-            effects=arguments.get("effects")
-        )
-        pack_id = namespace
-        output = f"## 🍎 自定义食物: {namespace}:{item_id}\n\n"
-        output += f"### 行为包文件: `behavior_pack_{pack_id}/netease_items_beh/{namespace}_{item_id}.json`\n\n"
-        output += f"```json\n{result['behavior']}\n```\n\n"
-        output += f"### 资源包文件: `resource_pack_{pack_id}/netease_items_res/{namespace}_{item_id}.json`\n\n"
-        output += f"```json\n{result['resource']}\n```\n\n"
-        output += f"### 📝 本地化条目 (texts/zh_CN.lang)\n\n```\nitem.{namespace}:{item_id}.name=自定义食物\n```"
-        return [TextContent(type="text", text=output)]
-    
-    elif name == "generate_armor_json":
-        namespace = arguments.get("namespace")
-        item_id = arguments.get("item_id")
-        result = generate_armor_item_json(
-            namespace=namespace,
-            item_id=item_id,
-            slot=arguments.get("slot", "slot.armor.chest"),
-            protection=arguments.get("protection", 5),
-            durability=arguments.get("durability", 165),
-            enchantability=arguments.get("enchantability", 9),
-            repair_material=arguments.get("repair_material")
-        )
-        slot_name_map = {
-            "slot.armor.head": "头盔",
-            "slot.armor.chest": "胸甲",
-            "slot.armor.legs": "护腿",
-            "slot.armor.feet": "靴子"
-        }
-        slot_name = slot_name_map.get(arguments.get("slot", "slot.armor.chest"), "盔甲")
-        pack_id = namespace
-        output = f"## 🛡️ 自定义{slot_name}: {namespace}:{item_id}\n\n"
-        output += f"### 行为包文件: `behavior_pack_{pack_id}/netease_items_beh/{namespace}_{item_id}.json`\n\n"
-        output += f"```json\n{result['behavior']}\n```\n\n"
-        output += f"### 资源包文件: `resource_pack_{pack_id}/netease_items_res/{namespace}_{item_id}.json`\n\n"
-        output += f"```json\n{result['resource']}\n```\n\n"
-        output += f"### 📝 本地化条目 (texts/zh_CN.lang)\n\n```\nitem.{namespace}:{item_id}.name=自定义{slot_name}\n```"
-        return [TextContent(type="text", text=output)]
-    
-    elif name == "generate_bow_json":
-        namespace = arguments.get("namespace")
-        item_id = arguments.get("item_id")
-        result = generate_bow_item_json(
-            namespace=namespace,
-            item_id=item_id,
-            durability=arguments.get("durability", 384),
-            max_draw_duration=arguments.get("max_draw_duration", 1.0),
-            enchantability=arguments.get("enchantability", 1)
-        )
-        pack_id = namespace
-        output = f"## 🏹 自定义弓: {namespace}:{item_id}\n\n"
-        output += f"### 行为包文件: `behavior_pack_{pack_id}/netease_items_beh/{namespace}_{item_id}.json`\n\n"
-        output += f"```json\n{result['behavior']}\n```\n\n"
-        output += f"### 资源包文件: `resource_pack_{pack_id}/netease_items_res/{namespace}_{item_id}.json`\n\n"
-        output += f"```json\n{result['resource']}\n```\n\n"
-        output += f"### 📝 本地化条目 (texts/zh_CN.lang)\n\n```\nitem.{namespace}:{item_id}.name=自定义弓\n```"
-        return [TextContent(type="text", text=output)]
-    
-    elif name == "generate_throwable_json":
-        namespace = arguments.get("namespace")
-        item_id = arguments.get("item_id")
-        projectile_entity = arguments.get("projectile_entity")
-        result = generate_throwable_item_json(
-            namespace=namespace,
-            item_id=item_id,
-            projectile_entity=projectile_entity,
-            max_draw_duration=arguments.get("max_draw_duration", 0.0),
-            launch_power=arguments.get("launch_power", 1.0)
-        )
-        pack_id = namespace
-        output = f"## 🎯 自定义投掷物: {namespace}:{item_id}\n\n"
-        output += f"### 行为包文件: `behavior_pack_{pack_id}/netease_items_beh/{namespace}_{item_id}.json`\n\n"
-        output += f"```json\n{result['behavior']}\n```\n\n"
-        output += f"### 资源包文件: `resource_pack_{pack_id}/netease_items_res/{namespace}_{item_id}.json`\n\n"
-        output += f"```json\n{result['resource']}\n```\n\n"
-        output += f"### 📝 本地化条目 (texts/zh_CN.lang)\n\n```\nitem.{namespace}:{item_id}.name=自定义投掷物\n```"
-        return [TextContent(type="text", text=output)]
-    
-    # JSON UI 模板生成
-    elif name == "generate_ui_json":
-        template = arguments.get("template", "screen")
-        namespace = arguments.get("namespace", "my_ui")
-        kwargs = {k: v for k, v in arguments.items() if k not in ("template", "namespace")}
-        result = generate_ui_json(template, namespace, **kwargs)
-
-        if "error" in result:
-            return [TextContent(type="text", text=result["error"])]
-
-        output = "## JSON UI 模板: {} ({})\n\n".format(namespace, template)
-        output += "### UI JSON 文件\n\n路径: `resource_pack/ui/{}.json`\n\n```json\n{}\n```\n\n".format(namespace, result["ui_json"])
-        output += "### _ui_defs.json 条目\n\n```json\n{}\n```\n\n".format(result["ui_defs_entry"])
-        output += "### 使用说明\n\n{}\n".format(result["usage_hint"])
-        return [TextContent(type="text", text=output)]
-
-    # manifest.json 生成
-    elif name == "generate_manifest_json":
-        mod_name = arguments.get("mod_name", "MyMod")
-        description = arguments.get("description", "")
-        version = arguments.get("version", "1.0.0")
-        result = generate_manifest_json(mod_name, description, version)
-
-        output = "## manifest.json: {}\n\n".format(mod_name)
-        output += "### 行为包 manifest.json\n\n```json\n{}\n```\n\n".format(result["behavior_manifest"])
-        output += "### 资源包 manifest.json\n\n```json\n{}\n```\n\n".format(result["resource_manifest"])
-        output += "**{}**\n".format(result["note"])
-        return [TextContent(type="text", text=output)]
-
     # 代码审查工具
     elif name == "review_code":
         code = arguments.get("code", "")
@@ -2505,30 +2118,6 @@ async def call_tool(name: str, arguments: Dict[str, Any]) -> List[TextContent]:
         result = get_architecture_pattern(pattern_name)
         return [TextContent(type="text", text=result)]
 
-    elif name == "list_modsdk_events":
-        side = arguments.get("side", "all")
-        output = "## 📋 ModSDK 事件列表\n\n"
-        
-        for event_name, event_data in MODSDK_EVENTS.items():
-            if side != "all" and event_data.get("side") != side:
-                continue
-            
-            output += f"### `{event_name}`\n"
-            output += f"- **端**: {event_data.get('side', 'unknown')}\n"
-            output += f"- **描述**: {event_data.get('description', '无描述')}\n"
-            
-            if event_data.get('args'):
-                output += f"- **参数**: {', '.join(event_data['args'])}\n"
-            
-            output += f"- **可取消**: {'是' if event_data.get('cancel') else '否'}\n"
-            
-            if event_data.get('important'):
-                output += f"- **⚠️ 重要**: {event_data['important']}\n"
-            
-            output += "\n"
-        
-        return [TextContent(type="text", text=output)]
-    
     else:
         return [TextContent(type="text", text=f"未知的工具: {name}")]
 

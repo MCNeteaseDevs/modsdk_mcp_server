@@ -579,7 +579,7 @@ class DocsReader:
             is_chinese = any('\u4e00' <= c <= '\u9fff' for c in token_lower)
             min_prefix_len = 4 if is_chinese else 3
             if len(token_lower) >= min_prefix_len:
-                candidates = self._find_api_prefix_candidates(token_lower)
+                candidates = self._find_prefix_candidates(token_lower, self._sorted_api_keywords)
                 for kw in candidates:
                     if kw == token_lower:
                         continue
@@ -634,31 +634,6 @@ class DocsReader:
             })
         
         return results
-    
-    def _find_api_prefix_candidates(self, token: str, max_candidates: int = 50) -> List[str]:
-        """
-        从排序后的 API 关键词列表中，用前缀二分查找快速筛选候选。
-        """
-        token_lower = token.lower()
-        if len(token_lower) < 2:
-            return []
-        
-        prefix = token_lower[:2]
-        prefix_end = prefix[:-1] + chr(ord(prefix[-1]) + 1)
-        
-        start = bisect.bisect_left(self._sorted_api_keywords, prefix)
-        end = bisect.bisect_left(self._sorted_api_keywords, prefix_end)
-        
-        candidates = self._sorted_api_keywords[start:end]
-        
-        if len(candidates) > max_candidates and len(token_lower) >= 3:
-            prefix3 = token_lower[:3]
-            prefix3_end = prefix3[:-1] + chr(ord(prefix3[-1]) + 1)
-            start = bisect.bisect_left(self._sorted_api_keywords, prefix3)
-            end = bisect.bisect_left(self._sorted_api_keywords, prefix3_end)
-            candidates = self._sorted_api_keywords[start:end]
-        
-        return candidates[:max_candidates]
     
     # ========================================================================
     # 模糊搜索辅助方法
@@ -726,7 +701,7 @@ class DocsReader:
         
         return False, 0.0
     
-    def _find_prefix_candidates(self, token: str, max_candidates: int = 50) -> List[str]:
+    def _find_prefix_candidates(self, token: str, sorted_list: List[str], max_candidates: int = 50) -> List[str]:
         """
         从排序后的关键词列表中，用前缀匹配快速筛选候选关键词。
         利用二分查找 O(log N) 定位前缀起始位置。
@@ -740,18 +715,18 @@ class DocsReader:
         # 计算前缀的上界
         prefix_end = prefix[:-1] + chr(ord(prefix[-1]) + 1)
         
-        start = bisect.bisect_left(self._sorted_keywords, prefix)
-        end = bisect.bisect_left(self._sorted_keywords, prefix_end)
+        start = bisect.bisect_left(sorted_list, prefix)
+        end = bisect.bisect_left(sorted_list, prefix_end)
         
-        candidates = self._sorted_keywords[start:end]
+        candidates = sorted_list[start:end]
         
         # 如果候选太多，进一步用更长前缀过滤
         if len(candidates) > max_candidates and len(token_lower) >= 3:
             prefix3 = token_lower[:3]
             prefix3_end = prefix3[:-1] + chr(ord(prefix3[-1]) + 1)
-            start = bisect.bisect_left(self._sorted_keywords, prefix3)
-            end = bisect.bisect_left(self._sorted_keywords, prefix3_end)
-            candidates = self._sorted_keywords[start:end]
+            start = bisect.bisect_left(sorted_list, prefix3)
+            end = bisect.bisect_left(sorted_list, prefix3_end)
+            candidates = sorted_list[start:end]
         
         return candidates[:max_candidates]
     
@@ -1030,10 +1005,6 @@ class DocsReader:
         """获取指定文档"""
         return self._documents.get(filepath)
     
-    def get_all_documents(self) -> List[Document]:
-        """获取所有文档"""
-        return list(self._documents.values())
-    
     def list_documents(self) -> List[Dict[str, str]]:
         """列出所有文档的基本信息"""
         return [
@@ -1155,7 +1126,7 @@ class DocsReader:
                     
                     # 3b. 英文 token：前缀候选匹配（用二分查找代替全量遍历）
                     if len(token_lower) >= 3:
-                        candidates = self._find_prefix_candidates(token_lower)
+                        candidates = self._find_prefix_candidates(token_lower, self._sorted_keywords)
                         for keyword in candidates:
                             if keyword == token_lower:
                                 continue  # 已在 3a 处理
@@ -1304,25 +1275,6 @@ class DocsReader:
         
         # 如果没找到关键词，返回开头部分
         return content[:context_length] + "..." if len(content) > context_length else content
-    
-    def search_in_section(self, query: str, section_title: str) -> List[Dict[str, Any]]:
-        """在指定章节标题中搜索"""
-        results = []
-        query_lower = query.lower()
-        section_lower = section_title.lower()
-        
-        for doc in self._documents.values():
-            for section in doc.sections:
-                if section_lower in section.title.lower():
-                    if query_lower in section.content.lower():
-                        results.append({
-                            "filepath": doc.filepath,
-                            "title": doc.title,
-                            "section": section.title,
-                            "content": section.content
-                        })
-        
-        return results
     
     def get_section_content(self, filepath: str, section_title: str) -> Optional[str]:
         """获取指定文档的指定章节内容"""

@@ -734,22 +734,6 @@ ITEM_BEHAVIOR_JSON_TEMPLATE = '''{{
         }}
     }}
 }}'''
-
-# 行为包物品 JSON 模板（国际版格式 1.16.100+ - 仅限国际版使用）
-# 注意：此模板不适用于网易版！
-ITEM_BEHAVIOR_JSON_TEMPLATE_INTERNATIONAL = '''{{
-    "format_version": "1.16.100",
-    "minecraft:item": {{
-        "description": {{
-            "identifier": "{namespace}:{item_id}",
-            "category": "{category}"
-        }},
-        "components": {{
-            "minecraft:max_stack_size": {max_stack_size}{additional_components}
-        }}
-    }}
-}}'''
-
 # 资源包物品 JSON 模板
 ITEM_RESOURCE_JSON_TEMPLATE = '''{{
     "format_version": "1.10",
@@ -791,30 +775,6 @@ BLOCK_BEHAVIOR_JSON_TEMPLATE = '''{{
             "minecraft:block_light_absorption": {{
                 "value": {light_dampening}
             }}{additional_components}
-        }}
-    }}
-}}'''
-
-# 行为包方块 JSON 模板 (国际版 1.19.20+ - 仅限国际版使用)
-# 注意：此模板不适用于网易版！
-BLOCK_BEHAVIOR_JSON_TEMPLATE_INTERNATIONAL = '''{{
-    "format_version": "1.19.20",
-    "minecraft:block": {{
-        "description": {{
-            "identifier": "{namespace}:{block_id}",
-            "register_to_create_menu": {register_to_menu},
-            "category": "{category}"
-        }},
-        "components": {{
-            "minecraft:destructible_by_mining": {{
-                "seconds_to_destroy": {destroy_time}
-            }},
-            "minecraft:destructible_by_explosion": {{
-                "explosion_resistance": {explosion_resistance}
-            }},
-            "minecraft:light_emission": {light_emission},
-            "minecraft:light_dampening": {light_dampening},
-            "minecraft:map_color": "{map_color}"{additional_components}
         }}
     }}
 }}'''
@@ -1770,25 +1730,6 @@ class BedrockComponentsGenerator:
         }
     
     @staticmethod
-    def generate_cooldown_component(
-        category: str = "attack",
-        duration: float = 1.0
-    ) -> Dict[str, Any]:
-        """
-        生成冷却组件 (minecraft:cooldown)
-        
-        Args:
-            category: 冷却类别（同类别物品共享冷却）
-            duration: 冷却时间（秒）
-        """
-        return {
-            "minecraft:cooldown": {
-                "category": category,
-                "duration": duration
-            }
-        }
-    
-    @staticmethod
     def generate_throwable_component(
         do_swing_animation: bool = True,
         launch_power_scale: float = 1.0,
@@ -1887,44 +1828,6 @@ class BedrockComponentsGenerator:
         }
     
     @staticmethod
-    def generate_block_placer_component(
-        block: str,
-        use_on: list = None
-    ) -> Dict[str, Any]:
-        """
-        生成方块放置器组件 (minecraft:block_placer)
-        
-        Args:
-            block: 要放置的方块
-            use_on: 可以放置的方块列表
-        """
-        component = {"block": block}
-        if use_on:
-            component["use_on"] = use_on
-        return {"minecraft:block_placer": component}
-    
-    @staticmethod
-    def generate_entity_placer_component(
-        entity: str,
-        use_on: list = None,
-        dispense_on: list = None
-    ) -> Dict[str, Any]:
-        """
-        生成实体放置器组件 (minecraft:entity_placer)
-        
-        Args:
-            entity: 要放置的实体
-            use_on: 可以放置的方块列表
-            dispense_on: 可以从发射器发射到的方块列表
-        """
-        component = {"entity": entity}
-        if use_on:
-            component["use_on"] = use_on
-        if dispense_on:
-            component["dispense_on"] = dispense_on
-        return {"minecraft:entity_placer": component}
-    
-    @staticmethod
     def generate_repairable_component(
         repair_items: list = None
     ) -> Dict[str, Any]:
@@ -1978,1039 +1881,244 @@ class BedrockComponentsGenerator:
                 "movement_modifier": movement_modifier
             }
         }
-    
-    @staticmethod
-    def generate_render_offsets_component(
-        main_hand: Dict = None,
-        off_hand: Dict = None
-    ) -> Dict[str, Any]:
-        """
-        生成渲染偏移组件 (minecraft:render_offsets)
-        
-        Args:
-            main_hand: 主手偏移 {"first_person": {...}, "third_person": {...}}
-            off_hand: 副手偏移
-        """
-        component = {}
-        if main_hand:
-            component["main_hand"] = main_hand
-        if off_hand:
-            component["off_hand"] = off_hand
-        return {"minecraft:render_offsets": component}
-    
-    @staticmethod
-    def generate_fuel_component(
-        duration: float = 200.0
-    ) -> Dict[str, Any]:
-        """
-        生成燃料组件 (minecraft:fuel)
-        
-        Args:
-            duration: 燃烧时间（tick），200 = 10秒
-        """
-        return {
-            "minecraft:fuel": {
-                "duration": duration
-            }
-        }
-    
-    @staticmethod
-    def generate_record_component(
-        sound_event: str,
-        duration: float = 0.0,
-        comparator_signal: int = 1
-    ) -> Dict[str, Any]:
-        """
-        生成唱片组件 (minecraft:record)
-        
-        Args:
-            sound_event: 音效事件名称
-            duration: 播放时长
-            comparator_signal: 比较器信号强度 (1-15)
-        """
-        return {
-            "minecraft:record": {
-                "sound_event": sound_event,
-                "duration": duration,
-                "comparator_signal": comparator_signal
-            }
-        }
 
 
 # ============================================================================
-# 网易特有组件生成器 (NetEase ModSDK)
+# 高级物品生成 - 统一配置与工厂函数
 # ============================================================================
 
-class NeteaseComponentsGenerator:
+# 物品类型配置表：每种类型的默认参数和组件构建规则
+ITEM_TYPE_CONFIGS = {
+    "sword": {
+        "defaults": {"damage": 5, "durability": 131, "enchantability": 15},
+        "enchant_slot": "sword",
+        "base_components": {
+            "minecraft:damage": "damage",
+            "minecraft:hand_equipped": True,
+            "minecraft:stacked_by_data": True,
+            "minecraft:max_stack_size": 1,
+        },
+        "features": ["durability", "weapon", "enchantable"],
+        "repair_amount": "formula",  # 使用公式而非整数
+    },
+    "pickaxe": {
+        "defaults": {"durability": 131, "mining_speed": 4, "enchantability": 15},
+        "enchant_slot": "pickaxe",
+        "base_components": {
+            "minecraft:hand_equipped": True,
+            "minecraft:stacked_by_data": True,
+            "minecraft:max_stack_size": 1,
+        },
+        "dig_tags": "q.any_tag('stone', 'metal')",
+        "features": ["durability", "digger", "enchantable"],
+        "repair_amount": "quarter",
+    },
+    "axe": {
+        "defaults": {"damage": 4, "durability": 131, "mining_speed": 4, "enchantability": 15},
+        "enchant_slot": "axe",
+        "base_components": {
+            "minecraft:damage": "damage",
+            "minecraft:hand_equipped": True,
+            "minecraft:stacked_by_data": True,
+            "minecraft:max_stack_size": 1,
+        },
+        "dig_tags": "q.any_tag('wood', 'log')",
+        "features": ["durability", "digger", "weapon", "enchantable"],
+        "repair_amount": "quarter",
+    },
+    "shovel": {
+        "defaults": {"durability": 131, "mining_speed": 4, "enchantability": 15},
+        "enchant_slot": "shovel",
+        "base_components": {
+            "minecraft:hand_equipped": True,
+            "minecraft:stacked_by_data": True,
+            "minecraft:max_stack_size": 1,
+        },
+        "dig_tags": "q.any_tag('dirt', 'sand', 'gravel', 'snow')",
+        "features": ["durability", "digger", "enchantable"],
+        "repair_amount": "quarter",
+    },
+    "hoe": {
+        "defaults": {"durability": 131, "enchantability": 15},
+        "enchant_slot": "hoe",
+        "base_components": {
+            "minecraft:hand_equipped": True,
+            "minecraft:stacked_by_data": True,
+            "minecraft:max_stack_size": 1,
+        },
+        "features": ["durability", "enchantable"],
+        "repair_amount": "quarter",
+    },
+    "food": {
+        "defaults": {"nutrition": 4, "saturation": "normal", "can_always_eat": False},
+        "base_components": {
+            "minecraft:use_animation": "eat",
+            "minecraft:use_duration": 1.6,
+        },
+        "features": ["food"],
+    },
+    "armor": {
+        "defaults": {"slot": "slot.armor.chest", "protection": 5, "durability": 165, "enchantability": 9},
+        "base_components": {
+            "minecraft:max_stack_size": 1,
+            "minecraft:stacked_by_data": True,
+        },
+        "features": ["wearable", "armor", "durability", "enchantable"],
+        "repair_amount": "quarter",
+        "slot_to_enchant": {
+            "slot.armor.head": "armor_head",
+            "slot.armor.chest": "armor_torso",
+            "slot.armor.legs": "armor_legs",
+            "slot.armor.feet": "armor_feet",
+        },
+    },
+    "bow": {
+        "defaults": {"durability": 384, "max_draw_duration": 1.0, "enchantability": 1},
+        "enchant_slot": "bow",
+        "base_components": {
+            "minecraft:max_stack_size": 1,
+            "minecraft:use_animation": "bow",
+        },
+        "features": ["durability", "shooter", "chargeable", "enchantable"],
+    },
+    "throwable": {
+        "defaults": {"max_draw_duration": 0.0, "launch_power": 1.0},
+        "features": ["throwable", "projectile"],
+    },
+}
+
+
+def generate_typed_item_json(item_type: str, namespace: str, item_id: str, **kwargs) -> Dict[str, str]:
     """
-    网易特有组件生成器
-    
-    生成 NetEase ModSDK 特有的组件
-    """
-    
-    @staticmethod
-    def generate_customtips_component(
-        value: str
-    ) -> Dict[str, Any]:
-        """
-        生成自定义提示组件 (netease:customtips)
-        
-        Args:
-            value: 提示文本（支持颜色代码）
-        """
-        return {
-            "netease:customtips": {
-                "value": value
-            }
-        }
-    
-    @staticmethod
-    def generate_frame_animation_component(
-        frame_count: int = 1,
-        frame_time: float = 1.0
-    ) -> Dict[str, Any]:
-        """
-        生成帧动画组件 (netease:frame_animation)
-        
-        Args:
-            frame_count: 帧数
-            frame_time: 每帧时间（秒）
-        """
-        return {
-            "netease:frame_animation": {
-                "frame_count": frame_count,
-                "frame_time": frame_time
-            }
-        }
-    
-    @staticmethod
-    def generate_show_in_hand_component(
-        value: bool = True
-    ) -> Dict[str, Any]:
-        """
-        生成手持显示组件 (netease:show_in_hand)
-        
-        Args:
-            value: 是否在手中显示
-        """
-        return {
-            "netease:show_in_hand": {
-                "value": value
-            }
-        }
-    
-    # ========== 方块组件 ==========
-    
-    @staticmethod
-    def generate_pathable_component(
-        value: bool = True
-    ) -> Dict[str, Any]:
-        """
-        生成可通行组件 (netease:pathable)
-        
-        Args:
-            value: 是否可被AI寻路通过
-        """
-        return {
-            "netease:pathable": {
-                "value": value
-            }
-        }
-    
-    @staticmethod
-    def generate_tier_component(
-        destroy_level: int = 0,
-        tool_type: str = "pickaxe"
-    ) -> Dict[str, Any]:
-        """
-        生成挖掘等级组件 (netease:tier)
-        
-        Args:
-            destroy_level: 挖掘等级 (0=手, 1=木, 2=石, 3=铁, 4=钻石, 5=下界合金)
-            tool_type: 工具类型 (pickaxe/axe/shovel/hoe/shears)
-        """
-        return {
-            "netease:tier": {
-                "destroy_level": destroy_level,
-                "tool_type": tool_type
-            }
-        }
-    
-    @staticmethod
-    def generate_block_entity_component(
-        tick: bool = False,
-        movable: bool = True
-    ) -> Dict[str, Any]:
-        """
-        生成方块实体组件 (netease:block_entity)
-        
-        Args:
-            tick: 是否每tick触发事件
-            movable: 是否可被活塞移动
-        """
-        return {
-            "netease:block_entity": {
-                "tick": tick,
-                "movable": movable
-            }
-        }
-    
-    @staticmethod
-    def generate_random_tick_component(
-        enable: bool = True
-    ) -> Dict[str, Any]:
-        """
-        生成随机刻组件 (netease:random_tick)
-        
-        Args:
-            enable: 是否启用随机刻
-        """
-        return {
-            "netease:random_tick": {
-                "enable": enable
-            }
-        }
-    
-    @staticmethod
-    def generate_listen_block_remove_component(
-        enable: bool = True
-    ) -> Dict[str, Any]:
-        """
-        生成监听方块移除组件 (netease:listen_block_remove)
-        
-        Args:
-            enable: 是否监听方块移除事件
-        """
-        return {
-            "netease:listen_block_remove": {
-                "enable": enable
-            }
-        }
-    
-    @staticmethod
-    def generate_aabb_component(
-        collision: list = None,
-        clip: list = None
-    ) -> Dict[str, Any]:
-        """
-        生成碰撞箱组件 (netease:aabb)
-        
-        Args:
-            collision: 碰撞箱 [minX, minY, minZ, maxX, maxY, maxZ]
-            clip: 射线检测碰撞箱
-        """
-        component = {}
-        if collision:
-            component["collision"] = collision
-        if clip:
-            component["clip"] = clip
-        return {"netease:aabb": component}
-    
-    @staticmethod
-    def generate_redstone_component(
-        can_be_powered: bool = True,
-        emit_redstone: int = 0
-    ) -> Dict[str, Any]:
-        """
-        生成红石组件 (netease:redstone)
-        
-        Args:
-            can_be_powered: 是否可被红石充能
-            emit_redstone: 发出的红石信号强度 (0-15)
-        """
-        return {
-            "netease:redstone": {
-                "can_be_powered": can_be_powered,
-                "emit_redstone": emit_redstone
-            }
-        }
-    
-    @staticmethod
-    def generate_block_container_component(
-        container_size: int = 27,
-        container_type: str = "chest"
-    ) -> Dict[str, Any]:
-        """
-        生成方块容器组件 (netease:block_container)
-        
-        Args:
-            container_size: 容器大小
-            container_type: 容器类型 (chest/hopper/dispenser/dropper)
-        """
-        return {
-            "netease:block_container": {
-                "container_size": container_size,
-                "container_type": container_type
-            }
-        }
+    统一的物品 JSON 生成函数，根据 item_type 从 ITEM_TYPE_CONFIGS 构建组件。
 
-
-# ============================================================================
-# 高级物品生成函数
-# ============================================================================
-
-def generate_sword_item_json(
-    namespace: str,
-    item_id: str,
-    damage: int = 5,
-    durability: int = 131,
-    enchantability: int = 15,
-    repair_material: str = None
-) -> Dict[str, str]:
-    """
-    生成剑类物品 JSON
-    
     Args:
+        item_type: 物品类型 (sword/pickaxe/axe/shovel/hoe/food/armor/bow/throwable)
         namespace: 命名空间
         item_id: 物品ID
-        damage: 攻击伤害
-        durability: 耐久值
-        enchantability: 附魔等级
-        repair_material: 修复材料 (如 minecraft:iron_ingot)
+        **kwargs: 覆盖默认参数（如 damage, durability, enchantability 等）
     """
-    components = {
-        "minecraft:damage": damage,
-        "minecraft:hand_equipped": True,
-        "minecraft:stacked_by_data": True,
-        "minecraft:max_stack_size": 1
-    }
-    components.update(BedrockComponentsGenerator.generate_durability_component(durability))
-    components.update(BedrockComponentsGenerator.generate_weapon_component())
-    components.update(BedrockComponentsGenerator.generate_enchantable_component("sword", enchantability))
-    
-    if repair_material:
-        components.update(BedrockComponentsGenerator.generate_repairable_component([
-            {"items": [repair_material], "repair_amount": "context.other->query.remaining_durability + 0.05 * context.other->query.max_durability"}
-        ]))
-    
-    return generate_item_json(namespace, item_id, components=components)
+    config = ITEM_TYPE_CONFIGS[item_type]
+    defaults = config["defaults"]
 
+    # 合并默认值与用户参数
+    params = {k: kwargs.get(k, v) for k, v in defaults.items()}
 
-# ============================================================================
-# 国际版方块组件生成器
-# ============================================================================
-
-class BedrockBlockComponentsGenerator:
-    """国际版基岩版方块组件生成器"""
-    
-    @staticmethod
-    def generate_destroy_time_component(value: float = 1.0) -> Dict[str, Any]:
-        """
-        生成方块破坏时间组件 (minecraft:destroy_time)
-        
-        Args:
-            value: 破坏时间（秒）
-        """
-        return {"minecraft:destroy_time": value}
-    
-    @staticmethod
-    def generate_explosion_resistance_component(value: float = 1.0) -> Dict[str, Any]:
-        """
-        生成爆炸抗性组件 (minecraft:explosion_resistance)
-        
-        Args:
-            value: 抗性值（TNT=4, 黑曜石=1200）
-        """
-        return {"minecraft:explosion_resistance": value}
-    
-    @staticmethod
-    def generate_friction_component(value: float = 0.6) -> Dict[str, Any]:
-        """
-        生成摩擦力组件 (minecraft:friction)
-        
-        Args:
-            value: 摩擦系数（0.0-1.0，冰=0.98，灵魂沙=0.5）
-        """
-        return {"minecraft:friction": value}
-    
-    @staticmethod
-    def generate_flammable_component(
-        catch_chance: int = 5,
-        destroy_chance: int = 20
-    ) -> Dict[str, Any]:
-        """
-        生成可燃性组件 (minecraft:flammable)
-        
-        Args:
-            catch_chance: 着火概率
-            destroy_chance: 被火焰摧毁概率
-        """
-        return {
-            "minecraft:flammable": {
-                "catch_chance_modifier": catch_chance,
-                "destroy_chance_modifier": destroy_chance
-            }
-        }
-    
-    @staticmethod
-    def generate_map_color_component(color: str = "#808080") -> Dict[str, Any]:
-        """
-        生成地图颜色组件 (minecraft:map_color)
-        
-        Args:
-            color: 十六进制颜色代码
-        """
-        return {"minecraft:map_color": color}
-    
-    @staticmethod
-    def generate_block_light_emission_component(value: float = 0.0) -> Dict[str, Any]:
-        """
-        生成光照发射组件 (minecraft:block_light_emission)
-        
-        Args:
-            value: 光照等级（0.0-1.0，对应0-15光照）
-        """
-        return {"minecraft:block_light_emission": value}
-    
-    @staticmethod
-    def generate_block_light_filter_component(value: int = 15) -> Dict[str, Any]:
-        """
-        生成光照过滤组件 (minecraft:block_light_filter)
-        
-        Args:
-            value: 光照过滤等级（0-15，0=透明，15=不透光）
-        """
-        return {"minecraft:block_light_filter": value}
-    
-    @staticmethod
-    def generate_crafting_table_component(
-        table_name: str = "custom_crafting",
-        crafting_tags: list = None
-    ) -> Dict[str, Any]:
-        """
-        生成工作台组件 (minecraft:crafting_table)
-        
-        Args:
-            table_name: 工作台名称
-            crafting_tags: 支持的配方标签
-        """
-        if crafting_tags is None:
-            crafting_tags = ["crafting_table"]
-        return {
-            "minecraft:crafting_table": {
-                "table_name": table_name,
-                "crafting_tags": crafting_tags
-            }
-        }
-    
-    @staticmethod
-    def generate_on_interact_component(
-        event: str,
-        condition: str = None,
-        target: str = "self"
-    ) -> Dict[str, Any]:
-        """
-        生成交互事件组件 (minecraft:on_interact)
-        
-        Args:
-            event: 触发的事件名称
-            condition: Molang 条件表达式
-            target: 事件目标 (self/other)
-        """
-        comp = {
-            "minecraft:on_interact": {
-                "event": event,
-                "target": target
-            }
-        }
-        if condition:
-            comp["minecraft:on_interact"]["condition"] = condition
-        return comp
-    
-    @staticmethod
-    def generate_on_step_on_component(
-        event: str,
-        condition: str = None,
-        target: str = "self"
-    ) -> Dict[str, Any]:
-        """
-        生成踩踏事件组件 (minecraft:on_step_on)
-        
-        Args:
-            event: 触发的事件名称
-            condition: Molang 条件表达式
-            target: 事件目标
-        """
-        comp = {
-            "minecraft:on_step_on": {
-                "event": event,
-                "target": target
-            }
-        }
-        if condition:
-            comp["minecraft:on_step_on"]["condition"] = condition
-        return comp
-    
-    @staticmethod
-    def generate_on_step_off_component(
-        event: str,
-        condition: str = None,
-        target: str = "self"
-    ) -> Dict[str, Any]:
-        """
-        生成离开事件组件 (minecraft:on_step_off)
-        """
-        comp = {
-            "minecraft:on_step_off": {
-                "event": event,
-                "target": target
-            }
-        }
-        if condition:
-            comp["minecraft:on_step_off"]["condition"] = condition
-        return comp
-    
-    @staticmethod
-    def generate_on_fall_on_component(
-        event: str,
-        min_fall_distance: float = 1.0,
-        target: str = "self"
-    ) -> Dict[str, Any]:
-        """
-        生成掉落到方块事件组件 (minecraft:on_fall_on)
-        
-        Args:
-            event: 触发的事件名称
-            min_fall_distance: 最小掉落高度
-            target: 事件目标
-        """
-        return {
-            "minecraft:on_fall_on": {
-                "event": event,
-                "min_fall_distance": min_fall_distance,
-                "target": target
-            }
-        }
-    
-    @staticmethod
-    def generate_on_placed_component(
-        event: str,
-        target: str = "self"
-    ) -> Dict[str, Any]:
-        """
-        生成放置事件组件 (minecraft:on_placed)
-        
-        Args:
-            event: 触发的事件名称
-            target: 事件目标
-        """
-        return {
-            "minecraft:on_placed": {
-                "event": event,
-                "target": target
-            }
-        }
-    
-    @staticmethod
-    def generate_on_player_destroyed_component(
-        event: str,
-        target: str = "self"
-    ) -> Dict[str, Any]:
-        """
-        生成玩家破坏事件组件 (minecraft:on_player_destroyed)
-        """
-        return {
-            "minecraft:on_player_destroyed": {
-                "event": event,
-                "target": target
-            }
-        }
-    
-    @staticmethod
-    def generate_random_ticking_component(
-        event: str,
-        target: str = "self"
-    ) -> Dict[str, Any]:
-        """
-        生成随机刻组件 (minecraft:random_ticking)
-        
-        Args:
-            event: 随机刻触发的事件
-            target: 事件目标
-        """
-        return {
-            "minecraft:random_ticking": {
-                "on_tick": {
-                    "event": event,
-                    "target": target
-                }
-            }
-        }
-    
-    @staticmethod
-    def generate_queued_ticking_component(
-        event: str,
-        interval_range: list = None,
-        looping: bool = True
-    ) -> Dict[str, Any]:
-        """
-        生成计划刻组件 (minecraft:queued_ticking)
-        
-        Args:
-            event: 触发的事件
-            interval_range: 刻间隔范围 [min, max]
-            looping: 是否循环
-        """
-        if interval_range is None:
-            interval_range = [20, 20]
-        return {
-            "minecraft:queued_ticking": {
-                "on_tick": {
-                    "event": event,
-                    "target": "self"
-                },
-                "interval_range": interval_range,
-                "looping": looping
-            }
-        }
-    
-    @staticmethod
-    def generate_unit_cube_component() -> Dict[str, Any]:
-        """
-        生成单位立方体组件 (minecraft:unit_cube)
-        用于简单方块渲染
-        """
-        return {"minecraft:unit_cube": {}}
-    
-    @staticmethod
-    def generate_geometry_component(
-        identifier: str,
-        bone_visibility: Dict[str, bool] = None
-    ) -> Dict[str, Any]:
-        """
-        生成几何体组件 (minecraft:geometry)
-        
-        Args:
-            identifier: 几何体标识符（如 geometry.custom_block）
-            bone_visibility: 骨骼可见性设置
-        """
-        comp = {"minecraft:geometry": identifier}
-        if bone_visibility:
-            comp = {
-                "minecraft:geometry": {
-                    "identifier": identifier,
-                    "bone_visibility": bone_visibility
-                }
-            }
-        return comp
-    
-    @staticmethod
-    def generate_material_instances_component(
-        instances: Dict[str, Dict] = None
-    ) -> Dict[str, Any]:
-        """
-        生成材质实例组件 (minecraft:material_instances)
-        
-        Args:
-            instances: 材质实例定义
-                {
-                    "*": {"texture": "my_texture", "render_method": "opaque"},
-                    "up": {"texture": "my_texture_top"}
-                }
-        """
-        if instances is None:
-            instances = {
-                "*": {
-                    "texture": "custom_texture",
-                    "render_method": "opaque"
-                }
-            }
-        return {"minecraft:material_instances": instances}
-    
-    @staticmethod
-    def generate_collision_box_component(
-        origin: list = None,
-        size: list = None,
-        enabled: bool = True
-    ) -> Dict[str, Any]:
-        """
-        生成碰撞箱组件 (minecraft:collision_box)
-        
-        Args:
-            origin: 原点 [-8, 0, -8]
-            size: 尺寸 [16, 16, 16]
-            enabled: 是否启用
-        """
-        if origin is None:
-            origin = [-8, 0, -8]
-        if size is None:
-            size = [16, 16, 16]
-        return {
-            "minecraft:collision_box": {
-                "origin": origin,
-                "size": size
-            }
-        }
-    
-    @staticmethod
-    def generate_selection_box_component(
-        origin: list = None,
-        size: list = None
-    ) -> Dict[str, Any]:
-        """
-        生成选择箱组件 (minecraft:selection_box)
-        
-        Args:
-            origin: 原点 [-8, 0, -8]
-            size: 尺寸 [16, 16, 16]
-        """
-        if origin is None:
-            origin = [-8, 0, -8]
-        if size is None:
-            size = [16, 16, 16]
-        return {
-            "minecraft:selection_box": {
-                "origin": origin,
-                "size": size
-            }
-        }
-    
-    @staticmethod
-    def generate_placement_filter_component(
-        conditions: list = None
-    ) -> Dict[str, Any]:
-        """
-        生成放置过滤组件 (minecraft:placement_filter)
-        
-        Args:
-            conditions: 放置条件列表
-                [{"allowed_faces": ["up"], "block_filter": ["minecraft:grass"]}]
-        """
-        if conditions is None:
-            conditions = [{"allowed_faces": ["up", "down", "north", "south", "east", "west"]}]
-        return {
-            "minecraft:placement_filter": {
-                "conditions": conditions
-            }
-        }
-    
-    @staticmethod
-    def generate_loot_component(loot_table: str) -> Dict[str, Any]:
-        """
-        生成战利品表组件 (minecraft:loot)
-        
-        Args:
-            loot_table: 战利品表路径（如 loot_tables/blocks/my_block.json）
-        """
-        return {"minecraft:loot": loot_table}
-    
-    @staticmethod
-    def generate_destructible_by_mining_component(
-        seconds_to_destroy: float = 1.0
-    ) -> Dict[str, Any]:
-        """
-        生成可挖掘破坏组件 (minecraft:destructible_by_mining)
-        
-        Args:
-            seconds_to_destroy: 破坏时间（秒）
-        """
-        return {
-            "minecraft:destructible_by_mining": {
-                "seconds_to_destroy": seconds_to_destroy
-            }
-        }
-    
-    @staticmethod
-    def generate_destructible_by_explosion_component(
-        explosion_resistance: float = 1.0
-    ) -> Dict[str, Any]:
-        """
-        生成可爆炸破坏组件 (minecraft:destructible_by_explosion)
-        
-        Args:
-            explosion_resistance: 爆炸抗性值
-        """
-        return {
-            "minecraft:destructible_by_explosion": {
-                "explosion_resistance": explosion_resistance
-            }
-        }
-    
-    @staticmethod
-    def generate_display_name_component(value: str) -> Dict[str, Any]:
-        """
-        生成显示名称组件 (minecraft:display_name)
-        
-        Args:
-            value: 显示名称（支持本地化键）
-        """
-        return {"minecraft:display_name": value}
-    
-    @staticmethod
-    def generate_breathability_component(value: str = "solid") -> Dict[str, Any]:
-        """
-        生成呼吸性组件 (minecraft:breathability)
-        
-        Args:
-            value: 呼吸类型（solid/air）
-        """
-        return {"minecraft:breathability": value}
-
-
-def generate_pickaxe_item_json(
-    namespace: str,
-    item_id: str,
-    durability: int = 131,
-    mining_speed: int = 4,
-    enchantability: int = 15,
-    destroy_speeds: list = None,
-    repair_material: str = None
-) -> Dict[str, str]:
-    """
-    生成镐类物品 JSON
-    
-    Args:
-        namespace: 命名空间
-        item_id: 物品ID
-        durability: 耐久值
-        mining_speed: 挖掘速度
-        enchantability: 附魔等级
-        destroy_speeds: 挖掘速度列表
-        repair_material: 修复材料
-    """
-    if destroy_speeds is None:
-        destroy_speeds = [
-            {"block": {"tags": "q.any_tag('stone', 'metal')"},"speed": mining_speed}
-        ]
-    
-    components = {
-        "minecraft:hand_equipped": True,
-        "minecraft:stacked_by_data": True,
-        "minecraft:max_stack_size": 1
-    }
-    components.update(BedrockComponentsGenerator.generate_durability_component(durability))
-    components.update(BedrockComponentsGenerator.generate_digger_component(destroy_speeds))
-    components.update(BedrockComponentsGenerator.generate_enchantable_component("pickaxe", enchantability))
-    
-    if repair_material:
-        components.update(BedrockComponentsGenerator.generate_repairable_component([
-            {"items": [repair_material], "repair_amount": durability // 4}
-        ]))
-    
-    return generate_item_json(namespace, item_id, components=components)
-
-
-def generate_food_item_json(
-    namespace: str,
-    item_id: str,
-    nutrition: int = 4,
-    saturation: str = "normal",
-    can_always_eat: bool = False,
-    effects: list = None
-) -> Dict[str, str]:
-    """
-    生成食物物品 JSON
-    
-    Args:
-        namespace: 命名空间
-        item_id: 物品ID
-        nutrition: 饥饿值
-        saturation: 饱和度
-        can_always_eat: 是否可随时食用
-        effects: 效果列表
-    """
-    components = {
-        "minecraft:use_animation": "eat",
-        "minecraft:use_duration": 1.6
-    }
-    components.update(BedrockComponentsGenerator.generate_food_component(
-        nutrition, saturation, can_always_eat, effects=effects
-    ))
-    
-    return generate_item_json(namespace, item_id, components=components)
-
-
-def generate_armor_item_json(
-    namespace: str,
-    item_id: str,
-    slot: str = "slot.armor.chest",
-    protection: int = 5,
-    durability: int = 165,
-    enchantability: int = 9,
-    repair_material: str = None
-) -> Dict[str, str]:
-    """
-    生成盔甲物品 JSON
-    
-    Args:
-        namespace: 命名空间
-        item_id: 物品ID
-        slot: 穿戴槽位
-        protection: 护甲值
-        durability: 耐久值
-        enchantability: 附魔等级
-        repair_material: 修复材料
-    """
-    # 根据槽位确定附魔类型
-    slot_to_enchant = {
-        "slot.armor.head": "armor_head",
-        "slot.armor.chest": "armor_torso",
-        "slot.armor.legs": "armor_legs",
-        "slot.armor.feet": "armor_feet"
-    }
-    enchant_slot = slot_to_enchant.get(slot, "armor_torso")
-    
-    components = {
-        "minecraft:max_stack_size": 1,
-        "minecraft:stacked_by_data": True
-    }
-    components.update(BedrockComponentsGenerator.generate_wearable_component(slot, protection))
-    components.update(BedrockComponentsGenerator.generate_armor_component(protection))
-    components.update(BedrockComponentsGenerator.generate_durability_component(durability))
-    components.update(BedrockComponentsGenerator.generate_enchantable_component(enchant_slot, enchantability))
-    
-    if repair_material:
-        components.update(BedrockComponentsGenerator.generate_repairable_component([
-            {"items": [repair_material], "repair_amount": durability // 4}
-        ]))
-    
-    return generate_item_json(namespace, item_id, components=components)
-
-
-def generate_throwable_item_json(
-    namespace: str,
-    item_id: str,
-    projectile_entity: str,
-    max_draw_duration: float = 0.0,
-    launch_power: float = 1.0
-) -> Dict[str, str]:
-    """
-    生成可投掷物品 JSON
-    
-    Args:
-        namespace: 命名空间
-        item_id: 物品ID
-        projectile_entity: 投掷出的实体
-        max_draw_duration: 最大蓄力时间
-        launch_power: 发射力度
-    """
+    # 构建基础组件
     components = {}
-    components.update(BedrockComponentsGenerator.generate_throwable_component(
-        max_draw_duration=max_draw_duration,
-        max_launch_power=launch_power
-    ))
-    components.update(BedrockComponentsGenerator.generate_projectile_component(projectile_entity))
-    
-    return generate_item_json(namespace, item_id, components=components)
+    for key, value in config.get("base_components", {}).items():
+        if isinstance(value, str) and value in params:
+            components[key] = params[value]
+        else:
+            components[key] = value
 
+    # 按 features 列表添加组件
+    features = config.get("features", [])
+    gen = BedrockComponentsGenerator
 
-def generate_bow_item_json(
-    namespace: str,
-    item_id: str,
-    durability: int = 384,
-    max_draw_duration: float = 1.0,
-    enchantability: int = 1
-) -> Dict[str, str]:
-    """
-    生成弓类物品 JSON
-    
-    Args:
-        namespace: 命名空间
-        item_id: 物品ID
-        durability: 耐久值
-        max_draw_duration: 最大蓄力时间
-        enchantability: 附魔等级
-    """
-    components = {
-        "minecraft:max_stack_size": 1,
-        "minecraft:use_animation": "bow"
-    }
-    components.update(BedrockComponentsGenerator.generate_durability_component(durability))
-    components.update(BedrockComponentsGenerator.generate_shooter_component(
-        max_draw_duration=max_draw_duration
-    ))
-    components.update(BedrockComponentsGenerator.generate_chargeable_component())
-    components.update(BedrockComponentsGenerator.generate_enchantable_component("bow", enchantability))
-    
-    return generate_item_json(namespace, item_id, components=components)
+    if "durability" in features:
+        components.update(gen.generate_durability_component(params["durability"]))
 
+    if "weapon" in features:
+        components.update(gen.generate_weapon_component())
 
-def generate_axe_item_json(
-    namespace: str,
-    item_id: str,
-    damage: int = 4,
-    durability: int = 131,
-    mining_speed: int = 4,
-    enchantability: int = 15,
-    repair_material: str = None
-) -> Dict[str, str]:
-    """
-    生成斧类物品 JSON
-    """
-    destroy_speeds = [
-        {"block": {"tags": "q.any_tag('wood', 'log')"},"speed": mining_speed}
-    ]
-    components = {
-        "minecraft:damage": damage,
-        "minecraft:hand_equipped": True,
-        "minecraft:stacked_by_data": True,
-        "minecraft:max_stack_size": 1
-    }
-    components.update(BedrockComponentsGenerator.generate_durability_component(durability))
-    components.update(BedrockComponentsGenerator.generate_digger_component(destroy_speeds))
-    components.update(BedrockComponentsGenerator.generate_weapon_component())
-    components.update(BedrockComponentsGenerator.generate_enchantable_component("axe", enchantability))
-    
-    if repair_material:
-        components.update(BedrockComponentsGenerator.generate_repairable_component([
-            {"items": [repair_material], "repair_amount": durability // 4}
+    if "digger" in features:
+        destroy_speeds = kwargs.get("destroy_speeds")
+        if destroy_speeds is None:
+            destroy_speeds = [{"block": {"tags": config["dig_tags"]}, "speed": params["mining_speed"]}]
+        components.update(gen.generate_digger_component(destroy_speeds))
+
+    if "food" in features:
+        components.update(gen.generate_food_component(
+            params["nutrition"], params["saturation"], params["can_always_eat"],
+            effects=kwargs.get("effects")
+        ))
+
+    if "wearable" in features:
+        components.update(gen.generate_wearable_component(params["slot"], params["protection"]))
+
+    if "armor" in features:
+        components.update(gen.generate_armor_component(params["protection"]))
+
+    if "shooter" in features:
+        components.update(gen.generate_shooter_component(max_draw_duration=params["max_draw_duration"]))
+
+    if "chargeable" in features:
+        components.update(gen.generate_chargeable_component())
+
+    if "throwable" in features:
+        components.update(gen.generate_throwable_component(
+            max_draw_duration=params["max_draw_duration"],
+            max_launch_power=params["launch_power"]
+        ))
+
+    if "projectile" in features:
+        components.update(gen.generate_projectile_component(kwargs.get("projectile_entity", "minecraft:arrow")))
+
+    if "enchantable" in features:
+        enchant_slot = config.get("enchant_slot")
+        if enchant_slot is None and "slot_to_enchant" in config:
+            enchant_slot = config["slot_to_enchant"].get(params["slot"], "armor_torso")
+        components.update(gen.generate_enchantable_component(enchant_slot, params["enchantability"]))
+
+    # 修复材料
+    repair_material = kwargs.get("repair_material")
+    if repair_material and config.get("repair_amount"):
+        if config["repair_amount"] == "formula":
+            amount = "context.other->query.remaining_durability + 0.05 * context.other->query.max_durability"
+        else:  # "quarter"
+            amount = params["durability"] // 4
+        components.update(gen.generate_repairable_component([
+            {"items": [repair_material], "repair_amount": amount}
         ]))
-    
+
     return generate_item_json(namespace, item_id, components=components)
 
 
-def generate_shovel_item_json(
-    namespace: str,
-    item_id: str,
-    durability: int = 131,
-    mining_speed: int = 4,
-    enchantability: int = 15,
-    repair_material: str = None
-) -> Dict[str, str]:
-    """
-    生成锹类物品 JSON
-    """
-    destroy_speeds = [
-        {"block": {"tags": "q.any_tag('dirt', 'sand', 'gravel', 'snow')"},"speed": mining_speed}
-    ]
-    components = {
-        "minecraft:hand_equipped": True,
-        "minecraft:stacked_by_data": True,
-        "minecraft:max_stack_size": 1
-    }
-    components.update(BedrockComponentsGenerator.generate_durability_component(durability))
-    components.update(BedrockComponentsGenerator.generate_digger_component(destroy_speeds))
-    components.update(BedrockComponentsGenerator.generate_enchantable_component("shovel", enchantability))
-    
-    if repair_material:
-        components.update(BedrockComponentsGenerator.generate_repairable_component([
-            {"items": [repair_material], "repair_amount": durability // 4}
-        ]))
-    
-    return generate_item_json(namespace, item_id, components=components)
+# ============================================================================
+# 向后兼容的薄包装函数
+# ============================================================================
+
+def generate_sword_item_json(namespace: str, item_id: str, **kwargs) -> Dict[str, str]:
+    """生成剑类物品 JSON（向后兼容包装）"""
+    return generate_typed_item_json("sword", namespace, item_id, **kwargs)
 
 
-def generate_hoe_item_json(
-    namespace: str,
-    item_id: str,
-    durability: int = 131,
-    enchantability: int = 15,
-    repair_material: str = None
-) -> Dict[str, str]:
-    """
-    生成锄类物品 JSON
-    """
-    components = {
-        "minecraft:hand_equipped": True,
-        "minecraft:stacked_by_data": True,
-        "minecraft:max_stack_size": 1
-    }
-    components.update(BedrockComponentsGenerator.generate_durability_component(durability))
-    components.update(BedrockComponentsGenerator.generate_enchantable_component("hoe", enchantability))
-    
-    if repair_material:
-        components.update(BedrockComponentsGenerator.generate_repairable_component([
-            {"items": [repair_material], "repair_amount": durability // 4}
-        ]))
-    
-    return generate_item_json(namespace, item_id, components=components)
+def generate_pickaxe_item_json(namespace: str, item_id: str, **kwargs) -> Dict[str, str]:
+    """生成镐类物品 JSON（向后兼容包装）"""
+    return generate_typed_item_json("pickaxe", namespace, item_id, **kwargs)
+
+
+def generate_axe_item_json(namespace: str, item_id: str, **kwargs) -> Dict[str, str]:
+    """生成斧类物品 JSON（向后兼容包装）"""
+    return generate_typed_item_json("axe", namespace, item_id, **kwargs)
+
+
+def generate_shovel_item_json(namespace: str, item_id: str, **kwargs) -> Dict[str, str]:
+    """生成锹类物品 JSON（向后兼容包装）"""
+    return generate_typed_item_json("shovel", namespace, item_id, **kwargs)
+
+
+def generate_hoe_item_json(namespace: str, item_id: str, **kwargs) -> Dict[str, str]:
+    """生成锄类物品 JSON（向后兼容包装）"""
+    return generate_typed_item_json("hoe", namespace, item_id, **kwargs)
+
+
+def generate_food_item_json(namespace: str, item_id: str, **kwargs) -> Dict[str, str]:
+    """生成食物物品 JSON（向后兼容包装）"""
+    return generate_typed_item_json("food", namespace, item_id, **kwargs)
+
+
+def generate_armor_item_json(namespace: str, item_id: str, **kwargs) -> Dict[str, str]:
+    """生成盔甲物品 JSON（向后兼容包装）"""
+    return generate_typed_item_json("armor", namespace, item_id, **kwargs)
+
+
+def generate_bow_item_json(namespace: str, item_id: str, **kwargs) -> Dict[str, str]:
+    """生成弓类物品 JSON（向后兼容包装）"""
+    return generate_typed_item_json("bow", namespace, item_id, **kwargs)
+
+
+def generate_throwable_item_json(namespace: str, item_id: str, **kwargs) -> Dict[str, str]:
+    """生成可投掷物品 JSON（向后兼容包装）"""
+    return generate_typed_item_json("throwable", namespace, item_id, **kwargs)
