@@ -84,6 +84,7 @@ def generate_ui_json(template, namespace, **kwargs):
                 "type": "screen",
                 "absorbs_input": True,
                 "is_showing_menu": True,
+                "controls": [
                     {"price_label": {"type": "label", "text": "", "color": [1, 0.84, 0], "font_size": "small", "anchor_from": "bottom_middle", "anchor_to": "bottom_middle", "offset": [0, -12]}}
                 ]
             },
