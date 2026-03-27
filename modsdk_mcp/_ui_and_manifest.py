@@ -84,11 +84,6 @@ def generate_ui_json(template, namespace, **kwargs):
                 "type": "screen",
                 "absorbs_input": True,
                 "is_showing_menu": True,
-                    {"price_label": {"type": "label", "text": "", "color": [1, 0.84, 0], "font_size": "small", "anchor_from": "bottom_middle", "anchor_to": "bottom_middle", "offset": [0, -12]}}
-                ]
-            },
-            screen_name: {
-                "type": "screen",
                 "controls": [{
                     "bg_panel": {
                         "type": "panel", "size": ["80%", "80%"],
@@ -107,23 +102,6 @@ def generate_ui_json(template, namespace, **kwargs):
             }
         }
         usage_extra = "\n4. [重要] grid与scroll_view一起使用时，必须监听GridComponentSizeChangedClientEvent，否则滚动时内容错位。详见UI说明文档grid章节注2。"
-                            {"bg_image": {"type": "image", "size": ["100%", "100%"], "texture": "textures/ui/bg_dark", "alpha": 0.8}},
-                            {"title": {"type": "label", "text": kwargs.get('title', '商店'), "color": [1, 1, 1], "font_size": "large", "anchor_from": "top_middle", "anchor_to": "top_middle", "offset": [0, 8]}},
-                            {"scroll_area": {
-                                "type": "scroll_view", "size": ["95%", "85%"],
-                                "anchor_from": "bottom_middle", "anchor_to": "bottom_middle", "offset": [0, -8],
-                                "scroll_content": {
-                                    "type": "grid",
-                                    "grid_dimensions": [columns, 0],
-                                    "grid_item_template": namespace + ".item_cell",
-                                    "collection_name": "shop_items"
-                                }
-                            }}
-                        ]
-                    }
-                }]
-            }
-        }
 
     elif template == 'dialog':
         ui = {
@@ -185,9 +163,6 @@ def generate_ui_json(template, namespace, **kwargs):
                 "render_game_behind": True,
                 "absorbs_input": False,
                 "controls": [{"hud@" + namespace + ".hud_element": {}}],
-                        "controls": [{"bar_fill": {"type": "image", "size": ["100%", "100%"], "texture": "textures/ui/bar_fill", "clip_direction": "left", "clip_ratio": 1.0}}]
-                    }}
-                ]
             }
         }
 
@@ -207,6 +182,7 @@ def generate_ui_json(template, namespace, **kwargs):
                 "$pressed_no_hover_texture": "textures/ui/toggle_on_hover",
                 "$toggle_state_binding_name": "#tab_toggle_state",
                 "controls": [{"label": {"type": "label", "text": tn, "color": [1, 1, 1], "layer": 2}}],
+            }})
             tab_ctrls.append({"tab_{}".format(i): {
                 "type": "toggle", "size": [60, 24], "toggle_name": "tab_toggle",
                 "toggle_default_state": i == 0, "toggle_group_forced_index": i,
@@ -215,7 +191,6 @@ def generate_ui_json(template, namespace, **kwargs):
             content_ctrls.append({"content_{}".format(i): {
                 "type": "panel", "size": ["100%", "100%"], "visible": i == 0,
                 "bindings": [{"binding_type": "view", "source_property_name": "(not (#tab_toggle - {}))".format(i), "target_property_name": "#visible"}],
-                "controls": [{"placeholder": {"type": "label", "text": "{} content".format(tn), "color": [0.7, 0.7, 0.7]}}],
                 "controls": [{"placeholder": {"type": "label", "text": "{} content".format(tn), "color": [0.7, 0.7, 0.7]}}]
             }})
 
@@ -229,11 +204,6 @@ def generate_ui_json(template, namespace, **kwargs):
                     "main_panel": {
                         "type": "panel", "size": ["80%", "80%"],
                         "controls": [
-                            {"bg": {"type": "image", "size": ["100%", "100%"], "texture": "textures/ui/White", "color": [0.1, 0.1, 0.1], "alpha": 0.8}},
-                            {"tab_bar": {"type": "stack_panel", "orientation": "horizontal", "size": ["100%", 28],
-                                "anchor_from": "top_left", "anchor_to": "top_left", "offset": [0, 4], "controls": tab_ctrls}},
-                            {"content_area": {"type": "panel", "size": ["100%", "100% - 36px"],
-                                "anchor_from": "bottom_left", "anchor_to": "bottom_left", "controls": content_ctrls}},
                             {"bg": {"type": "image", "size": ["100%", "100%"], "texture": "textures/ui/bg_dark", "alpha": 0.8}},
                             {"tab_bar": {"type": "stack_panel", "orientation": "horizontal", "size": ["100%", 28],
                                 "anchor_from": "top_left", "anchor_to": "top_left", "offset": [0, 4], "controls": tab_ctrls}},
@@ -255,7 +225,6 @@ def generate_ui_json(template, namespace, **kwargs):
         "screen_name": screen_name,
         "usage_hint": "1. Save to resource_pack/ui/{ns}.json\n2. Add to _ui_defs.json: {{\"ui_defs\": [\"ui/{ns}.json\"]}}\n3. Python: RegisterUI(ns, uiKey, clsPath, '{ns}.{sn}') + CreateUI(ns, uiKey){extra}".format(
             ns=namespace, sn=screen_name, e=entry, extra=usage_extra)
-        "usage_hint": "1. Save to resource_pack/ui/{ns}.json\n2. Add to _ui_defs.json: \"{e}\"\n3. Python: RegisterUI(ns, screenCls) + CreateUI(ns, uiKey)".format(ns=namespace, e=entry)
     }
 
 
