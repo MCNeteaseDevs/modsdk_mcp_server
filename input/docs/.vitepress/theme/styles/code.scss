@@ -1,0 +1,145 @@
+:not(.shiki) > code,
+[class*="language-"] > :is(.line-numbers-wrapper, .shiki) {
+  font-family: monospace;
+  font-size: 1.1em;
+}
+
+:not(.shiki) > code {
+  background-color: var(--light-bg-color);
+
+  border: var(--border);
+  border-radius: 4px;
+
+  padding-inline: 0.2em;
+}
+
+[class*="language-"] {
+  margin-block: 0.5em;
+  padding-top: 1em;
+  min-height: 3.5em;
+
+  background-color: var(--light-bg-color);
+  position: relative;
+
+  border: var(--border);
+  border-radius: var(--border-radius);
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  grid-template-areas: "line-numbers code";
+
+  & > .lang {
+    display: none;
+  }
+
+  & > .copy {
+    display: none;
+  }
+
+  & > .line-numbers-wrapper {
+    grid-area: line-numbers;
+    padding-inline: 1em;
+    margin-bottom: 1em;
+
+    border-right: var(--border);
+    user-select: none;
+    color: #6a737d;
+    text-align: end;
+
+    &:has(> .line-number:only-of-type) {
+      display: none;
+    }
+  }
+
+  .line-number {
+    white-space: nowrap;
+  }
+
+  & > .shiki {
+    grid-area: code;
+    overflow-x: auto;
+
+    & > code {
+      padding-inline: 1em;
+      display: block;
+      width: fit-content;
+      min-width: 100%;
+      max-width: none;
+    }
+  }
+}
+
+.shiki .line:is(.highlighted, .diff) {
+  --line-symbol: "";
+
+  display: inline-block;
+  width: 100%;
+
+  position: relative;
+  isolation: isolate;
+
+  &::before {
+    content: var(--line-symbol);
+    background-color: var(--line-bg-color);
+
+    padding-left: 0.2em;
+    position: absolute;
+    max-width: none;
+    inset: 0 -1em;
+    z-index: -1;
+  }
+}
+
+.shiki .line {
+  &.highlighted {
+    --line-bg-color: rgb(1, 1, 1, 0.05);
+  }
+
+  &.warning {
+    --line-bg-color: rgba(255, 230, 100, 0.3);
+  }
+
+  &.error {
+    --line-bg-color: rgba(220, 120, 120, 0.1);
+  }
+
+  &.add {
+    --line-symbol: "+";
+    --line-bg-color: rgba(150, 255, 200, 0.2);
+  }
+
+  &.remove {
+    opacity: 0.8;
+    --line-symbol: "–";
+    --line-bg-color: rgba(220, 120, 120, 0.1);
+  }
+}
+
+.dark .shiki .line {
+  &.highlighted {
+    --line-bg-color: rgba(255, 255, 255, 0.05);
+  }
+
+  &.warning {
+    --line-bg-color: rgba(255, 230, 100, 0.1);
+  }
+
+  &.error {
+    --line-bg-color: rgba(200, 120, 120, 0.1);
+  }
+
+  &.add {
+    --line-bg-color: rgba(150, 255, 200, 0.1);
+  }
+
+  &.remove {
+    --line-bg-color: rgba(220, 120, 120, 0.1);
+  }
+}
+
+.shiki span {
+  color: var(--shiki-light);
+}
+
+.dark .shiki span {
+  color: var(--shiki-dark);
+}

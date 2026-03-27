@@ -71,7 +71,14 @@ from .templates import (
     generate_throwable_item_json,
     generate_bow_item_json,
 )
-from ._ui_and_manifest import generate_ui_json, generate_manifest_json
+try:
+    from ._ui_and_manifest import generate_ui_json, generate_manifest_json
+except (ImportError, SyntaxError):
+    # _ui_and_manifest.py 可能存在语法问题，提供降级实现
+    def generate_ui_json(**kwargs):
+        return {"error": "UI生成模块未加载"}
+    def generate_manifest_json(**kwargs):
+        return {"error": "Manifest生成模块未加载"}
 
 
 # 创建 MCP Server 实例
@@ -85,26 +92,32 @@ server = Server(
 
 ⚠️ 在编写任何代码之前，必须先查阅文档！这是强制性要求。
 
-1. **查找API/事件的推荐流程**
+1. **API 接口必须阅读 docs/接口 下的文档**
    - **首选**: 加载 api-index://full Resource 浏览完整API索引，用自身语义理解直接找到正确API名
    - **次选**: 用 search_api 关键词搜索（适合探索性搜索）
    - 找到API名后，用 get_api_detail(name) 获取完整参数签名
    - 禁止假设参数名，必须通过 get_api_detail 查证后再使用
 
-2. **事件参数必须查文档**
+2. **事件参数必须查 docs 文档**
    - 不同事件的参数名不一致！例如：
      * ServerPlayerTryDestroyBlockEvent 使用 "playerId" 和 "cancel"
      * ServerItemUseOnEvent 使用 "entityId" 和 "ret"
    - 使用 get_api_detail(事件名) 获取精确参数定义
 
-3. **组件和 JSON 格式必须查文档**
+3. **参考文档必须同时查阅 docs 和 bedrock-wiki-wiki**
+   - docs/ 下包含网易版 ModSDK 的官方接口文档、事件文档、枚举值文档
+   - bedrock-wiki-wiki/ 下包含 Bedrock 版社区 Wiki 的实体、方块、物品、UI 等参考资料
+   - ⚠️ bedrock-wiki-wiki 中的内容版本不得大于 1.21.90，超出此版本的特性在网易版中不可用
+   - 使用 search_docs 搜索文档时会同时搜索两个来源
+   - 使用 bedrock-wiki://{topic} Resource 可直接加载 Wiki 专题内容
+
+4. **组件和 JSON 格式必须查文档**
    - 使用 search_component 查询组件的正确格式
    - 网易版和国际版的 format_version 和组件名称不同
    - 网易版物品使用 "1.10"，方块使用 "1.10.0"
 
-4. **参考示例项目**
+5. **参考示例项目**
    - input/ 目录下有示例项目，可参考实际用法
-   - 使用 search_docs 时会同时搜索文档和示例代码
 
 【强制遵循的代码规范】
 
@@ -185,111 +198,138 @@ server = Server(
 输出格式：问题严重程度 + 位置 + 问题代码 + 修复建议"""
 )
 
-# Skills 目录路径
-SKILLS_PATH = Path(os.environ.get("MODSDK_SKILLS_PATH", "./skills"))
-STANDARD_PATH = Path(os.environ.get("MODSDK_STANDARD_PATH", "./standard"))
+# Bedrock Wiki 路径（相对于项目根目录）
+_PROJECT_ROOT = Path(__file__).parent.parent
+BEDROCK_WIKI_PATH = Path(os.environ.get("MODSDK_BEDROCK_WIKI_PATH", str(_PROJECT_ROOT / "bedrock-wiki-wiki")))
+# Bedrock Wiki 最大支持版本（网易版兼容上限）
+BEDROCK_WIKI_MAX_VERSION = "1.21.90"
 
 
 # ============================================================================
-# Skills 读取器
+# Bedrock Wiki 读取器
 # ============================================================================
 
-class SkillsReader:
-    """读取 Skills 和 Standard 文档"""
+class BedrockWikiReader:
+    """读取 bedrock-wiki-wiki/docs/ 下的 Markdown 文档，过滤版本 > MAX_VERSION 的内容"""
     
-    def __init__(self):
-        self.skills = {}
-        self.standards = {}
-        self._load_all()
+    def __init__(self, wiki_path, max_version="1.21.90"):
+        self.wiki_path = Path(wiki_path) / "docs"
+        self.max_version = max_version
+        self._topics = {}  # topic_key -> {name, files: [{path, content}]}
+        self._load_topics()
     
-    def _load_all(self):
-        """加载所有 Skills 和 Standard 文件"""
-        # 加载 Skills
-        if SKILLS_PATH.exists():
-            for filepath in SKILLS_PATH.glob("*.md"):
-                name = filepath.stem
-                try:
-                    content = filepath.read_text(encoding="utf-8")
-                    self.skills[name] = {
-                        "name": name,
-                        "filepath": str(filepath),
-                        "content": content,
-                        "description": self._extract_description(content)
-                    }
-                except Exception as e:
-                    print(f"加载 Skill 失败: {filepath}, 错误: {e}")
+    def _parse_version(self, version_str):
+        """解析版本号字符串为可比较的元组，如 '1.21.90' -> (1, 21, 90)"""
+        try:
+            return tuple(int(x) for x in version_str.strip().split('.'))
+        except (ValueError, AttributeError):
+            return (0,)
+    
+    def _version_exceeds_max(self, version_str):
+        """检查版本是否超出最大支持版本"""
+        return self._parse_version(version_str) > self._parse_version(self.max_version)
+    
+    def _filter_content(self, content):
+        """过滤掉引用了超出版本的内容段落，并在开头添加版本警告"""
+        import re
+        # 检测 format_version / min_engine_version 等版本声明
+        version_pattern = re.compile(
+            r'["\']?(?:format_version|min_engine_version)["\']?\s*[:=]\s*["\']?([\d.]+)["\']?',
+            re.IGNORECASE
+        )
         
-        # 加载 Standard
-        if STANDARD_PATH.exists():
-            for filepath in STANDARD_PATH.glob("*.md"):
-                name = filepath.stem
-                try:
-                    content = filepath.read_text(encoding="utf-8")
-                    self.standards[name] = {
-                        "name": name,
-                        "filepath": str(filepath),
-                        "content": content,
-                        "description": self._extract_description(content)
-                    }
-                except Exception as e:
-                    print(f"加载 Standard 失败: {filepath}, 错误: {e}")
-    
-    def _extract_description(self, content: str) -> str:
-        """从内容中提取描述（第一个标题后的第一段）"""
-        lines = content.split('\n')
-        found_title = False
-        description_lines = []
+        found_versions = version_pattern.findall(content)
+        has_exceeding = any(self._version_exceeds_max(v) for v in found_versions)
         
-        for line in lines:
-            if line.startswith('# '):
-                found_title = True
+        warning = ""
+        if has_exceeding:
+            warning = (
+                f"> ⚠️ 版本警告：本文档中包含高于 {self.max_version} 版本的内容，"
+                f"这些特性在网易《我的世界》中国版中可能不可用。请以 docs/ 下的网易官方文档为准。\n\n"
+            )
+        
+        return warning + content
+    
+    def _load_topics(self):
+        """按一级子目录加载为 topic"""
+        if not self.wiki_path.exists():
+            return
+        
+        for subdir in sorted(self.wiki_path.iterdir()):
+            if subdir.is_dir() and not subdir.name.startswith('.'):
+                topic_key = subdir.name  # e.g. "entities", "blocks", "items"
+                md_files = sorted(subdir.rglob("*.md"))
+                if md_files:
+                    self._topics[topic_key] = {
+                        "name": topic_key,
+                        "file_count": len(md_files),
+                        "files": md_files,  # Path objects, lazy load content
+                    }
+        
+        # 也加载根目录下的独立 md 文件
+        root_mds = sorted(self.wiki_path.glob("*.md"))
+        if root_mds:
+            self._topics["_root"] = {
+                "name": "概述",
+                "file_count": len(root_mds),
+                "files": root_mds,
+            }
+    
+    def list_topics(self):
+        """列出所有可用的 Wiki 主题"""
+        return [
+            {"key": k, "name": v["name"], "file_count": v["file_count"]}
+            for k, v in self._topics.items()
+            if k != "_root"
+        ]
+    
+    def get_topic_content(self, topic_key, max_files=20):
+        """获取指定主题的合并内容（带版本过滤）"""
+        topic = self._topics.get(topic_key)
+        if not topic:
+            return None
+        
+        parts = []
+        for md_file in topic["files"][:max_files]:
+            try:
+                raw = md_file.read_text(encoding="utf-8").strip()
+                if raw:
+                    filtered = self._filter_content(raw)
+                    rel_name = str(md_file.relative_to(self.wiki_path))
+                    parts.append(f"---\n## {rel_name}\n---\n\n{filtered}")
+            except Exception:
                 continue
-            if found_title:
-                if line.strip() == '':
-                    if description_lines:
-                        break
-                    continue
-                if line.startswith('#'):
-                    break
-                description_lines.append(line.strip())
-                if len(description_lines) >= 2:
-                    break
         
-        return ' '.join(description_lines)[:200] if description_lines else "无描述"
-    
-    def list_skills(self) -> List[Dict]:
-        """列出所有 Skills"""
-        return list(self.skills.values())
-    
-    def list_standards(self) -> List[Dict]:
-        """列出所有 Standards"""
-        return list(self.standards.values())
-    
-    def get_skill(self, name: str) -> Optional[Dict]:
-        """获取指定 Skill"""
-        return self.skills.get(name)
-    
-    def get_standard(self, name: str) -> Optional[Dict]:
-        """获取指定 Standard"""
-        return self.standards.get(name)
-    
-    def reload(self):
-        """重新加载"""
-        self.skills = {}
-        self.standards = {}
-        self._load_all()
+        if not parts:
+            return f"主题 '{topic_key}' 下没有可用内容"
+        
+        header = (
+            f"# Bedrock Wiki: {topic_key}\n"
+            f"> 来源: bedrock-wiki-wiki | 版本上限: {self.max_version}\n"
+            f"> 共 {len(parts)} 个文档\n\n"
+        )
+        return header + "\n\n".join(parts)
 
 
-# 全局 Skills 读取器实例
-_skills_reader = None  # type: Optional[SkillsReader]
+# 全局 Bedrock Wiki 读取器实例
+_bedrock_wiki_reader = None  # type: Optional[BedrockWikiReader]
 
 
-def get_skills_reader() -> SkillsReader:
-    """获取 Skills 读取器实例"""
-    global _skills_reader
-    if _skills_reader is None:
-        _skills_reader = SkillsReader()
-    return _skills_reader
+def get_bedrock_wiki_reader():
+    """获取 Bedrock Wiki 读取器实例"""
+    global _bedrock_wiki_reader
+    if _bedrock_wiki_reader is None:
+        if BEDROCK_WIKI_PATH.exists():
+            _bedrock_wiki_reader = BedrockWikiReader(
+                BEDROCK_WIKI_PATH,
+                max_version=BEDROCK_WIKI_MAX_VERSION
+            )
+        else:
+            _bedrock_wiki_reader = BedrockWikiReader(
+                BEDROCK_WIKI_PATH,  # will just have empty topics
+                max_version=BEDROCK_WIKI_MAX_VERSION
+            )
+    return _bedrock_wiki_reader
 
 
 # ============================================================================
@@ -298,41 +338,20 @@ def get_skills_reader() -> SkillsReader:
 
 @server.list_resources()
 async def list_resources() -> List[Resource]:
-    """列出所有可用的 Resources（Skills 和 Standards）"""
-    skills_reader = get_skills_reader()
+    """列出所有可用的 Resources"""
     resources = []
     
-    # 添加 Skills 资源
-    for skill in skills_reader.list_skills():
+    # Bedrock Wiki 资源
+    wiki_reader = get_bedrock_wiki_reader()
+    for topic in wiki_reader.list_topics():
         resources.append(
             Resource(
-                uri=f"skill://{skill['name']}",
-                name=f"Skill: {skill['name']}",
-                description=skill['description'],
+                uri=f"bedrock-wiki://{topic['key']}",
+                name=f"Bedrock Wiki: {topic['name']} ({topic['file_count']}篇)",
+                description=f"Bedrock 版社区 Wiki: {topic['name']} 专题（{topic['file_count']}篇，版本上限 {BEDROCK_WIKI_MAX_VERSION}）",
                 mimeType="text/markdown"
             )
         )
-    
-    # 添加 Standard 资源
-    for standard in skills_reader.list_standards():
-        resources.append(
-            Resource(
-                uri=f"standard://{standard['name']}",
-                name=f"Standard: {standard['name']}",
-                description=standard['description'],
-                mimeType="text/markdown"
-            )
-        )
-    
-    # 添加合并的代码规范资源
-    resources.append(
-        Resource(
-            uri="skill://code-generation-rules",
-            name="NetEase ModSDK 代码生成规范（完整版）",
-            description="生成 ModSDK 代码时必须遵循的所有规则，包括性能优化、架构规范等",
-            mimeType="text/markdown"
-        )
-    )
 
     # API/事件紧凑索引 Resource — 让 LLM 直接看到所有 API，用自身语义能力匹配
     resources.append(
@@ -404,29 +423,18 @@ _GUIDE_RESOURCE_PATHS = {
 async def read_resource(uri) -> str:
     """读取指定的 Resource 内容"""
     uri = str(uri)  # AnyUrl -> str
-    skills_reader = get_skills_reader()
 
     # 解析 URI
-    if uri.startswith("skill://"):
-        name = uri[8:]  # 移除 "skill://" 前缀
-        
-        # 特殊资源：合并的代码规范
-        if name == "code-generation-rules":
-            return _get_combined_rules()
-        
-        skill = skills_reader.get_skill(name)
-        if skill:
-            return skill['content']
+    if uri.startswith("bedrock-wiki://"):
+        topic_key = uri[15:]  # 移除 "bedrock-wiki://" 前缀
+        wiki_reader = get_bedrock_wiki_reader()
+        content = wiki_reader.get_topic_content(topic_key)
+        if content:
+            return content
         else:
-            return f"Skill '{name}' 不存在。"
-    
-    elif uri.startswith("standard://"):
-        name = uri[11:]  # 移除 "standard://" 前缀
-        standard = skills_reader.get_standard(name)
-        if standard:
-            return standard['content']
-        else:
-            return f"Standard '{name}' 不存在。"
+            topics = wiki_reader.list_topics()
+            available = ', '.join(t['key'] for t in topics)
+            return f"Wiki 主题 '{topic_key}' 不存在。可用主题: {available}"
     
     elif uri.startswith("api-index://"):
         from urllib.parse import unquote
@@ -518,43 +526,6 @@ def _try_inline_enum(docs_reader, text: str) -> Optional[str]:
             if inline:
                 return f"  - {enum_name}: {inline}"
     return None
-
-
-def _get_combined_rules() -> str:
-    """获取合并的代码生成规范"""
-    skills_reader = get_skills_reader()
-    
-    # 尝试获取优化规范
-    optimization_skill = skills_reader.get_skill("netease-optimization-expert")
-    
-    if optimization_skill:
-        return optimization_skill['content']
-    
-    # 如果没有找到，返回内置的基本规则
-    return """# NetEase ModSDK 代码生成规范
-
-## 强制规则
-
-### 1. 客户端/服务端分离
-- 禁止在 ServerSystem 中 import clientApi
-- 禁止在 ClientSystem 中 import serverApi
-- 使用事件通信进行跨端交互
-
-### 2. 缓存 GetEngineCompFactory
-```python
-CF = serverApi.GetEngineCompFactory()
-levelId = serverApi.GetLevelId()
-```
-
-### 3. import 放在文件顶部
-不要在函数内 import
-
-### 4. Tick 逻辑降帧
-使用 `self.tick % N == 0` 降低执行频率
-
-### 5. 点对点通信
-使用 `NotifyToClient(playerId, ...)` 而非 `BroadcastToAllClient(...)`
-"""
 
 
 # ============================================================================

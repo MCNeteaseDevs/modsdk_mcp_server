@@ -1,0 +1,56 @@
+/* Styling for markdown-it-container */
+
+.custom-block {
+  border-left: var(--border-color) 3px solid;
+  padding: 0.5em 1.2em;
+  overflow-x: auto;
+
+  border-bottom-right-radius: var(--border-radius);
+  border-top-right-radius: var(--border-radius);
+}
+
+.custom-block:has(+ .custom-block) {
+  margin-bottom: 0;
+}
+.custom-block + .custom-block {
+  margin-top: 0;
+}
+
+.custom-block:has(+ .custom-block:not(.info, .details)) {
+  border-bottom-right-radius: 0;
+}
+.custom-block:not(.info, .details) + .custom-block {
+  border-top-right-radius: 0;
+}
+
+.custom-block-title {
+  font-weight: 600;
+}
+
+.custom-block.tip {
+  border-color: rgb(50, 150, 100);
+  background-color: rgba(150, 255, 200, 0.2);
+}
+.custom-block.warning {
+  border-color: rgb(200, 150, 30);
+  background-color: rgba(255, 230, 100, 0.3);
+  color: rgb(80, 70, 0);
+}
+.custom-block.danger {
+  border-color: rgb(200, 50, 50);
+  background-color: rgba(220, 120, 120, 0.1);
+  color: rgb(80, 0, 0);
+}
+
+.dark .custom-block.tip {
+  background-color: rgba(150, 255, 200, 0.1);
+  color: #ffffff;
+}
+.dark .custom-block.warning {
+  background-color: rgba(255, 230, 100, 0.1);
+  color: #ffffff;
+}
+.dark .custom-block.danger {
+  background-color: rgba(200, 120, 120, 0.1);
+  color: #ffffff;
+}
