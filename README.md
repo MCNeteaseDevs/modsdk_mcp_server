@@ -137,7 +137,7 @@ pip install -r requirements.txt
 启动 SSE 服务：
 
 ```bash
-python -m modsdk_mcp --sse
+python -m modsdk_mcp.server --sse
 # 默认监听 http://0.0.0.0:8000
 ```
 

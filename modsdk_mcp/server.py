@@ -3061,15 +3061,15 @@ async def main_sse(host: str = "0.0.0.0", port: int = 8000):
     """使用 SSE 模式运行（远程部署）"""
     from mcp.server.sse import SseServerTransport
     from starlette.applications import Starlette
-    from starlette.routing import Route
-    from starlette.responses import JSONResponse
+    from starlette.routing import Route, Mount
+    from starlette.responses import JSONResponse, Response
     import uvicorn
     
     # 初始化文档读取器
     get_docs_reader()
     
     # 创建 SSE transport
-    sse = SseServerTransport("/messages")
+    sse = SseServerTransport("/messages/")
     
     async def handle_sse(request):
         async with sse.connect_sse(
@@ -3080,9 +3080,7 @@ async def main_sse(host: str = "0.0.0.0", port: int = 8000):
                 streams[1],
                 server.create_initialization_options()
             )
-    
-    async def handle_messages(request):
-        await sse.handle_post_message(request.scope, request.receive, request._send)
+        return Response()
     
     async def health_check(request):
         return JSONResponse({"status": "ok", "server": "netease-modsdk-mcp"})
@@ -3090,8 +3088,8 @@ async def main_sse(host: str = "0.0.0.0", port: int = 8000):
     app = Starlette(
         debug=True,
         routes=[
-            Route("/sse", endpoint=handle_sse),
-            Route("/messages", endpoint=handle_messages, methods=["POST"]),
+            Route("/sse", endpoint=handle_sse, methods=["GET"]),
+            Mount("/messages/", app=sse.handle_post_message),
             Route("/health", endpoint=health_check),
         ],
     )
