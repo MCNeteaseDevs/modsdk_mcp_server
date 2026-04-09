@@ -3,12 +3,10 @@
     "ModSDK MCP Server": {
       "type": "stdio",
       "name": "ModSDK MCP Server",
-      "command": "D:/Python312/python.exe",
+      "command": "python",
       "args": [
-        "-m",
-        "modsdk_mcp"
+        "D:/ModSDK MCP Server/start_mcp.py"
       ],
-      "cwd": "D:/ModSDK MCP Server",
       "env": {}
     }
   }

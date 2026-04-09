@@ -1223,7 +1223,16 @@ behavior_pack_<namespace>/spawn_rules/<namespace>_<entity_id>.json
                     "can_always_eat": {"type": "boolean", "description": "是否可随时食用", "default": False},
                     "effects": {
                         "type": "array",
-                        "description": "药水效果列表 [{name, duration, amplifier, chance}]"
+                        "description": "药水效果列表 [{name, duration, amplifier, chance}]",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "name": {"type": "string", "description": "效果名称"},
+                                "duration": {"type": "integer", "description": "持续时间(tick)"},
+                                "amplifier": {"type": "integer", "description": "效果等级"},
+                                "chance": {"type": "number", "description": "触发概率(0-1)"}
+                            }
+                        }
                     }
                 },
                 "required": ["namespace", "item_id"]
@@ -1411,7 +1420,6 @@ behavior_pack_<namespace>/spawn_rules/<namespace>_<entity_id>.json
                         "default": "all"
                     }
                 },
-                "required": []
             }
         ),
         Tool(
@@ -1433,7 +1441,6 @@ behavior_pack_<namespace>/spawn_rules/<namespace>_<entity_id>.json
                         "default": "all"
                     }
                 },
-                "required": []
             }
         ),
         Tool(
@@ -1452,7 +1459,6 @@ behavior_pack_<namespace>/spawn_rules/<namespace>_<entity_id>.json
                         "description": "模式名称，如'跨端通信'、'UI开发流程'、'物品掉落'。支持模糊匹配。"
                     }
                 },
-                "required": []
             }
         ),
         Tool(
@@ -1476,7 +1482,6 @@ behavior_pack_<namespace>/spawn_rules/<namespace>_<entity_id>.json
                         "default": "all"
                     },
                 },
-                "required": []
             }
         )
     ]

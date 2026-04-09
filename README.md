@@ -36,6 +36,9 @@ pip install -r requirements.txt
 
 ### 2. 选择你的 AI 客户端进行配置
 
+> **通用说明**：所有客户端统一使用 `start_mcp.py` 绝对路径启动，无需 `cwd` 参数，兼容性最好。
+> 请将下方示例中的 `D:/ModSDK MCP Server` 替换为你的实际安装路径。
+
 <details>
 <summary><b>🟢 Claude Desktop（推荐）</b></summary>
 
@@ -48,14 +51,36 @@ pip install -r requirements.txt
   "mcpServers": {
     "ModSDK MCP Server": {
       "command": "python",
-      "args": ["-m", "modsdk_mcp"],
-      "cwd": "D:/ModSDK MCP Server"
+      "args": ["D:/ModSDK MCP Server/start_mcp.py"]
     }
   }
 }
 ```
 
 保存后重启 Claude Desktop。
+</details>
+
+<details>
+<summary><b>🟣 Claude Code（CLI）</b></summary>
+
+Claude Code 不支持 `cwd` 参数，使用 `start_mcp.py` 绝对路径即可：
+
+```bash
+claude mcp add "ModSDK MCP Server" -- python "D:/ModSDK MCP Server/start_mcp.py"
+```
+
+或手动编辑 `~/.claude/settings.json`：
+
+```json
+{
+  "mcpServers": {
+    "ModSDK MCP Server": {
+      "command": "python",
+      "args": ["D:/ModSDK MCP Server/start_mcp.py"]
+    }
+  }
+}
+```
 </details>
 
 <details>
@@ -68,8 +93,7 @@ pip install -r requirements.txt
   "servers": {
     "ModSDK MCP Server": {
       "command": "python",
-      "args": ["-m", "modsdk_mcp"],
-      "cwd": "D:/ModSDK MCP Server"
+      "args": ["D:/ModSDK MCP Server/start_mcp.py"]
     }
   }
 }
@@ -118,17 +142,14 @@ pip install -r requirements.txt
 
 ```json
 {
-  "servers": {
+  "mcpServers": {
     "ModSDK MCP Server": {
       "command": "python",
-      "args": ["start_mcp.py"],
-      "cwd": "D:/ModSDK MCP Server"
+      "args": ["D:/ModSDK MCP Server/start_mcp.py"]
     }
   }
 }
 ```
-
-> **说明**: CodeMaker 不支持 `python -m` 的 `cwd` 传参方式，因此使用 `start_mcp.py` 包装入口。
 </details>
 
 <details>
@@ -137,7 +158,7 @@ pip install -r requirements.txt
 启动 SSE 服务：
 
 ```bash
-python -m modsdk_mcp --sse
+python "D:/ModSDK MCP Server/start_mcp.py" --sse
 # 默认监听 http://0.0.0.0:8000
 ```
 
