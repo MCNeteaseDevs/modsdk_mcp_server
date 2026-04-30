@@ -86,6 +86,7 @@ server = Server(
    - 使用 search_component 查询组件的正确格式
    - 网易版和国际版的 format_version 和组件名称不同
    - 网易版物品使用 "1.10"，方块使用 "1.10.0"
+   - ModSDK 3.8 的 manifest.json 必须使用 format_version: 2，避免新生物蛋贴图异常
 
 5. **参考示例项目**
    - input/ 目录下有示例项目，可参考实际用法
@@ -959,7 +960,7 @@ behavior_pack_<namespace>/netease_recipes/<recipe_id>.json""",
             description="""生成自定义实体 JSON 文件（行为包 + 资源包）。
 
 【适用于自定义生物/实体】
-遵循 NetEase ModSDK 3.7 官方文档规范
+遵循 NetEase ModSDK 3.8 官方文档规范
 
 生成内容：
 - 行为包实体 JSON: behavior_pack_<namespace>/entities/<namespace>_<entity_id>.json
@@ -1408,7 +1409,7 @@ behavior_pack_<namespace>/spawn_rules/<namespace>_<entity_id>.json
 - item: 物品组件（22个）
 - block: 方块组件（22个）
 - entity: 实体组件（19个）
-- netease_item: 网易物品组件（3个）
+- netease_item: 网易物品组件（4个）
 - netease_block: 网易方块组件（7个）""",
             inputSchema={
                 "type": "object",
@@ -1430,6 +1431,7 @@ behavior_pack_<namespace>/spawn_rules/<namespace>_<entity_id>.json
 - python27_compatibility: Python 2.7 兼容性规则
 - client_server_separation: 客户端/服务端分离规则
 - performance: 性能优化规则
+- modsdk_38_migration: ModSDK 3.8 迁移规则
 - all: 所有规则（默认）""",
             inputSchema={
                 "type": "object",
@@ -1437,7 +1439,7 @@ behavior_pack_<namespace>/spawn_rules/<namespace>_<entity_id>.json
                     "category": {
                         "type": "string",
                         "description": "规则分类",
-                        "enum": ["all", "python27_compatibility", "client_server_separation", "performance"],
+                        "enum": ["all", "python27_compatibility", "client_server_separation", "performance", "modsdk_38_migration"],
                         "default": "all"
                     }
                 },

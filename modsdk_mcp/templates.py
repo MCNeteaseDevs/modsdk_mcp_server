@@ -1325,7 +1325,7 @@ SPAWN_RULES_JSON_TEMPLATE = '''{{
 class EntityJsonGenerator:
     """实体 JSON 生成器
     
-    遵循 NetEase ModSDK 3.7 官方文档规范：
+    遵循 NetEase ModSDK 3.8 官方文档规范：
     - format_version: 1.10.0
     - runtime_identifier: 基于哪个原版实体构建
     - 支持 component_groups 和 events
