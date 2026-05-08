@@ -36,6 +36,7 @@
 2. **使用 API 前** → 调用 `search_api("API名")` 查询接口签名
 3. **使用组件前** → 调用 `search_component("组件名")` 查询组件格式
 4. **生成 JSON 前** → 确认网易版的 `format_version`（物品 1.10，方块 1.10.0）
+5. **生成 manifest 前** → ModSDK 3.8 使用 `format_version: 2`
 
 ---
 
@@ -118,6 +119,15 @@ self.UnListenForEvent(
 ### 物品事件
 - `ServerItemUseOnEvent` - 物品使用
 - `ActorAcquiredItemServerEvent` - 获得物品
+- `LiquidClippedServerEvent` / `LiquidClippedClientEvent` - 玩家点击流体，物品需配置 `netease:liquid_clipped`
+- `PlayerAddCustomContainerItemServerEvent` / `PlayerAddCustomContainerItemClientEvent` - 自定义容器添加物品完成
+- `PlayerRemoveCustomContainerItemServerEvent` / `PlayerRemoveCustomContainerItemClientEvent` - 自定义容器移除物品完成
+
+### 3.8 钓鱼与物理事件
+- `PlayerStartFishingServerEvent` - 玩家开始钓鱼
+- `PlayerFishingServerEvent` - 玩家钓鱼成功收杆，掉落物生成前
+- `PlayerFishingAfterServerEvent` - 玩家钓鱼成功收杆，掉落物生成后
+- `PhysxTriggerServerEvent` / `PhysxTriggerClientEvent` - 自定义刚体触发器进入或离开
 - `PlayerDropItemServerEvent` - 丢弃物品
 
 ## 使用 MCP 工具

@@ -2,7 +2,7 @@
 
 ## 概述
 
-这是一个专门用于网易我的世界 ModSDK 3.7 基岩版 JSON 内容生成的 MCP 技能。它提供了完整的数据驱动内容生成能力，支持物品、方块、实体、配方、战利品表等 JSON 文件的生成。
+这是一个专门用于网易我的世界 ModSDK 3.8 基岩版 JSON 内容生成的 MCP 技能。它提供了完整的数据驱动内容生成能力，支持物品、方块、实体、配方、战利品表等 JSON 文件的生成。
 
 ## 核心能力
 
@@ -30,7 +30,7 @@
 
 ### 3. 实体 JSON 生成
 - `generate_entity_json` - 生成自定义实体 JSON
-- **重要**：网易 ModSDK 3.7 必须设置 `runtime_identifier`
+- **重要**：网易 ModSDK 3.8 实体仍需设置 `runtime_identifier`
 - 支持行为组件、寻路组件、战斗组件等
 
 ### 4. 其他 JSON 生成
@@ -177,13 +177,14 @@ resource_pack/
 ## 注意事项
 
 1. **Python 2.7 兼容性**：ModSDK 使用 Python 2.7，代码不能使用 f-string、type hints 等
-2. **runtime_identifier**：网易 ModSDK 3.7 实体必须设置此属性
+2. **runtime_identifier**：网易 ModSDK 3.8 实体必须设置此属性
 3. **组件工厂缓存**：`GetEngineCompFactory()` 必须在文件顶部缓存
 4. **Tick 降帧**：所有 Tick 逻辑必须使用质数间隔降帧
+5. **manifest 格式**：ModSDK 3.8 的 `manifest.json` 使用 `format_version: 2`
 
 ## 版本信息
 
 - MCP Server 版本: 1.0.0
-- 支持的 ModSDK 版本: 3.7
+- 支持的 ModSDK 版本: 3.8
 - 支持的基岩版格式版本: 1.8.0 - 1.16.100
 - 工具总数: 34 个

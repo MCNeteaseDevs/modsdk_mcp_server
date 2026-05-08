@@ -1,17 +1,28 @@
-# EntityType
+---
+source_url: "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9E%9A%E4%B8%BE%E5%80%BC/EntityType.html"
+last_modified: "Wed, 29 Apr 2026 14:40:01 GMT"
+synced_from: "NetEase developer official website"
+---
+
+#  EntityType
 
 class in mod.common.minecraftEnum
 
-- 描述
+-
 
-    实体类型枚举
+描述
 
-- 备注
-    - 当实体行为包内使用[runtime_identifier](https://dev.mc.163.com/dev/mcmanual/mc-dev/mconline/15-%E7%8E%A9%E6%B3%95%E7%BB%84%E4%BB%B6%E6%95%99%E7%A8%8B/7-%E8%87%AA%E5%AE%9A%E4%B9%89%E5%AE%9E%E4%BD%93/4-%E6%8E%A2%E7%B4%A2%E5%AE%9E%E4%BD%93%E7%9A%84%E8%A1%8C%E4%B8%BA%E6%96%87%E4%BB%B6.html#%E7%90%86%E8%A7%A3%E5%AE%9E%E4%BD%93%E8%A1%8C%E4%B8%BA%E7%9A%84%E6%8F%8F%E8%BF%B0%E4%BF%A1%E6%81%AF)字段继承某种实体的特征时，此时实体所属分类与runtime_indentifier所指向的实体相同。
-    - 自定义实体未使用runtime_identifier字段时该实体默认只属于Mob类。
-    - 在控制台打印枚举值为位运算结果，例如，EntityType.Zombie 输出为 199456。
+实体类型枚举
 
+-
 
+备注
+
+- 当实体行为包内使用runtime_identifier  (opens new window)字段继承某种实体的特征时，此时实体所属分类与runtime_indentifier所指向的实体相同。
+
+- 自定义实体未使用runtime_identifier字段时该实体默认只属于Mob类。
+
+- 在控制台打印枚举值为位运算结果，例如，EntityType.Zombie 输出为 199456。
 
 ```python
 class EntityType(object):
@@ -166,9 +177,10 @@ class EntityType(object):
 	WindChargeProjectile = 143 | Projectile			# 风弹
 	Bogged = 144 | SkeletonMonster					# 沼骸
 	OminousItemSpawner = 145						# 不祥之物生成器
+	Creaking = 146 | Monster						# 嘎枝
+	HappyGhast = 147 | Animal						# 快乐恶魂
 	CustomProjectile = 254 | Projectile				# 自定义抛射物
 	EntityExtension = 255							# 实体扩展
 	MAX_ENTITY_ID = 256								# 最大实体ID
 
-``` 
-
+```

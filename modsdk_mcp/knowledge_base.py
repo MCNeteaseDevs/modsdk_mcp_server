@@ -294,6 +294,12 @@ NETEASE_ITEM_COMPONENTS = {
         "name": "手持显示",
         "description": "物品的手持显示设置"
     },
+    "netease:liquid_clipped": {
+        "name": "流体点击检测",
+        "description": "ModSDK 3.8 新增物品组件；设置为 True 后，玩家点击原版流体或自定义流体时可触发 LiquidClippedServerEvent / LiquidClippedClientEvent",
+        "type": "boolean",
+        "example": True
+    },
 }
 
 NETEASE_BLOCK_COMPONENTS = {
@@ -677,6 +683,18 @@ ENTITY_COMPONENTS = {
             "x_max_rotation": "X轴最大旋转角度",
             "y_max_head_rotation": "Y轴头部最大旋转角度"
         }
+    },
+    "modsdk_38_migration": {
+        "name": "ModSDK 3.8 迁移",
+        "rules": [
+            "manifest.json 使用 format_version: 2，避免 3.8 新生物蛋贴图异常",
+            "PlayerDestoryBlock 已废弃，使用 PlayerDestroyBlock",
+            "EntityUseItemToPos 已废弃，使用 UseItemToPos",
+            "Set/CancelShearsDestoryBlockSpeed 系列已废弃，使用 Destroy 拼写的新接口",
+            "SetCameraPos 前先调用 DepartCamera()，恢复跟随使用 ResetCameraPos()",
+            "SetToggleOption 不再支持 GRAPHICS 选项",
+            "物品信息字典 getUserData 可覆盖收纳袋场景，相关背包/容器接口需要按 3.8 文档核对"
+        ]
     },
 }
 

@@ -1,17 +1,26 @@
-# RenderLayer
+---
+source_url: "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9E%9A%E4%B8%BE%E5%80%BC/RenderLayer.html"
+last_modified: "Wed, 29 Apr 2026 14:40:01 GMT"
+synced_from: "NetEase developer official website"
+---
+
+#  RenderLayer
 
 class in mod.common.minecraftEnum
 
-- 描述
+-
 
-    方块渲染时的材质类型
+描述
 
-- 备注
-    - 目前自定义方块只支持使用部分材质，具体见<a href="../../../mcguide/20-玩法开发/15-自定义游戏内容/2-自定义方块/1-JSON组件.html" rel="noopenner"> 自定义方块json组件 </a>
-        由于联机大厅和apollo存在部分材质缺少定义，所以枚举值在联机大厅和apollo环境下，整体-2
-        如：Blend = 5 变成 Blend = 3 ; Opaque = 6 变成 Opaque = 4，依此类推
+方块渲染时的材质类型
 
+-
 
+备注
+
+- 目前自定义方块只支持使用部分材质，具体见 自定义方块json组件
+由于联机大厅和apollo存在部分材质缺少定义，所以枚举值在联机大厅和apollo环境下，整体-2
+如：Blend = 5 变成 Blend = 3 ; Opaque = 6 变成 Opaque = 4，依此类推
 
 ```python
 class RenderLayer(object):
@@ -21,16 +30,18 @@ class RenderLayer(object):
 	RAY_TRACED_WATER = 3 # 原版光线追踪水面
 	DEFERRED_WATER = 4 # 原版延迟渲染水面
 	BLEND = 5 # 半透明
-	OPAQUE = 6 # 不透明
-	OPTIONAL_ALPHATEST = 7 # 局部全透明
-	ALPHATEST = 8 # 全透明
-	SEASONS_OPAQUE = 9 # 原版用于渲染不透明树叶
-	SEASONS_OPTIONAL_ALPHATEST = 10 # 原版用于渲染局部全透明方块
-	ALPHATEST_SINGLE_SIDE = 11 # 单面全透明
-	ENDPORTAL = 12 # 原版末地传送门
-	BARRIER = 13 # 原版屏障
-	LIGHT = 14 # 原版光源
-	STRUCTURE_VOID = 15
+	BLEND_TO_OPAQUE = 6 # 半透明转不透明(远距离渲染为不透明)
+	OPAQUE = 7 # 不透明
+	LIGHT_SOURCE = 8 # 原版发光方块
+	OPTIONAL_ALPHATEST = 9 # 全透明转不透明(远距离渲染为不透明)
+	ALPHATEST = 10 # 全透明
+	SEASONS_OPAQUE = 11 # 原版用于渲染不透明树叶
+	SEASONS_OPTIONAL_ALPHATEST = 12 # 原版季节性全透明转不透明方块
+	ALPHATEST_SINGLE_SIDE = 13 # 单面全透明
+	ALPHATEST_SINGLE_SIDE_TO_OPAQUE = 14 # 单面全透明转不透明(远距离渲染为不透明)
+	ENDPORTAL = 15 # 原版末地传送门
+	BARRIER = 16 # 原版屏障
+	LIGHT = 17 # 原版光源
+	STRUCTURE_VOID = 18 # 原版结构空位
 
-``` 
-
+```
