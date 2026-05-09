@@ -33,7 +33,7 @@
 ### 安装依赖
 
 ```bash
-cd "D:/ModSDK MCP Server"
+cd "<PROJECT_ROOT>"
 pip install -r requirements.txt
 ```
 
@@ -95,7 +95,7 @@ notepad "$env:APPDATA\Claude\claude_desktop_config.json"
     "ModSDK MCP Server": {
       "command": "python",
       "args": ["-m", "modsdk_mcp"],
-      "cwd": "D:/ModSDK MCP Server"
+      "cwd": "<PROJECT_ROOT>"
     }
   }
 }
@@ -112,7 +112,7 @@ notepad "$env:APPDATA\Claude\claude_desktop_config.json"
     "ModSDK MCP Server": {
       "command": "python",
       "args": ["-m", "modsdk_mcp"],
-      "cwd": "D:/ModSDK MCP Server"
+      "cwd": "<PROJECT_ROOT>"
     }
   }
 }
@@ -140,7 +140,7 @@ notepad "$env:APPDATA\Claude\claude_desktop_config.json"
     "ModSDK MCP Server": {
       "command": "python",
       "args": ["-m", "modsdk_mcp"],
-      "cwd": "D:/ModSDK MCP Server"
+      "cwd": "<PROJECT_ROOT>"
     }
   }
 }
@@ -156,7 +156,7 @@ notepad "$env:APPDATA\Claude\claude_desktop_config.json"
     "ModSDK MCP Server": {
       "command": "python",
       "args": ["-m", "modsdk_mcp"],
-      "cwd": "D:/ModSDK MCP Server"
+      "cwd": "<PROJECT_ROOT>"
     }
   }
 }
@@ -192,7 +192,7 @@ CodeMaker 对 `python -m` 方式的 `cwd` 支持存在限制，因此项目提�
     "ModSDK MCP Server": {
       "command": "python",
       "args": ["start_mcp.py"],
-      "cwd": "D:/ModSDK MCP Server"
+      "cwd": "."
     }
   }
 }
@@ -216,7 +216,7 @@ run()
 ### 本地启动 SSE 服务
 
 ```bash
-cd "D:/ModSDK MCP Server"
+cd "<PROJECT_ROOT>"
 python -m modsdk_mcp --sse
 ```
 
@@ -329,7 +329,7 @@ server {
 ### 构建 & 启动
 
 ```bash
-cd "D:/ModSDK MCP Server"
+cd "<PROJECT_ROOT>"
 
 # 构建并启动
 docker-compose up -d --build
@@ -341,7 +341,7 @@ docker-compose logs -f
 预期输出：
 
 ```
-modsdk-mcp-server  | 🚀 MCP Server (SSE) 启动在 http://0.0.0.0:8000
+modsdk-mcp-server  | MCP Server (SSE) 启动在 http://0.0.0.0:8000
 ```
 
 ### 客户端配置
@@ -455,11 +455,11 @@ def OnTick(self):
 
 ```json
 // ✅ 正确的 Windows 路径
-"cwd": "D:/ModSDK MCP Server"
-"cwd": "D:\\ModSDK MCP Server"
+"cwd": "C:/path/to/modsdk_mcp_server"
+"cwd": "C:\\path\\to\\modsdk_mcp_server"
 
 // ❌ 错误的 Windows 路径
-"cwd": "D:\ModSDK MCP Server"
+"cwd": "C:\path\to\modsdk_mcp_server"
 ```
 
 ### 🔴 Docker 端口被占用

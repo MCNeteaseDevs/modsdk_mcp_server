@@ -17,7 +17,7 @@
 确保你的项目目录结构如下：
 
 ```
-D:/ModSDK MCP Server/
+<PROJECT_ROOT>/
 ├── modsdk_mcp/
 │   ├── __init__.py
 │   ├── server.py
@@ -100,7 +100,7 @@ services:
 
 ```powershell
 # 进入项目目录
-cd "D:/ModSDK MCP Server"
+cd "<PROJECT_ROOT>"
 
 # 构建 Docker 镜像
 docker-compose build
@@ -118,9 +118,9 @@ docker-compose logs -f
 你应该看到类似输出：
 
 ```
-modsdk-mcp-server  | 🚀 MCP Server (SSE) 启动在 http://0.0.0.0:8000
+modsdk-mcp-server  | MCP Server (SSE) 启动在 http://0.0.0.0:8000
 modsdk-mcp-server  |    - SSE 端点: http://0.0.0.0:8000/sse
-modsdk-mcp-server  |    - 消息端点: http://0.0.0.0:8000/messages
+modsdk-mcp-server  |    - 消息端点: http://0.0.0.0:8000/messages/
 modsdk-mcp-server  |    - 健康检查: http://0.0.0.0:8000/health
 ```
 

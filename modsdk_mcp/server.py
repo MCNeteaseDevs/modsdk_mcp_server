@@ -2653,19 +2653,18 @@ async def main_stdio():
         )
 
 
-async def main_sse(host: str = "0.0.0.0", port: int = 8000):
-    """使用 SSE 模式运行（远程部署）"""
+def create_sse_app():
+    """创建 SSE 模式使用的 Starlette 应用。"""
     from mcp.server.sse import SseServerTransport
     from starlette.applications import Starlette
-    from starlette.routing import Route
-    from starlette.responses import JSONResponse
-    import uvicorn
+    from starlette.routing import Mount, Route
+    from starlette.responses import JSONResponse, Response
     
     # 初始化文档读取器
     get_docs_reader()
     
     # 创建 SSE transport
-    sse = SseServerTransport("/messages")
+    sse = SseServerTransport("/messages/")
     
     async def handle_sse(request):
         async with sse.connect_sse(
@@ -2676,25 +2675,30 @@ async def main_sse(host: str = "0.0.0.0", port: int = 8000):
                 streams[1],
                 server.create_initialization_options()
             )
-    
-    async def handle_messages(request):
-        await sse.handle_post_message(request.scope, request.receive, request._send)
+        return Response()
     
     async def health_check(request):
         return JSONResponse({"status": "ok", "server": "netease-modsdk-mcp"})
     
-    app = Starlette(
+    return Starlette(
         debug=True,
         routes=[
-            Route("/sse", endpoint=handle_sse),
-            Route("/messages", endpoint=handle_messages, methods=["POST"]),
+            Route("/sse", endpoint=handle_sse, methods=["GET"]),
+            Mount("/messages/", app=sse.handle_post_message),
             Route("/health", endpoint=health_check),
         ],
     )
+
+
+async def main_sse(host: str = "0.0.0.0", port: int = 8000):
+    """使用 SSE 模式运行（远程部署）"""
+    import uvicorn
+
+    app = create_sse_app()
     
-    print(f"🚀 MCP Server (SSE) 启动在 http://{host}:{port}")
+    print(f"MCP Server (SSE) 启动在 http://{host}:{port}")
     print(f"   - SSE 端点: http://{host}:{port}/sse")
-    print(f"   - 消息端点: http://{host}:{port}/messages")
+    print(f"   - 消息端点: http://{host}:{port}/messages/")
     print(f"   - 健康检查: http://{host}:{port}/health")
     
     config = uvicorn.Config(app, host=host, port=port, log_level="info")
@@ -2719,7 +2723,7 @@ if __name__ == "__main__":
     import sys
     
     if len(sys.argv) > 1 and sys.argv[1] == "--sse":
-        # SSE 模式：python -m modsdk_mcp.server --sse
+        # SSE 模式：python -m modsdk_mcp --sse
         run_sse()
     else:
         # 默认 stdio 模式

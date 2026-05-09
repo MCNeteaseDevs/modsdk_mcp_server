@@ -5,8 +5,9 @@
       "name": "ModSDK MCP Server",
       "command": "python",
       "args": [
-        "D:/ModSDK MCP Server/start_mcp.py"
+        "start_mcp.py"
       ],
+      "cwd": ".",
       "env": {}
     }
   }
