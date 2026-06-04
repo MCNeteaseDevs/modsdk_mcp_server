@@ -46,6 +46,8 @@ class ApiEntry:
     return_info: Dict[str, str]
     entry_type: str  # "api" 或 "event"
     class_path: str  # 完整类路径
+    notes: List[str] = None  # 备注（从文档section提取）
+    example: str = ""  # 示例代码（从文档section提取）
 
 
 # ============================================================================
@@ -442,7 +444,27 @@ class DocsReader:
 
         # 构建排序后的 API 关键词列表，用于前缀二分查找
         self._sorted_api_keywords = sorted(self._api_keywords.keys())
-    
+
+        # 从文档sections提取备注和示例，补充到ApiEntry
+        for doc in self._documents.values():
+            sections = doc.sections
+            for i, sec in enumerate(sections):
+                keys = self._api_name_lower_map.get(sec.title.lower())
+                if not keys:
+                    continue
+                # 收集子section内容（如"服务端接口"/"客户端接口"）
+                sub = []
+                for j in range(i + 1, len(sections)):
+                    if sections[j].level <= sec.level:
+                        break
+                    sub.append(sections[j].content)
+                contents = sub or [sec.content]
+                for k, uk in enumerate(keys):
+                    entry = self._api_entries[uk]
+                    if entry.notes is None:
+                        content = contents[k] if k < len(contents) else contents[-1]
+                        entry.notes, entry.example = self._parse_notes_and_example(content)
+
     def _index_api_entry(self, entry: ApiEntry, unique_key: str) -> None:
         """为 API/事件条目建立关键词索引"""
         # 1. 完整名称
@@ -940,10 +962,31 @@ class DocsReader:
                 "params": entry.params,
                 "return": entry.return_info,
                 "class_path": entry.class_path,
+                "notes": entry.notes or [],
+                "example": entry.example or "",
             }
             results.append(result)
 
         return results if len(results) > 1 else results[0]
+
+    def _parse_notes_and_example(self, content):
+        """从文档section内容中提取备注和示例"""
+        notes = []
+        example = ""
+
+        # 解析备注："备注"后面的bullet points，直到下一个分隔符或"示例"
+        notes_match = re.search(r'备注\s*\n(.*?)(?=\n\s*-\s*\n|\n示例|\Z)', content, re.DOTALL)
+        if notes_match:
+            notes_text = notes_match.group(1).strip()
+            notes = [l.lstrip('- ').strip() for l in notes_text.split('\n')
+                     if l.strip().startswith('-') and l.strip() != '- 示例']
+
+        # 解析示例："示例"后的代码块（可能没有闭合的```）
+        example_match = re.search(r'示例\s*\n```(?:python)?\n(.*?)(?:```|$)', content, re.DOTALL)
+        if example_match:
+            example = example_match.group(1).strip()
+
+        return notes, example
 
     def _load_enum_data(self) -> None:
         """从 docs/枚举值/*.md 自动解析枚举值定义。

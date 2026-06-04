@@ -523,7 +523,7 @@ async def list_tools() -> List[Tool]:
         ),
         Tool(
             name="get_api_detail",
-            description="""按精确名称获取 API/事件的完整详情（参数签名、返回值、描述）。
+            description="""按精确名称获取 API/事件的完整详情（参数签名、返回值、描述、备注、示例）。
 
 推荐工作流：先通过 api-index Resource 浏览索引找到API名 → 再用本工具获取完整签名。
 也可配合 search_api 使用：search_api 找到大致目标 → get_api_detail 获取精确参数。""",
@@ -1571,7 +1571,10 @@ async def call_tool(name: str, arguments: Dict[str, Any]) -> List[TextContent]:
 
         # 支持同名多端API（如 GetPos 有服务端和客户端两个版本）
         entries = detail if isinstance(detail, list) else [detail]
-        output = f"## `{api_name}` 详情\n\n"
+        if len(entries) > 1:
+            output = f"## `{api_name}` 详情\n\n"
+        else:
+            output = ""
 
         for entry in entries:
             side = entry.get("side", "")
@@ -1601,6 +1604,18 @@ async def call_tool(name: str, arguments: Dict[str, Any]) -> List[TextContent]:
                 rcomment = ret.get('return_comment', '')
                 if rtype:
                     output += f"- 返回: `{rtype}`{' — ' + rcomment if rcomment else ''}\n"
+
+            # 备注
+            notes = entry.get('notes', [])
+            if notes:
+                output += "- 备注:\n"
+                for note in notes:
+                    output += f"  - {note}\n"
+
+            # 示例
+            example = entry.get('example', '')
+            if example:
+                output += "- 示例:\n```python\n{}\n```\n".format(example)
 
             output += "\n"
 
