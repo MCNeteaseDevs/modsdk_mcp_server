@@ -333,9 +333,14 @@ class DocsReader:
         
         current_section = None
         current_content = []
-        
+        in_code_block = False  # ```围栏内不解析标题，避免示例代码里的 # 注释被误判为标题切断示例
+
         for line in lines:
-            header_match = re.match(r"^(#{1,6})\s+(.+)$", line)
+            if line.strip().startswith("```"):
+                in_code_block = not in_code_block
+                current_content.append(line)
+                continue
+            header_match = None if in_code_block else re.match(r"^(#{1,6})\s+(.+)$", line)
             if header_match:
                 # 保存之前的章节
                 if current_section:
@@ -464,7 +469,44 @@ class DocsReader:
 
         # 构建排序后的 API 关键词列表，用于前缀二分查找
         self._sorted_api_keywords = sorted(self._api_keywords.keys())
-    
+
+        # 从文档sections提取备注和示例，补充到ApiEntry
+        for doc in self._documents.values():
+            sections = doc.sections
+            for i, sec in enumerate(sections):
+                keys = self._api_name_lower_map.get(sec.title.lower())
+                if not keys:
+                    continue
+                # 收集子section（如"服务端接口"/"客户端接口"），保留title用于事件按端匹配
+                # 接口子section正文含 "method in <class_path>"，事件则无，需用title中的端侧区分
+                sub_blocks = []
+                for j in range(i + 1, len(sections)):
+                    if sections[j].level <= sec.level:
+                        break
+                    sub_blocks.append((sections[j].title, sections[j].content))
+                for uk in keys:
+                    entry = self._api_entries[uk]
+                    if entry.notes is not None:
+                        continue
+                    # 事件：正文在父section自身内容（事件section不带 method in 行）；
+                    # 仅当有"服务端事件/客户端事件"等端侧子section时才下钻，否则用父内容
+                    if entry.entry_type == "event":
+                        target = sec.content
+                        for title, block in sub_blocks:
+                            if entry.side and entry.side[:2] in title:
+                                target = block
+                                break
+                        entry.notes, entry.example = self._parse_notes_and_example(target)
+                        continue
+                    # 接口：用 class_path 在各块中精确定位所属块（每块含 "method in <class_path>"）
+                    # 无子section时正文在父section自身
+                    if entry.class_path:
+                        blocks = sub_blocks or [("", sec.content)]
+                        for title, block in blocks:
+                            if entry.class_path in block:
+                                entry.notes, entry.example = self._parse_notes_and_example(block)
+                                break
+
     def _index_api_entry(self, entry: ApiEntry, unique_key: str) -> None:
         """为 API/事件条目建立关键词索引"""
         # 1. 完整名称
@@ -971,15 +1013,54 @@ class DocsReader:
                 "params": entry.params,
                 "return": entry.return_info,
                 "class_path": entry.class_path,
-                "remarks": entry.remarks,
-                "examples": entry.examples,
-                "source_url": entry.source_url,
-                "source_last_modified": entry.source_last_modified,
-                "state": entry.state,
+                "notes": entry.notes or [],
+                "example": entry.example or "",
             }
             results.append(result)
 
         return results if len(results) > 1 else results[0]
+
+    def _parse_notes_and_example(self, content):
+        """从文档section内容中提取备注和示例。
+        文档有两种段标记格式：
+          A) "- 备注" / "- 示例"（连写，备注条目缩进4空格 "    - "）
+          B) "-" 单行 + 空行 + "备注"（分隔，备注条目顶格 "- "）
+        段标记关键词固定：描述/参数/返回值/备注/示例/成员变量/继承关系/状态。
+        关键词后必须是非内容字符（行尾/空行），避免把备注条目 "- 备注：xxx" 误判为段标记。
+        """
+        notes = []
+        example = ""
+
+        SEC_NAMES = r'(?:描述|参数|返回值|备注|示例|成员变量|继承关系|状态)(?=\s|$)'
+        # 段标记：顶格 "- 关键词"（格式A）或 顶格 "-\n\s*关键词"（格式B）
+        SEC_MARK = r'(?:^- ' + SEC_NAMES + r'|^-\s*\n\s*' + SEC_NAMES + r')'
+
+        # 备注段：从备注标记到下一个段标记或文末
+        notes_start = re.search(r'(?:- 备注|^-\s*\n\s*备注)', content, re.MULTILINE)
+        if notes_start:
+            rest = content[notes_start.end():]
+            next_sec = re.search(SEC_MARK, rest, re.MULTILINE)
+            notes_text = rest[:next_sec.start()] if next_sec else rest
+            items = []
+            for line in notes_text.split('\n'):
+                if not line.strip():
+                    continue
+                if line.lstrip().startswith('- '):
+                    items.append(line.lstrip()[2:])
+                elif items:
+                    items[-1] += '\n' + line
+            notes = items
+
+        # 示例段：示例标记后的代码块（可能没有闭合的```）
+        # 不用 MULTILINE：避免 $ 误匹配代码行尾导致示例被截断
+        example_start = re.search(r'(?:- 示例|^-\s*\n\s*示例)', content, re.MULTILINE)
+        if example_start:
+            rest = content[example_start.end():]
+            code_match = re.search(r'```(?:python)?\n(.*?)(?:```|$)', rest, re.DOTALL)
+            if code_match:
+                example = code_match.group(1).strip()
+
+        return notes, example
 
     def _load_enum_data(self) -> None:
         """从 docs/枚举值/*.md 自动解析枚举值定义。

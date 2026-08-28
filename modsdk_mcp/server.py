@@ -55,6 +55,9 @@ from .templates import (
 from .validation import Artifact, ValidationReport, get_registered_detectors, validate_artifacts
 
 
+# 是否暴露 generate 系列工具（默认关闭以节省上下文，设 MODSDK_ENABLE_GENERATE_TOOLS=1 启用）
+_ENABLE_GENERATE = os.environ.get("MODSDK_ENABLE_GENERATE_TOOLS", "") == "1"
+
 # 创建 MCP Server 实例
 server = Server(
     "minecraft-modsdk",
@@ -475,7 +478,7 @@ def _try_inline_enum(docs_reader, text: str) -> Optional[str]:
 @server.list_tools()
 async def list_tools() -> List[Tool]:
     """列出所有可用的工具"""
-    return [
+    tools = [
         # 文档查询工具
         Tool(
             name="search_docs",
@@ -542,7 +545,7 @@ async def list_tools() -> List[Tool]:
         ),
         Tool(
             name="get_api_detail",
-            description="""按精确名称获取 API/事件的完整详情（参数签名、返回值、描述）。
+            description="""按精确名称获取 API/事件的完整详情（参数签名、返回值、描述、备注、示例）。
 
 推荐工作流：先通过 api-index Resource 浏览索引找到API名 → 再用本工具获取完整签名。
 也可配合 search_api 使用：search_api 找到大致目标 → get_api_detail 获取精确参数。""",
@@ -656,6 +659,212 @@ async def list_tools() -> List[Tool]:
             }
         ),
         
+        # 代码审查工具
+        Tool(
+            name="review_code",
+            description="""审查 NetEase ModSDK 代码，检测性能问题、架构违规和 Python 2.7 兼容性问题。
+
+【重要】ModSDK 运行在 Python 2.7 环境！
+
+【审查检查项】
+
+🔴 严重问题（CRITICAL）- 必须修复：
+1. Python 2.7 不兼容语法（f-string、type hints、print()函数、async/await）
+2. 客户端/服务端混用（ServerSystem 导入 clientApi）
+3. GetEngineCompFactory 未缓存（在函数内调用）
+4. 函数内 import（每次调用都执行 import）
+5. Tick 事件无降帧（每帧执行耗时操作）
+
+🟠 警告问题（WARNING）- 建议修复：
+6. BroadcastToAllClient 滥用
+7. ServerBlockEntityTickEvent 无加盐
+8. 组件重复创建（循环内创建组件）
+9. 大量字符串拼接
+
+🟡 优化建议（SUGGESTION）- 可选：
+10. 魔法数字
+11. 缺少错误处理
+12. 事件命名不规范
+
+【输出格式】
+对每个问题输出：严重程度 + 位置 + 问题代码 + 修复建议
+
+【审查报告】
+最后提供统计和整体评价""",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "string",
+                        "description": "要审查的代码内容"
+                    },
+                    "filename": {
+                        "type": "string",
+                        "description": "文件名（可选，用于定位问题）",
+                        "default": "unknown.py"
+                    }
+                },
+                "required": ["code"]
+            }
+        ),
+        
+        # ============================================================
+        # 知识库查询工具
+        # ============================================================
+        Tool(
+            name="search_components",
+            description="""搜索基岩版组件（物品/方块/实体/网易特有）。
+
+【支持的组件类型】
+- item: 物品组件（minecraft:food, minecraft:durability 等）
+- block: 方块组件（minecraft:friction, minecraft:geometry 等）
+- entity: 实体组件（minecraft:health, minecraft:movement 等）
+- netease: 网易特有组件（netease:customtips, netease:tier 等）
+- all: 搜索所有类型（默认）
+
+【使用场景】
+- 查询组件用法和属性
+- 确认组件是否存在
+- 获取组件配置示例""",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "query": {
+                        "type": "string",
+                        "description": "搜索关键词（组件名或中文描述）"
+                    },
+                    "component_type": {
+                        "type": "string",
+                        "description": "组件类型",
+                        "enum": ["all", "item", "block", "entity", "netease"],
+                        "default": "all"
+                    }
+                },
+                "required": ["query"]
+            }
+        ),
+        Tool(
+            name="get_component_details",
+            description="""获取指定组件的详细信息。
+
+需要提供完整的组件 ID，如：
+- minecraft:food
+- minecraft:durability
+- netease:customtips
+- minecraft:behavior.melee_attack""",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "component_id": {
+                        "type": "string",
+                        "description": "组件 ID（如 minecraft:food）"
+                    }
+                },
+                "required": ["component_id"]
+            }
+        ),
+        Tool(
+            name="list_components",
+            description="""列出所有可用的组件。
+
+【组件分类】
+- item: 物品组件（22个）
+- block: 方块组件（22个）
+- entity: 实体组件（19个）
+- netease_item: 网易物品组件（4个）
+- netease_block: 网易方块组件（7个）""",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "component_type": {
+                        "type": "string",
+                        "description": "组件类型",
+                        "enum": ["item", "block", "entity", "netease_item", "netease_block", "all"],
+                        "default": "all"
+                    }
+                },
+            }
+        ),
+        Tool(
+            name="get_best_practices",
+            description="""获取 ModSDK 最佳实践规则。
+
+【规则分类】
+- python27_compatibility: Python 2.7 兼容性规则
+- client_server_separation: 客户端/服务端分离规则
+- performance: 性能优化规则
+- modsdk_38_migration: ModSDK 3.8 迁移规则
+- all: 所有规则（默认）""",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "category": {
+                        "type": "string",
+                        "description": "规则分类",
+                        "enum": ["all", "python27_compatibility", "client_server_separation", "performance", "modsdk_38_migration"],
+                        "default": "all"
+                    }
+                },
+            }
+        ),
+        Tool(
+            name="get_architecture_pattern",
+            description="""获取 ModSDK 核心架构模式的完整代码示例。
+
+当你不确定如何组合多个API实现一个完整功能时，先查架构模式。
+
+可用模式：跨端通信、组件使用、UI开发流程、实体创建与管理、定时任务、物品掉落与生成
+不传参数返回所有可用模式列表。""",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "pattern_name": {
+                        "type": "string",
+                        "description": "模式名称，如'跨端通信'、'UI开发流程'、'物品掉落'。支持模糊匹配。"
+                    }
+                },
+            }
+        ),
+        Tool(
+            name="browse_api_category",
+            description="""按分类浏览API/事件列表。当 search_api 搜索不到时，用此工具按分类逐步缩小范围。
+
+可用一级分类：实体、玩家、方块、世界、物品、特效、控制、模型、自定义UI、后处理、音效等。
+支持二级分类路径，如"实体/属性"、"世界/天气"、"玩家/背包"。
+不传 category 参数时返回完整分类目录树。""",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "category": {
+                        "type": "string",
+                        "description": "分类路径，如'实体/属性'、'世界/天气'、'后处理'。支持模糊匹配。不传则返回全部分类目录。"
+                    },
+                    "entry_type": {
+                        "type": "string",
+                        "description": "筛选类型",
+                        "enum": ["all", "api", "event"],
+                        "default": "all"
+                    },
+                },
+            }
+        )
+    ]
+
+    if _ENABLE_GENERATE:
+        tools.extend(_build_generate_tools())
+
+    return tools
+
+
+# ============================================================================
+# 高级物品工具 - 统一查找表与格式化
+# ============================================================================
+
+
+
+def _build_generate_tools() -> List[Tool]:
+    """构建 generate 系列工具（仅在 MODSDK_ENABLE_GENERATE_TOOLS=1 时启用）"""
+    return [
         # 代码生成工具
         Tool(
             name="generate_mod_project",
@@ -1372,197 +1581,8 @@ behavior_pack_<namespace>/spawn_rules/<namespace>_<entity_id>.json
                 "required": ["namespace", "item_id", "projectile_entity"]
             }
         ),
-        
-        # 代码审查工具
-        Tool(
-            name="review_code",
-            description="""审查显式传入的 Python/JSON 文本，检测确定性兼容问题、架构违规和带证据边界的工程风险。
-
-确定性阻断包括：UTF-8 声明、Python 2.7 语法、真实 u/U/ur/ru 前缀、精确导入白名单、跨端导入、动态导入、已证实事件字段，以及 JSON 解析、必需标识和版本—组件形状冲突。只有上下文明确的高频 print 刷屏会警告；其他工程范式交由 guidance 或人工验收。""",
-            inputSchema={
-                "type": "object",
-                "properties": {
-                    "code": {
-                        "type": "string",
-                        "description": "要审查的代码内容"
-                    },
-                    "filename": {
-                        "type": "string",
-                        "description": "文件名（可选，用于定位问题）",
-                        "default": "unknown.py"
-                    },
-                    "artifact_type": {
-                        "type": "string",
-                        "enum": ["auto", "python", "json", "json_ui"],
-                        "default": "auto"
-                    },
-                    "side": {
-                        "type": "string",
-                        "enum": ["auto", "client", "server", "common", "cross_side"],
-                        "default": "auto"
-                    },
-                    "target_version": {
-                        "type": "string",
-                        "default": "current"
-                    },
-                    "project_modules": {
-                        "type": "array",
-                        "items": {"type": "string"},
-                        "description": "显式声明的项目内顶级模块或完整模块名"
-                    }
-                },
-                "required": ["code"]
-            }
-        ),
-        
-        # ============================================================
-        # 知识库查询工具
-        # ============================================================
-        Tool(
-            name="search_components",
-            description="""搜索基岩版组件（物品/方块/实体/网易特有）。
-
-【支持的组件类型】
-- item: 物品组件（minecraft:food, minecraft:durability 等）
-- block: 方块组件（minecraft:friction, minecraft:geometry 等）
-- entity: 实体组件（minecraft:health, minecraft:movement 等）
-- netease: 网易特有组件（netease:customtips, netease:tier 等）
-- all: 搜索所有类型（默认）
-
-【使用场景】
-- 查询组件用法和属性
-- 确认组件是否存在
-- 获取组件配置示例""",
-            inputSchema={
-                "type": "object",
-                "properties": {
-                    "query": {
-                        "type": "string",
-                        "description": "搜索关键词（组件名或中文描述）"
-                    },
-                    "component_type": {
-                        "type": "string",
-                        "description": "组件类型",
-                        "enum": ["all", "item", "block", "entity", "netease"],
-                        "default": "all"
-                    }
-                },
-                "required": ["query"]
-            }
-        ),
-        Tool(
-            name="get_component_details",
-            description="""获取指定组件的详细信息。
-
-需要提供完整的组件 ID，如：
-- minecraft:food
-- minecraft:durability
-- netease:customtips
-- minecraft:behavior.melee_attack""",
-            inputSchema={
-                "type": "object",
-                "properties": {
-                    "component_id": {
-                        "type": "string",
-                        "description": "组件 ID（如 minecraft:food）"
-                    }
-                },
-                "required": ["component_id"]
-            }
-        ),
-        Tool(
-            name="list_components",
-            description="""列出所有可用的组件。
-
-【组件分类】
-- item: 物品组件（22个）
-- block: 方块组件（22个）
-- entity: 实体组件（19个）
-- netease_item: 网易物品组件（4个）
-- netease_block: 网易方块组件（7个）""",
-            inputSchema={
-                "type": "object",
-                "properties": {
-                    "component_type": {
-                        "type": "string",
-                        "description": "组件类型",
-                        "enum": ["item", "block", "entity", "netease_item", "netease_block", "all"],
-                        "default": "all"
-                    }
-                },
-            }
-        ),
-        Tool(
-            name="get_best_practices",
-            description="""获取 ModSDK 最佳实践规则。
-
-【规则分类】
-- python27_compatibility: Python 2.7 兼容性规则
-- client_server_separation: 客户端/服务端分离规则
-- performance: 性能优化规则
-- ui_development: JSON UI 开发规则
-- modsdk_38_migration: ModSDK 3.8 迁移规则
-- modsdk_39_migration: ModSDK 3.9 / BE 1.21.120 迁移规则
-- all: 所有规则（默认）""",
-            inputSchema={
-                "type": "object",
-                "properties": {
-                    "category": {
-                        "type": "string",
-                        "description": "规则分类",
-                        "enum": ["all", "python27_compatibility", "client_server_separation", "performance", "ui_development", "modsdk_38_migration", "modsdk_39_migration"],
-                        "default": "all"
-                    }
-                },
-            }
-        ),
-        Tool(
-            name="get_architecture_pattern",
-            description="""获取 ModSDK 核心架构模式的完整代码示例。
-
-当你不确定如何组合多个API实现一个完整功能时，先查架构模式。
-
-可用模式：跨端通信、组件使用、UI开发流程、实体创建与管理、定时任务、物品掉落与生成
-不传参数返回所有可用模式列表。""",
-            inputSchema={
-                "type": "object",
-                "properties": {
-                    "pattern_name": {
-                        "type": "string",
-                        "description": "模式名称，如'跨端通信'、'UI开发流程'、'物品掉落'。支持模糊匹配。"
-                    }
-                },
-            }
-        ),
-        Tool(
-            name="browse_api_category",
-            description="""按分类浏览API/事件列表。当 search_api 搜索不到时，用此工具按分类逐步缩小范围。
-
-可用一级分类：实体、玩家、方块、世界、物品、特效、控制、模型、自定义UI、后处理、音效等。
-支持二级分类路径，如"实体/属性"、"世界/天气"、"玩家/背包"。
-不传 category 参数时返回完整分类目录树。""",
-            inputSchema={
-                "type": "object",
-                "properties": {
-                    "category": {
-                        "type": "string",
-                        "description": "分类路径，如'实体/属性'、'世界/天气'、'后处理'。支持模糊匹配。不传则返回全部分类目录。"
-                    },
-                    "entry_type": {
-                        "type": "string",
-                        "description": "筛选类型",
-                        "enum": ["all", "api", "event"],
-                        "default": "all"
-                    },
-                },
-            }
-        )
     ]
 
-
-# ============================================================================
-# 高级物品工具 - 统一查找表与格式化
-# ============================================================================
 
 ADVANCED_ITEM_TOOLS = {
     "generate_sword_json":     ("sword",     "⚔️ 自定义剑类武器",  "自定义剑"),
@@ -1703,7 +1723,10 @@ async def call_tool(name: str, arguments: Dict[str, Any]) -> List[TextContent]:
 
         # 支持同名多端API（如 GetPos 有服务端和客户端两个版本）
         entries = detail if isinstance(detail, list) else [detail]
-        output = f"## `{api_name}` 详情\n\n"
+        if len(entries) > 1:
+            output = f"## `{api_name}` 详情\n\n"
+        else:
+            output = ""
 
         for entry in entries:
             side = entry.get("side", "")
@@ -1734,18 +1757,17 @@ async def call_tool(name: str, arguments: Dict[str, Any]) -> List[TextContent]:
                 if rtype:
                     output += f"- 返回: `{rtype}`{' — ' + rcomment if rcomment else ''}\n"
 
-            remarks = entry.get("remarks") or []
-            if remarks:
-                output += "- 备注:\n" + "\n".join("  - {}".format(item) for item in remarks) + "\n"
-            examples = entry.get("examples") or []
-            if examples:
-                output += "- 示例:\n" + "\n".join("```python\n{}\n```".format(item) for item in examples) + "\n"
-            if entry.get("source_url"):
-                output += "- 来源: {}\n".format(entry["source_url"])
-            if entry.get("source_last_modified"):
-                output += "- 来源更新时间: {}\n".format(entry["source_last_modified"])
-            if entry.get("state"):
-                output += "- 版本状态: {}\n".format(json.dumps(entry["state"], ensure_ascii=False, sort_keys=True))
+            # 备注
+            notes = entry.get('notes', [])
+            if notes:
+                output += "- 备注:\n"
+                for note in notes:
+                    output += f"  - {note}\n"
+
+            # 示例
+            example = entry.get('example', '')
+            if example:
+                output += "- 示例:\n```python\n{}\n```\n".format(example)
 
             output += "\n"
 

@@ -123,13 +123,6 @@ self.UnListenForEvent(
 - `PlayerAddCustomContainerItemServerEvent` / `PlayerAddCustomContainerItemClientEvent` - 自定义容器添加物品完成
 - `PlayerRemoveCustomContainerItemServerEvent` / `PlayerRemoveCustomContainerItemClientEvent` - 自定义容器移除物品完成
 
-### 3.8 引入、3.9 继续保留的钓鱼与物理事件
-- `PlayerStartFishingServerEvent` - 玩家开始钓鱼
-- `PlayerFishingServerEvent` - 玩家钓鱼成功收杆，掉落物生成前
-- `PlayerFishingAfterServerEvent` - 玩家钓鱼成功收杆，掉落物生成后
-- `PhysxTriggerServerEvent` / `PhysxTriggerClientEvent` - 自定义刚体触发器进入或离开
-- `PlayerDropItemServerEvent` - 丢弃物品
-
 ## 使用 MCP 工具
 
 当用户询问问题时，请使用以下工具：
