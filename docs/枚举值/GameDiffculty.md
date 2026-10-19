@@ -1,12 +1,16 @@
-# GameDiffculty
+---
+source_url: "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9E%9A%E4%B8%BE%E5%80%BC/GameDiffculty.html"
+last_modified: "Thu, 24 Sep 2026 12:01:38 GMT"
+synced_from: "NetEase developer official website"
+---
+
+#  GameDiffculty
 
 class in mod.common.minecraftEnum
 
 - 描述
 
-    描述游戏难度的枚举值
-
-
+描述游戏难度的枚举值
 
 ```python
 class GameDiffculty(object):
@@ -17,5 +21,4 @@ class GameDiffculty(object):
 	Count = 4		# 游戏难度种数
 	Unknown = 5		# 未知
 
-``` 
-
+```

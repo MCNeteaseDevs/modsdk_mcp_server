@@ -1,12 +1,16 @@
-# BrewingStandSlotType
+---
+source_url: "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9E%9A%E4%B8%BE%E5%80%BC/BrewingStandSlotType.html"
+last_modified: "Thu, 24 Sep 2026 12:01:38 GMT"
+synced_from: "NetEase developer official website"
+---
+
+#  BrewingStandSlotType
 
 class in mod.common.minecraftEnum
 
 - 描述
 
-    描述酿造台槽位
-
-
+描述酿造台槽位
 
 ```python
 class BrewingStandSlotType:
@@ -16,5 +20,4 @@ class BrewingStandSlotType:
 	SLOT_POTION3 = 3  		# 药水槽位3
 	SLOT_FUEL = 4 			# 燃料槽位
 
-``` 
-
+```

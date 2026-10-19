@@ -1,12 +1,16 @@
-# EntityComponentType
+---
+source_url: "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9E%9A%E4%B8%BE%E5%80%BC/EntityComponentType.html"
+last_modified: "Thu, 24 Sep 2026 12:01:38 GMT"
+synced_from: "NetEase developer official website"
+---
+
+#  EntityComponentType
 
 class in mod.common.minecraftEnum
 
 - 描述
 
-    原版实体组件类型,具体描述可参考[微软原版实体组件描述](https://learn.microsoft.com/en-us/minecraft/creator/reference/content/entityreference/examples/componentlist)
-
-
+原版实体组件类型,具体描述可参考[微软原版实体组件描述(opens new window)](https://learn.microsoft.com/en-us/minecraft/creator/reference/content/entityreference/examples/componentlist)
 
 ```python
 class EntityComponentType(object):
@@ -133,5 +137,4 @@ class EntityComponentType(object):
 	underwater_movement = 120
 	water_movement = 121
 
-``` 
-
+```

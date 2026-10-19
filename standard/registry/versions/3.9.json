@@ -13,9 +13,8 @@
     "3.9",
     "3.9.x",
     "V3.9",
-    "BE1.21.120",
-    "current",
-    "latest"
+    "BE1.21.120"
   ],
-  "source_boundary": "尚无可读的 ModSDK 3.9 Python 运行时源码复核"
+  "source_boundary": "尚无可读的 ModSDK 3.9 Python 运行时源码复核",
+  "docs_base_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI"
 }

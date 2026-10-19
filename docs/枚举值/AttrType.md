@@ -1,6 +1,6 @@
 ---
-source_url: "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9E%9A%E4%B8%BE%E5%80%BC/AttrType.html"
-last_modified: "Wed, 29 Apr 2026 14:40:01 GMT"
+source_url: "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9E%9A%E4%B8%BE%E5%80%BC/AttrType.html"
+last_modified: "Thu, 24 Sep 2026 12:01:38 GMT"
 synced_from: "NetEase developer official website"
 ---
 
@@ -8,17 +8,13 @@ synced_from: "NetEase developer official website"
 
 class in mod.common.minecraftEnum
 
--
-
-描述
+- 描述
 
 描述属性枚举值，用于设置与获取实体的引擎属性的当前值与最大值
 
--
+- 备注
 
-备注
-
-- ABSORPTION: 伤害吸收效果的量化值，详见wiki文档：伤害吸收  (opens new window)
+- ABSORPTION: 伤害吸收效果的量化值，详见wiki文档：[伤害吸收(opens new window)](https://zh.minecraft.wiki/w/%E4%BC%A4%E5%AE%B3%E5%90%B8%E6%94%B6)
 
 - 各类属性值一般通过entity的json配置，如`minecraft:knockback_resistance : {"value": 100, "max": 100}`
 

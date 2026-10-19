@@ -1,6 +1,6 @@
 ---
-source_url: "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9E%9A%E4%B8%BE%E5%80%BC/AttributeModifierOperation.html"
-last_modified: "Wed, 29 Apr 2026 14:40:01 GMT"
+source_url: "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9E%9A%E4%B8%BE%E5%80%BC/AttributeModifierOperation.html"
+last_modified: "Thu, 24 Sep 2026 12:01:38 GMT"
 synced_from: "NetEase developer official website"
 ---
 
@@ -8,9 +8,7 @@ synced_from: "NetEase developer official website"
 
 class in mod.common.minecraftEnum
 
--
-
-描述
+- 描述
 
 属性修饰符操作类型枚举
 

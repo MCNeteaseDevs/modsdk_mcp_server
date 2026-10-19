@@ -1,12 +1,16 @@
-# ItemAcquisitionMethod
+---
+source_url: "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9E%9A%E4%B8%BE%E5%80%BC/ItemAcquisitionMethod.html"
+last_modified: "Thu, 24 Sep 2026 12:01:38 GMT"
+synced_from: "NetEase developer official website"
+---
+
+#  ItemAcquisitionMethod
 
 class in mod.common.minecraftEnum
 
 - 描述
 
-    获得物品的方法枚举值
-
-
+获得物品的方法枚举值
 
 ```python
 class ItemAcquisitionMethod(object):
@@ -27,5 +31,4 @@ class ItemAcquisitionMethod(object):
     Container = 13              # 通过容器的方式获得，目前只支持锻造台。从客户端触发。
     Feeding = 14                # 被喂食。从服务端触发。
 
-``` 
-
+```

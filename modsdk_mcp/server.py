@@ -52,27 +52,32 @@ from .templates import (
     # 统一高级物品生成函数
     generate_typed_item_json,
 )
-from .validation import Artifact, ValidationReport, get_registered_detectors, validate_artifacts
+from .validation import CURRENT_TARGET_VERSION, Artifact, ValidationReport, get_registered_detectors, validate_artifacts
+from .standards import get_version_profile
+
+
+_TARGET_PROFILE = get_version_profile()
+MODSDK_LABEL = "ModSDK {} / BE {}".format(_TARGET_PROFILE["version"], _TARGET_PROFILE["bedrock_version"])
 
 
 # 创建 MCP Server 实例
 server = Server(
     "minecraft-modsdk",
-    instructions="""你是网易《我的世界》ModSDK 3.9（BE 1.21.120）开发助手。
+    instructions=f"""你是网易《我的世界》{MODSDK_LABEL} 开发助手，当前官方版本状态为 {_TARGET_PROFILE["status"]}。
 
 固定工作流：
 1. 先调用 get_development_guidance 获取与目标、端侧和产物匹配的规则。
 2. 涉及 API 或事件时，用 search_api/get_api_detail 查证名称、端侧、参数和备注；需要正文时再用 search_docs/get_document_section。
 3. 生成产物后读取随附校验报告；critical 必须修复后再输出，warning 说明证据边界和人工验证项。
 
-运行时只使用仓库内快照。3.9 官方文档已经同步，但尚无可读的 ModSDK 3.9 Python 运行时源码复核；不得猜测 API 签名或把工程经验表述为官方硬规则。"""
+运行时只使用仓库内快照。{_TARGET_PROFILE["source_boundary"]}。不得猜测 API 签名或把工程经验表述为官方硬规则。历史版本指导不切换当前 API 快照；版本迁移差异见 get_version_changes。"""
 )
 
 # Bedrock Wiki 路径（相对于项目根目录）
 _PROJECT_ROOT = Path(__file__).parent.parent
 BEDROCK_WIKI_PATH = Path(os.environ.get("MODSDK_BEDROCK_WIKI_PATH", str(_PROJECT_ROOT / "bedrock-wiki-wiki")))
 # Bedrock Wiki 最大支持版本（网易版兼容上限）
-BEDROCK_WIKI_MAX_VERSION = "1.21.120"
+BEDROCK_WIKI_MAX_VERSION = _TARGET_PROFILE["bedrock_version"]
 
 
 # ============================================================================
@@ -82,9 +87,9 @@ BEDROCK_WIKI_MAX_VERSION = "1.21.120"
 class BedrockWikiReader:
     """读取 bedrock-wiki-wiki/docs/ 下的 Markdown 文档，过滤版本 > MAX_VERSION 的内容"""
     
-    def __init__(self, wiki_path, max_version="1.21.120"):
+    def __init__(self, wiki_path, max_version=None):
         self.wiki_path = Path(wiki_path) / "docs"
-        self.max_version = max_version
+        self.max_version = max_version or BEDROCK_WIKI_MAX_VERSION
         self._topics = {}  # topic_key -> {name, files: [{path, content}]}
         self._load_topics()
     
@@ -233,6 +238,12 @@ async def list_resources() -> List[Resource]:
             description="规则来源、authority 与快照元数据",
             mimeType="application/json",
         ),
+        Resource(
+            uri="modsdk-guidance://changes",
+            name="ModSDK 官方版本完整差异",
+            description="官方 3.9 与 3.10 的完整接口、事件、文档差异及更新日志分类",
+            mimeType="application/json",
+        ),
     ])
     for rule in registry.rules:
         resources.append(Resource(
@@ -355,6 +366,8 @@ async def read_resource(uri) -> str:
                 "schema_version": registry.manifest["schema_version"],
                 "sources": list(registry.sources),
             }
+        elif key == "changes":
+            payload = registry.get_version_changes()
         elif key.startswith("rules/"):
             rule_id = key[len("rules/"):]
             try:
@@ -620,6 +633,21 @@ async def list_tools() -> List[Tool]:
             }
         ),
 
+        Tool(
+            name="get_version_changes",
+            description="查询官方 3.9→3.10 完整差异。区分更新日志明确新增、索引新增、契约调整、分类迁移及旧库清理；默认返回摘要，可筛选名称并分页。",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "section": {"type": "string", "enum": ["overview", "api", "event", "enum", "documents", "release_notes", "repository_reconciliation"], "default": "overview"},
+                    "operation": {"type": "string", "enum": ["all", "added", "removed", "changed"], "default": "all"},
+                    "query": {"type": "string", "default": ""},
+                    "offset": {"type": "integer", "minimum": 0, "default": 0},
+                    "limit": {"type": "integer", "minimum": 1, "maximum": 50, "default": 20},
+                    "include_details": {"type": "boolean", "default": False},
+                },
+            },
+        ),
         Tool(
             name="get_development_guidance",
             description="按目标、领域、端侧和 ModSDK 版本返回最相关的版本化开发规则与证据边界。",
@@ -1033,10 +1061,10 @@ behavior_pack_<namespace>/netease_recipes/<recipe_id>.json""",
         ),
         Tool(
             name="generate_entity_json",
-            description="""生成自定义实体 JSON 文件（行为包 + 资源包）。
+            description=f"""生成自定义实体 JSON 文件（行为包 + 资源包）。
 
 【适用于自定义生物/实体】
-遵循 NetEase ModSDK 3.9 / BE 1.21.120 官方文档快照
+遵循 NetEase {MODSDK_LABEL} 官方文档快照
 
 生成内容：
 - 行为包实体 JSON: behavior_pack_<namespace>/entities/<namespace>_<entity_id>.json
@@ -1502,7 +1530,8 @@ behavior_pack_<namespace>/spawn_rules/<namespace>_<entity_id>.json
 - performance: 性能优化规则
 - ui_development: JSON UI 开发规则
 - modsdk_38_migration: ModSDK 3.8 迁移规则
-- modsdk_39_migration: ModSDK 3.9 / BE 1.21.120 迁移规则
+- modsdk_39_migration: ModSDK 3.9 / BE 1.21.120 历史迁移规则
+- modsdk_310_migration: ModSDK 3.10 / BE 1.21.130 迁移规则
 - all: 所有规则（默认）""",
             inputSchema={
                 "type": "object",
@@ -1510,7 +1539,7 @@ behavior_pack_<namespace>/spawn_rules/<namespace>_<entity_id>.json
                     "category": {
                         "type": "string",
                         "description": "规则分类",
-                        "enum": ["all", "python27_compatibility", "client_server_separation", "performance", "ui_development", "modsdk_38_migration", "modsdk_39_migration"],
+                        "enum": ["all", "python27_compatibility", "client_server_separation", "performance", "ui_development", "modsdk_38_migration", "modsdk_39_migration", "modsdk_310_migration"],
                         "default": "all"
                     }
                 },
@@ -1709,6 +1738,7 @@ async def call_tool(name: str, arguments: Dict[str, Any]) -> List[TextContent]:
             side = entry.get("side", "")
             output += f"### {entry['name']} ({side})\n"
             output += f"- 类型: {entry['type']} | 分类: {entry.get('category', '无')}\n"
+            output += "- 类路径: `{}` | 文档版本: {}\n".format(entry["class_path"], entry.get("sdk_version", CURRENT_TARGET_VERSION))
             output += f"- 描述: {entry['desc']}\n"
 
             if entry.get('params'):
@@ -1891,6 +1921,43 @@ async def call_tool(name: str, arguments: Dict[str, Any]) -> List[TextContent]:
         docs = docs_reader.list_documents()
         return [TextContent(type="text", text=f"文档已重新加载。当前共有 {len(docs)} 个文档。")]
 
+    elif name == "get_version_changes":
+        from .standards import get_registry
+
+        changes = get_registry().get_version_changes()
+        section = arguments.get("section", "overview")
+        if section == "overview":
+            payload = {key: changes[key] for key in ("from_version", "to_version", "scope", "retrieved_at")}
+            for kind in ("api", "event", "enum", "documents"):
+                payload[kind] = {key: changes[kind][key] for key in ("before_count", "after_count")}
+                payload[kind].update({op: len(changes[kind][op]) for op in ("added", "removed", "changed")})
+            payload["release_notes"] = changes.get("release_notes", {}).get("summary", {})
+            payload["caveats"] = changes.get("caveats", [])
+        elif section == "repository_reconciliation":
+            payload = changes.get(section, {})
+        else:
+            operation = arguments.get("operation", "all")
+            offset, limit = arguments.get("offset", 0), arguments.get("limit", 20)
+            if section not in {"api", "event", "enum", "documents", "release_notes"} or operation not in {"all", "added", "removed", "changed"}:
+                return _blocked_report("VERSION_CHANGES_FILTER_INVALID", "未知差异分类或操作类型")
+            if type(offset) is not int or type(limit) is not int or offset < 0 or not 1 <= limit <= 50:
+                return _blocked_report("VERSION_CHANGES_PAGE_INVALID", "offset 必须非负，limit 必须为 1 到 50")
+            if section == "release_notes":
+                records = changes.get(section, {}).get("entries", [])
+                if operation != "all":
+                    accepted = {"added": {"新增"}, "removed": {"删除", "废弃"}, "changed": {"调整"}}[operation]
+                    records = [entry for entry in records if entry["operation"] in accepted]
+            else:
+                records = [dict(entry, change=op) for op in ("added", "removed", "changed") if operation in {"all", op} for entry in changes[section][op]]
+            query = str(arguments.get("query", "")).casefold()
+            records = [record for record in records if not query or query in json.dumps(record, ensure_ascii=False).casefold()]
+            selected = records[offset:offset + limit]
+            if not arguments.get("include_details", False):
+                fields = {"change", "name", "side", "path", "changed_fields", "source_url", "before_url", "after_url", "before_value", "after_value", "operation", "comment", "declared_operation", "historical_repository_entry"}
+                selected = [{key: value for key, value in entry.items() if key in fields} for entry in selected]
+            payload = {"section": section, "total": len(records), "offset": offset, "entries": selected, "next_offset": offset + limit if offset + limit < len(records) else None}
+        return [TextContent(type="text", text=json.dumps(payload, ensure_ascii=False, indent=2))]
+
     elif name == "get_development_guidance":
         from .guidance import render_guidance_json
 
@@ -1945,7 +2012,7 @@ async def call_tool(name: str, arguments: Dict[str, Any]) -> List[TextContent]:
                 filename=filename,
                 artifact_type="python",
                 side=side,
-                target_version="3.9",
+                target_version=CURRENT_TARGET_VERSION,
                 project_modules=(project_root, mod_id),
             ))
         return _validated_generated_response(output, artifacts)
@@ -1956,7 +2023,7 @@ async def call_tool(name: str, arguments: Dict[str, Any]) -> List[TextContent]:
             class_name=arguments.get("class_name")
         )
         output = f"## 服务端系统代码\n\n```python\n{code}\n```"
-        return _validated_generated_response(output, [Artifact(code, "server.py", "python", "server", "3.9")])
+        return _validated_generated_response(output, [Artifact(code, "server.py", "python", "server", CURRENT_TARGET_VERSION)])
     
     elif name == "generate_client_system":
         code = generate_client_system(
@@ -1964,7 +2031,7 @@ async def call_tool(name: str, arguments: Dict[str, Any]) -> List[TextContent]:
             class_name=arguments.get("class_name")
         )
         output = f"## 客户端系统代码\n\n```python\n{code}\n```"
-        return _validated_generated_response(output, [Artifact(code, "client.py", "python", "client", "3.9")])
+        return _validated_generated_response(output, [Artifact(code, "client.py", "python", "client", CURRENT_TARGET_VERSION)])
     
     elif name == "generate_event_listener":
         event_name = arguments.get("event_name")
@@ -2009,6 +2076,9 @@ async def call_tool(name: str, arguments: Dict[str, Any]) -> List[TextContent]:
                 )
             entry = entries[0]
             selected_side = _entry_side(entry)
+            if selected_side not in {"server", "client"}:
+                return _blocked_report("OFFICIAL_EVENT_SIDE_UNSUPPORTED", "该事件属于独立服务器环境，请按官方环境接入", {"side": entry.get("side")})
+            event_name = entry["name"]
             params = {
                 param.get("param_name", ""): "{}{}".format(
                     param.get("param_type", ""),
@@ -2027,14 +2097,14 @@ async def call_tool(name: str, arguments: Dict[str, Any]) -> List[TextContent]:
             side=selected_side,
         )
         output = f"## 事件监听器代码\n\n```python\n{code}\n```"
-        return _validated_generated_response(output, [Artifact(code, "event_listener.py", "python", selected_side, "3.9")])
+        return _validated_generated_response(output, [Artifact(code, "event_listener.py", "python", selected_side, CURRENT_TARGET_VERSION)])
     
     elif name == "generate_custom_command":
         code = generate_custom_command(
             command_name=arguments.get("command_name")
         )
         output = f"## 自定义命令代码\n\n```python\n{code}\n```"
-        return _validated_generated_response(output, [Artifact(code, "custom_command.py", "python", "server", "3.9")])
+        return _validated_generated_response(output, [Artifact(code, "custom_command.py", "python", "server", CURRENT_TARGET_VERSION)])
     
     elif name == "generate_custom_item":
         code = generate_custom_item(
@@ -2044,7 +2114,7 @@ async def call_tool(name: str, arguments: Dict[str, Any]) -> List[TextContent]:
             max_stack=arguments.get("max_stack", 64)
         )
         output = f"## 自定义物品代码\n\n```python\n{code}\n```"
-        return _validated_generated_response(output, [Artifact(code, "custom_item.py", "python", "server", "3.9")])
+        return _validated_generated_response(output, [Artifact(code, "custom_item.py", "python", "server", CURRENT_TARGET_VERSION)])
     
     elif name == "generate_custom_block":
         code = generate_custom_block(
@@ -2054,7 +2124,7 @@ async def call_tool(name: str, arguments: Dict[str, Any]) -> List[TextContent]:
             explosion_resistance=arguments.get("explosion_resistance", 1.0)
         )
         output = f"## 自定义方块代码\n\n```python\n{code}\n```"
-        return _validated_generated_response(output, [Artifact(code, "custom_block.py", "python", "server", "3.9")])
+        return _validated_generated_response(output, [Artifact(code, "custom_block.py", "python", "server", CURRENT_TARGET_VERSION)])
     
     # ============================================================
     # Bedrock JSON 生成工具处理
@@ -2084,8 +2154,8 @@ async def call_tool(name: str, arguments: Dict[str, Any]) -> List[TextContent]:
         output += f"### 本地化条目 (texts/zh_CN.lang)\n\n```\nitem.{namespace}:{item_id}.name=物品显示名称\n```"
 
         artifacts = [
-            Artifact(result["behavior"], "{}_{}.json".format(namespace, item_id), "item", "common", "3.9"),
-            Artifact(result["resource"], "{}_{}.resource.json".format(namespace, item_id), "item", "client", "3.9"),
+            Artifact(result["behavior"], "{}_{}.json".format(namespace, item_id), "item", "common", CURRENT_TARGET_VERSION),
+            Artifact(result["resource"], "{}_{}.resource.json".format(namespace, item_id), "item", "client", CURRENT_TARGET_VERSION),
         ]
         return _validated_generated_response(output, artifacts)
     
@@ -2116,7 +2186,7 @@ async def call_tool(name: str, arguments: Dict[str, Any]) -> List[TextContent]:
             "{}_{}.json".format(namespace, block_id),
             "block",
             "common",
-            "3.9",
+            CURRENT_TARGET_VERSION,
             format_profile,
         )
         return _validated_generated_response(output, [artifact])
@@ -2163,7 +2233,7 @@ async def call_tool(name: str, arguments: Dict[str, Any]) -> List[TextContent]:
         
         return _validated_generated_response(
             output,
-            [Artifact(result, "{}.json".format(recipe_id), "json", "common", "3.9")],
+            [Artifact(result, "{}.json".format(recipe_id), "json", "common", CURRENT_TARGET_VERSION)],
         )
     
     elif name == "generate_entity_json":
@@ -2192,8 +2262,8 @@ async def call_tool(name: str, arguments: Dict[str, Any]) -> List[TextContent]:
         output += f"### 本地化条目 (texts/zh_CN.lang)\n\n```\nentity.{namespace}:{entity_id}.name=实体显示名称\n```"
         
         artifacts = [
-            Artifact(result["behavior"], "{}_{}.entity.json".format(namespace, entity_id), "json", "common", "3.9"),
-            Artifact(result["resource"], "{}_{}.client_entity.json".format(namespace, entity_id), "json", "client", "3.9"),
+            Artifact(result["behavior"], "{}_{}.entity.json".format(namespace, entity_id), "json", "common", CURRENT_TARGET_VERSION),
+            Artifact(result["resource"], "{}_{}.client_entity.json".format(namespace, entity_id), "json", "client", CURRENT_TARGET_VERSION),
         ]
         return _validated_generated_response(output, artifacts)
     
@@ -2208,7 +2278,7 @@ async def call_tool(name: str, arguments: Dict[str, Any]) -> List[TextContent]:
         
         return _validated_generated_response(
             output,
-            [Artifact(result, "loot_table.json", "json", "common", "3.9")],
+            [Artifact(result, "loot_table.json", "json", "common", CURRENT_TARGET_VERSION)],
         )
     
     elif name == "generate_spawn_rules_json":
@@ -2231,7 +2301,7 @@ async def call_tool(name: str, arguments: Dict[str, Any]) -> List[TextContent]:
         
         return _validated_generated_response(
             output,
-            [Artifact(result, "{}_{}.spawn_rules.json".format(namespace, entity_id), "json", "server", "3.9")],
+            [Artifact(result, "{}_{}.spawn_rules.json".format(namespace, entity_id), "json", "server", CURRENT_TARGET_VERSION)],
         )
     
     # ============================================================
@@ -2251,8 +2321,8 @@ async def call_tool(name: str, arguments: Dict[str, Any]) -> List[TextContent]:
             default_lang_name = f"自定义{slot_name}"
         output = _format_item_result(result, namespace, item_id, display_label, default_lang_name)
         artifacts = [
-            Artifact(result["behavior"], "{}_{}.json".format(namespace, item_id), "item", "common", "3.9"),
-            Artifact(result["resource"], "{}_{}.resource.json".format(namespace, item_id), "item", "client", "3.9"),
+            Artifact(result["behavior"], "{}_{}.json".format(namespace, item_id), "item", "common", CURRENT_TARGET_VERSION),
+            Artifact(result["resource"], "{}_{}.resource.json".format(namespace, item_id), "item", "client", CURRENT_TARGET_VERSION),
         ]
         return _validated_generated_response(output, artifacts)
     
@@ -2424,10 +2494,10 @@ async def call_tool(name: str, arguments: Dict[str, Any]) -> List[TextContent]:
             output += f"### {cat_data.get('name', cat_id)}\n\n"
             if cat_data.get("projection") == "standard_registry":
                 output += "- 规范来源：`standard/registry`（目标版本 {}）\n".format(
-                    cat_data.get("target_version", "3.9")
+                    cat_data.get("target_version", CURRENT_TARGET_VERSION)
                 )
             elif cat_data.get("projection") == "legacy_3.8_compatibility":
-                output += "- 兼容边界：仅保留 3.8 历史迁移入口；当前默认目标仍为 3.9。\n"
+                output += "- 兼容边界：保留 3.8 历史迁移入口；当前默认目标为 {}。\n".format(CURRENT_TARGET_VERSION)
             if cat_data.get("source_boundary"):
                 output += "- 证据边界：{}\n".format(cat_data["source_boundary"])
             for rule in cat_data.get('rules', []):
@@ -2443,7 +2513,7 @@ async def call_tool(name: str, arguments: Dict[str, Any]) -> List[TextContent]:
         if not pattern_files:
             return [TextContent(type="text", text=result)]
         artifacts = [
-            Artifact(code, filename, "python", "auto", "3.9")
+            Artifact(code, filename, "python", "auto", CURRENT_TARGET_VERSION)
             for filename, code in pattern_files.items()
         ]
         return _validated_generated_response(result, artifacts)
@@ -2458,7 +2528,7 @@ def _perform_code_review(code: str, filename: str) -> str:
 
     artifact_type = "json" if filename.lower().endswith(".json") else "python"
     report = validate_artifacts(
-        [Artifact(code, filename, artifact_type, "auto", "3.9")],
+        [Artifact(code, filename, artifact_type, "auto", CURRENT_TARGET_VERSION)],
         whitelist=get_python_module_whitelist(),
     )
     return _render_validation_report(report)
@@ -2528,7 +2598,7 @@ async def get_prompt(name: str, arguments: Optional[Dict[str, str]]) -> GetPromp
                     role="user",
                     content=TextContent(
                         type="text",
-                        text="""以 ModSDK 3.9 / BE 1.21.120 为目标处理开发请求：
+                        text=f"""以 {MODSDK_LABEL} 为目标处理开发请求（当前状态：{_TARGET_PROFILE["status"]}）：
 1. 调用 get_development_guidance 取得目标、端侧和产物规则。
 2. 涉及 API/事件时用 search_api → get_api_detail 查证；需要正文再用 search_docs/get_document_section。
 3. 生成代码或 JSON，并读取随附校验报告。

@@ -9,7 +9,7 @@
 - 资源包配置 (item_texture.json / blocks.json / texts/)
 - 行为包与资源包的 manifest.json
 
-目标版本为 ModSDK 3.9 / BE 1.21.120。先调用 `get_development_guidance` 获取内容类型和格式档规则；本文件示例不能覆盖同版本官方详情。
+目标版本为 ModSDK 3.10 Beta / BE 1.21.130。先调用 `get_development_guidance` 获取内容类型和格式档规则；本文件示例不能覆盖同版本官方详情。
 
 ## 核心知识
 

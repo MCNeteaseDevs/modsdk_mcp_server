@@ -1,19 +1,23 @@
 {
   "schema_version": "1.0",
-  "registry_version": "2026.08.17",
-  "default_version": "3.9",
+  "registry_version": "2026.10.19",
+  "default_version": "3.10",
   "source_file": "sources.json",
   "version_files": {
-    "3.9": "versions/3.9.json"
+    "3.9": "versions/3.9.json",
+    "3.10": "versions/3.10.json"
   },
   "rule_files": [
     "rules/python.json",
     "rules/architecture.json",
     "rules/json-content.json",
-    "rules/json-ui.json"
+    "rules/json-ui.json",
+    "rules/modsdk-3.10.json"
   ],
   "snapshot_files": {
-    "python_module_whitelist": "snapshots/python-module-whitelist.json"
+    "python_module_whitelist": "snapshots/python-module-whitelist.json",
+    "version_changes": "snapshots/modsdk-3.9-to-3.10.json",
+    "official_docs": "snapshots/official-docs.json"
   },
   "required_rule_fields": [
     "id",
@@ -50,7 +54,8 @@
     "released_at",
     "runtime_evidence_status",
     "source_ids",
-    "aliases"
+    "aliases",
+    "docs_base_url"
   ],
   "domains": [
     "python",

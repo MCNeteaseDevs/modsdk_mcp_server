@@ -1,12 +1,16 @@
-# OptionId
+---
+source_url: "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9E%9A%E4%B8%BE%E5%80%BC/OptionId.html"
+last_modified: "Thu, 24 Sep 2026 12:01:38 GMT"
+synced_from: "NetEase developer official website"
+---
+
+#  OptionId
 
 class in mod.common.minecraftEnum
 
 - 描述
 
-    可设置的枚举值
-
-
+可设置的枚举值
 
 ```python
 class OptionId(object):
@@ -27,5 +31,4 @@ class OptionId(object):
 	RENDER_CLOUDS = "RENDER_CLOUDS"					#渲染云
 	FORCE_SPRINT = "FORCE_SPRINT"					#强制疾跑
 
-``` 
-
+```

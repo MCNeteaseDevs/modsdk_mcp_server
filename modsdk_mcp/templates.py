@@ -1386,7 +1386,7 @@ SPAWN_RULES_JSON_TEMPLATE = '''{{
 class EntityJsonGenerator:
     """实体 JSON 生成器
     
-    面向 ModSDK 3.9 / BE 1.21.120 的官方基础结构：
+    面向当前注册版本 ModSDK 官方文档的基础结构：
     - format_version: 1.10.0
     - runtime_identifier: 基于哪个原版实体构建
     - 支持 component_groups 和 events

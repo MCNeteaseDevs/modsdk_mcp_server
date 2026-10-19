@@ -1,12 +1,16 @@
-# GamepadKeyType
+---
+source_url: "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9E%9A%E4%B8%BE%E5%80%BC/GamepadKeyType.html"
+last_modified: "Thu, 24 Sep 2026 12:01:38 GMT"
+synced_from: "NetEase developer official website"
+---
+
+#  GamepadKeyType
 
 class in mod.common.minecraftEnum
 
 - 描述
 
-    描述游戏手柄的按键枚举值
-
-
+描述游戏手柄的按键枚举值
 
 ```python
 class GamepadKeyType:
@@ -34,5 +38,4 @@ class GamepadKeyType:
 	TRIGGER_LEFT = 0 | TRIGGER  	# 左扳机
 	TRIGGER_RIGHT = 1 | TRIGGER 	# 右扳机
 
-``` 
-
+```

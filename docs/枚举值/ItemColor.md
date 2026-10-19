@@ -1,12 +1,16 @@
-# ItemColor
+---
+source_url: "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9E%9A%E4%B8%BE%E5%80%BC/ItemColor.html"
+last_modified: "Thu, 24 Sep 2026 12:01:38 GMT"
+synced_from: "NetEase developer official website"
+---
+
+#  ItemColor
 
 class in mod.common.minecraftEnum
 
 - 描述
 
-    物品的颜色枚举值
-
-
+物品的颜色枚举值
 
 ```python
 class ItemColor(object):
@@ -27,5 +31,4 @@ class ItemColor(object):
 	Orange = 14			# 橙色
 	White = 15			# 白色
 
-``` 
-
+```

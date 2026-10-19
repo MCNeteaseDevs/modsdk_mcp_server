@@ -2,7 +2,7 @@
 
 ## 概述
 
-这是一个面向网易《我的世界》ModSDK 3.9 / BE 1.21.120 的 JSON 内容生成说明。开始前先调用 `get_development_guidance`，生成后以工具返回的校验报告为准。
+这是一个面向网易《我的世界》ModSDK 3.10 Beta / BE 1.21.130 的 JSON 内容生成说明。开始前先调用 `get_development_guidance`，生成后以工具返回的校验报告为准。
 
 ## 核心能力
 
@@ -179,12 +179,12 @@ resource_pack/
 1. **Python 2.7 兼容性**：ModSDK 使用 Python 2.7，代码不能使用 f-string、type hints 等
 2. **runtime_identifier**：只在相应实体格式和目标要求时设置，并通过文档查证
 3. **版本—结构一致**：不要把现代组件写入旧版方块格式，也不要把旧对象形状写入标量档
-4. **命名空间**：3.9 自定义维度的 `biome_type` 必须使用完整 `namespace:id`
-5. **证据边界**：3.9 已同步官方文档，但尚无可读的 Python 运行时源码复核
+4. **命名空间**：3.9 起自定义维度的 `biome_type` 必须使用完整 `namespace:id`
+5. **证据边界**：3.10 已同步官方 Beta 文档，尚无可读的 Python 运行时源码复核，也没有本次游戏实机验收
 
 ## 版本信息
 
 - MCP Server 版本: 1.0.0
-- 当前 ModSDK 版本: 3.9
-- 对应基岩版版本: 1.21.120
+- 当前 ModSDK 版本: 3.10（Beta）
+- 对应基岩版版本: 1.21.130
 - MCP 工具总数: 38 个

@@ -787,7 +787,8 @@ _BEST_PRACTICE_CATEGORY_SPECS = {
         "domains": ("json_ui",),
     },
     "modsdk_39_migration": {
-        "name": "ModSDK 3.9 / BE 1.21.120 迁移",
+        "name": "ModSDK 3.9 / BE 1.21.120 历史迁移",
+        "target_version": "3.9",
         "rule_ids": (
             "ARCH-API-001",
             "JSON-BIOME-001",
@@ -799,6 +800,17 @@ _BEST_PRACTICE_CATEGORY_SPECS = {
             "PY-EVENT-001",
             "PY-IMPORT-001",
             "UI-SCROLL-001",
+        ),
+    },
+    "modsdk_310_migration": {
+        "name": "ModSDK 3.10 / BE 1.21.130 迁移",
+        "target_version": "3.10",
+        "rule_ids": (
+            "SDK-RELEASE-310", "PHYSX-EXPERIMENTAL-001", "PHYSX-SHAPE-001",
+            "PHYSX-FORCE-001", "PHYSX-JOINT-001", "PHYSX-SIMULATION-001",
+            "CAMERA-PROJECTION-001", "ROOM-METADATA-001", "ROOM-HOST-001",
+            "TAG-LOOKUP-001", "RENDER-ATLAS-001", "RENDER-CLOUD-001",
+            "MODEL-DIMENSION-001", "ENCHANT-ENUM-001",
         ),
     },
 }
@@ -836,8 +848,10 @@ def _project_best_practice_category(category: str) -> Dict:
     if spec is None:
         return {}
 
+    target_version = spec.get("target_version", "current")
+    profile = get_version_profile(target_version)
     rules = list_standard_rules(
-        version="3.9",
+        version=profile["version"],
         domains=spec.get("domains"),
         rule_ids=spec.get("rule_ids"),
     )
@@ -846,11 +860,9 @@ def _project_best_practice_category(category: str) -> Dict:
         "rules": [_format_registry_practice(rule) for rule in rules],
         "rule_ids": [rule["id"] for rule in rules],
         "projection": "standard_registry",
-        "target_version": "3.9",
+        "target_version": profile["version"],
     }
-    if category == "modsdk_39_migration":
-        profile = get_version_profile("3.9")
-        projected["source_boundary"] = profile["source_boundary"]
+    projected["source_boundary"] = profile["source_boundary"]
     return projected
 
 
@@ -863,6 +875,7 @@ def get_best_practices(category: str = "all") -> Dict:
         "ui_development",
         "modsdk_38_migration",
         "modsdk_39_migration",
+        "modsdk_310_migration",
     )
     if category == "all":
         return {name: _project_best_practice_category(name) for name in categories}

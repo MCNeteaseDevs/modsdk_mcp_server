@@ -70,7 +70,6 @@ RuntimeEvidenceStatus = Literal["reviewed", "partial", "unreviewed"]
 
 _MODULE_NAME_RE = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*(?:\.[A-Za-z_][A-Za-z0-9_]*)*$")
 _RULE_ID_PATTERN = r"^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$"
-_UNREVIEWED_39_BOUNDARY = "尚无可读的 ModSDK 3.9 Python 运行时源码复核"
 _LOCAL_PATH_RE = re.compile(
     r"(?:(?<![A-Za-z0-9])[A-Za-z]:[\\/][^\s\"'<>]+|\\\\[^\\/\s]+[\\/][^\s\"'<>]+|(?<![A-Za-z0-9:/])/(?:home|Users)/[^\s\"'<>]+)",
     re.IGNORECASE,
@@ -177,6 +176,10 @@ class VersionProfile(_StrictRegistryModel):
     bedrock_version: str = Field(min_length=1)
     status: VersionStatus
     released_at: str = Field(min_length=1)
+    docs_base_url: str = Field(min_length=1)
+    scheduled_stable_at: Optional[str] = None
+    scheduled_rollout_at: Optional[str] = None
+    previous_version: Optional[str] = None
     runtime_evidence_status: RuntimeEvidenceStatus
     source_ids: Tuple[str, ...]
     aliases: Tuple[str, ...]
@@ -199,10 +202,11 @@ class VersionProfile(_StrictRegistryModel):
         return value
 
     @model_validator(mode="after")
-    def _require_unreviewed_39_boundary(self) -> "VersionProfile":
-        if self.version == "3.9" and self.runtime_evidence_status == "unreviewed":
-            if self.source_boundary != _UNREVIEWED_39_BOUNDARY:
-                raise ValueError("ModSDK 3.9 requires the neutral unreviewed runtime boundary")
+    def _require_runtime_boundary(self) -> "VersionProfile":
+        if self.runtime_evidence_status == "unreviewed" and not self.source_boundary:
+            raise ValueError("未经运行时复核的版本必须声明证据边界")
+        if not re.fullmatch(r"https://mc\.163\.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI(?:-beta)?", self.docs_base_url):
+            raise ValueError("版本文档必须指向网易官方稳定版或 Beta 版频道")
         return self
 
 
@@ -524,8 +528,8 @@ class StandardsRegistry:
         ):
             errors.append("Python module whitelist contains an invalid module path")
             return
-        if snapshot.get("module_count") != len(modules) or len(modules) != 456:
-            errors.append("Python module whitelist must contain exactly 456 modules")
+        if snapshot.get("module_count") != len(modules) or not modules:
+            errors.append("Python module whitelist count must match its non-empty snapshot")
         if len(modules) != len(set(modules)):
             errors.append("Python module whitelist contains duplicates")
         entries = snapshot.get("entries")
@@ -610,12 +614,18 @@ class StandardsRegistry:
         except KeyError as exc:
             raise KeyError("Unknown standards source: {}".format(source_id)) from exc
 
-    def get_version_profile(self, version: str = "3.9") -> Dict[str, Any]:
+    def get_version_profile(self, version: str = "current") -> Dict[str, Any]:
         key = str(version).strip().casefold()
+        if key in {"current", "latest"}:
+            key = self._manifest["default_version"].casefold()
         try:
             return _model_dict(self._versions_by_name[key])
         except KeyError as exc:
             raise KeyError("Unknown ModSDK version: {}".format(version)) from exc
+
+    def get_version_changes(self) -> Dict[str, Any]:
+        """读取完整官方版本比较快照，运行时不重新抓取或推断版本变更。"""
+        return self._read_json(self._manifest["snapshot_files"]["version_changes"])
 
     def get_rule(self, rule_id: str) -> Dict[str, Any]:
         try:
@@ -759,7 +769,7 @@ def get_standard_rule(rule_id: str) -> Dict[str, Any]:
     return get_registry().get_rule(rule_id)
 
 
-def get_version_profile(version: str = "3.9") -> Dict[str, Any]:
+def get_version_profile(version: str = "current") -> Dict[str, Any]:
     return get_registry().get_version_profile(version)
 
 

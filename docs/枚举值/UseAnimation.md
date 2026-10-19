@@ -1,12 +1,16 @@
-# UseAnimation
+---
+source_url: "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9E%9A%E4%B8%BE%E5%80%BC/UseAnimation.html"
+last_modified: "Thu, 24 Sep 2026 12:01:38 GMT"
+synced_from: "NetEase developer official website"
+---
+
+#  UseAnimation
 
 class in mod.common.minecraftEnum
 
 - 描述
 
-    使用物品时动画枚举值
-
-
+使用物品时动画枚举值
 
 ```python
 class UseAnimation(object):
@@ -22,5 +26,4 @@ class UseAnimation(object):
 	GoatHorn = 11		# 山羊号角
 	Brush = 12			# 刷
 
-``` 
-
+```
