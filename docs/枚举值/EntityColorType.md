@@ -1,12 +1,16 @@
-# EntityColorType
+---
+source_url: "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9E%9A%E4%B8%BE%E5%80%BC/EntityColorType.html"
+last_modified: "Wed, 28 Oct 2026 10:10:37 GMT"
+synced_from: "NetEase developer official website"
+---
+
+#  EntityColorType
 
 class in mod.common.minecraftEnum
 
 - 描述
 
-    描述实体的颜色种类，截止至网易2.9版本，该枚举值应用于羊和热带鱼的颜色
-
-
+描述实体的颜色种类，截止至网易2.9版本，该枚举值应用于羊和热带鱼的颜色
 
 ```python
 class EntityColorType:
@@ -27,5 +31,4 @@ class EntityColorType:
 	Red = 14  		# 红色
 	Black = 15  	# 黑色
 
-``` 
-
+```

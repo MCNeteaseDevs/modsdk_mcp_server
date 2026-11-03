@@ -1,12 +1,16 @@
-# PxEventMask
+---
+source_url: "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9E%9A%E4%B8%BE%E5%80%BC/PxEventMask.html"
+last_modified: "Wed, 28 Oct 2026 10:10:37 GMT"
+synced_from: "NetEase developer official website"
+---
+
+#  PxEventMask
 
 class in mod.common.minecraftEnum
 
 - 描述
 
-    碰撞事件枚举
-
-
+碰撞事件枚举
 
 ```python
 class PxEventMask(object):
@@ -17,5 +21,4 @@ class PxEventMask(object):
     Server = 0x8        # 需要服务器事件
     Client = 0x10       # 需要客户端事件
 
-``` 
-
+```

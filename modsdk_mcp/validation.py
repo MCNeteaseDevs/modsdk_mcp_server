@@ -13,7 +13,10 @@ from dataclasses import dataclass, field
 from typing import Any, Callable, Dict, FrozenSet, Iterable, List, Mapping, Optional, Sequence, Tuple, Union
 
 
-CURRENT_TARGET_VERSION = "3.9"
+from .standards import get_version_profile
+
+
+CURRENT_TARGET_VERSION = get_version_profile()["version"]
 SEVERITY_CRITICAL = "critical"
 SEVERITY_ERROR = "error"
 SEVERITY_WARNING = "warning"
@@ -534,8 +537,6 @@ def _dotted_name(node: ast.AST) -> str:
 def _constant_string(node: Optional[ast.AST]) -> Optional[str]:
     if isinstance(node, ast.Constant) and isinstance(node.value, str):
         return node.value
-    if isinstance(node, ast.Str):
-        return node.s
     return None
 
 
@@ -1419,7 +1420,7 @@ def _detect_biome_namespace(artifact: Artifact, context: ValidationContext) -> I
         issues.append(_issue(
             artifact,
             "JSON_BIOME_TYPE_NAMESPACE",
-            "ModSDK 3.9 的 biome_type 必须使用完整 namespace:id：{!r}".format(value),
+            "ModSDK 3.9 起 biome_type 必须使用完整 namespace:id：{!r}".format(value),
             "json.biome_namespace",
             line=line,
             column=column,

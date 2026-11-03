@@ -1,27 +1,30 @@
 ---
-sidebarDepth: 1
+source_url: "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%8E%A5%E5%8F%A3/%E9%80%9A%E7%94%A8/System.html"
+last_modified: "Wed, 28 Oct 2026 10:10:37 GMT"
+synced_from: "NetEase developer official website"
 ---
-# System
 
-## GetClientSystemCls
+#  System
 
-<span style="display:inline;color:#7575f9">客户端</span>
+##  GetClientSystemCls
+
+客户端
 
 method in mod.client.extraClientApi
 
 - 描述
 
-    用于获取客户端system基类。实现新的system时，需要继承该接口返回的类
+用于获取客户端system基类。实现新的system时，需要继承该接口返回的类
 
 - 参数
 
-    无
+无
 
 - 返回值
 
-    | <div style="width: 4em">数据类型</div> | 说明 |
-    | :--- | :--- |
-    | type(ClientSystem) | 客户端系统类 |
+| 数据类型 | 说明 |
+| --- | --- |
+| type(ClientSystem) | 客户端系统类 |
 
 - 示例
 
@@ -31,29 +34,28 @@ ClientSystem = clientApi.GetClientSystemCls()
 class FpsClientSystem(ClientSystem):
     def __init__(self, namespace, systemName):
         ClientSystem.__init__(self, namespace, systemName)
+
 ```
 
+##  GetServerSystemCls
 
-
-## GetServerSystemCls
-
-<span style="display:inline;color:#ff5555">服务端</span>
+服务端
 
 method in mod.server.extraServerApi
 
 - 描述
 
-    用于获取服务器system基类。实现新的system时，需要继承该接口返回的类
+用于获取服务器system基类。实现新的system时，需要继承该接口返回的类
 
 - 参数
 
-    无
+无
 
 - 返回值
 
-    | <div style="width: 4em">数据类型</div> | 说明 |
-    | :--- | :--- |
-    | type(ServerSystem) | 服务端系统类 |
+| 数据类型 | 说明 |
+| --- | --- |
+| type(ServerSystem) | 服务端系统类 |
 
 - 示例
 
@@ -63,66 +65,62 @@ ServerSystem = serverApi.GetServerSystemCls()
 class FpsServerSystem(ServerSystem):
     def __init__(self, namespace, systemName):
         ServerSystem.__init__(self, namespace, systemName)
+
 ```
 
+##  GetSystem
 
+服务端客户端
 
-## GetSystem
+###  服务端接口
 
-<span style="display:inline;color:#ff5555">服务端</span><span style="display:inline;color:#7575f9">客户端</span>
-
-### 服务端接口
-
-<span id="s0"></span>
 method in mod.server.extraServerApi
 
 - 描述
 
-    获取已注册的系统
+获取已注册的系统
 
 - 参数
 
-    | 参数名 | <div style="width: 4em">数据类型</div> | 说明 |
-    | :--- | :--- | :--- |
-    | nameSpace | str | 命名空间，建议为mod名字 |
-    | systemName | str | 系统名称，自定义名称，可以使用英文、拼音和下划线，建议尽量个性化 |
+| 参数名 | 数据类型 | 说明 |
+| --- | --- | --- |
+| nameSpace | str | 命名空间，建议为mod名字 |
+| systemName | str | 系统名称，自定义名称，可以使用英文、拼音和下划线，建议尽量个性化 |
 
 - 返回值
 
-    | <div style="width: 4em">数据类型</div> | 说明 |
-    | :--- | :--- |
-    | ServerSystem | 返回具体系统的实例 |
+| 数据类型 | 说明 |
+| --- | --- |
+| ServerSystem | 返回具体系统的实例 |
 
 - 示例
 
 ```python
 import mod.server.extraServerApi as serverApi
 serverSystem = serverApi.GetSystem("TutorialMod", "TutorialServerSystem")
+
 ```
 
+###  客户端接口
 
-
-### 客户端接口
-
-<span id="c0"></span>
 method in mod.client.extraClientApi
 
 - 描述
 
-    用于获取其他系统实例
+用于获取其他系统实例
 
 - 参数
 
-    | 参数名 | <div style="width: 4em">数据类型</div> | 说明 |
-    | :--- | :--- | :--- |
-    | nameSpace | str | 系统注册的命名空间，一般为mod名字 |
-    | systemName | str | 要获取的系统名称 |
+| 参数名 | 数据类型 | 说明 |
+| --- | --- | --- |
+| nameSpace | str | 系统注册的命名空间，一般为mod名字 |
+| systemName | str | 要获取的系统名称 |
 
 - 返回值
 
-    | <div style="width: 4em">数据类型</div> | 说明 |
-    | :--- | :--- |
-    | ClientSystem | 返回具体系统的实例，如果获取不到则返回 None |
+| 数据类型 | 说明 |
+| --- | --- |
+| ClientSystem | 返回具体系统的实例，如果获取不到则返回 None |
 
 - 示例
 
@@ -133,36 +131,34 @@ class FpsClientSystem(ClientSystem):
     def __init__(self, namespace, systemName):
         ClientSystem.__init__(self, namespace, systemName)
         self.tutorialSystem = clientApi.GetSystem("TutorialMod", "TutorialClientSystem")
+
 ```
 
+##  RegisterSystem
 
+服务端客户端
 
-## RegisterSystem
+###  服务端接口
 
-<span style="display:inline;color:#ff5555">服务端</span><span style="display:inline;color:#7575f9">客户端</span>
-
-### 服务端接口
-
-<span id="s0"></span>
 method in mod.server.extraServerApi
 
 - 描述
 
-    用于将系统注册到引擎中，引擎会创建一个该系统的实例，并在退出游戏时回收。系统可以执行我们引擎赋予的基本逻辑，例如监听事件、执行Tick函数、与客户端进行通讯等。
+用于将系统注册到引擎中，引擎会创建一个该系统的实例，并在退出游戏时回收。系统可以执行我们引擎赋予的基本逻辑，例如监听事件、执行Tick函数、与客户端进行通讯等。
 
 - 参数
 
-    | 参数名 | <div style="width: 4em">数据类型</div> | 说明 |
-    | :--- | :--- | :--- |
-    | nameSpace | str | 命名空间，建议为mod名字 |
-    | systemName | str | 系统名称，自定义名称，可以使用英文、拼音和下划线，建议尽量个性化 |
-    | clsPath | str | 组件类路径，路径从脚本的第一层开始算起 |
+| 参数名 | 数据类型 | 说明 |
+| --- | --- | --- |
+| nameSpace | str | 命名空间，建议为mod名字 |
+| systemName | str | 系统名称，自定义名称，可以使用英文、拼音和下划线，建议尽量个性化 |
+| clsPath | str | 组件类路径，路径从脚本的第一层开始算起 |
 
 - 返回值
 
-    | <div style="width: 4em">数据类型</div> | 说明 |
-    | :--- | :--- |
-    | ServerSystem | 返回具体系统的实例 |
+| 数据类型 | 说明 |
+| --- | --- |
+| ServerSystem | 返回具体系统的实例 |
 
 - 示例
 
@@ -173,32 +169,30 @@ import mod.server.extraServerApi as serverApi
 @Mod.InitServer()
 def TutorialServerInit(self):
     serverApi.RegisterSystem("TutorialMod", "TutorialServerSystem", "tutorialScripts.tutorialServerSystem.TutorialServerSystem")
+
 ```
 
+###  客户端接口
 
-
-### 客户端接口
-
-<span id="c0"></span>
 method in mod.client.extraClientApi
 
 - 描述
 
-    用于将系统注册到引擎中，引擎会创建一个该系统的实例，并在退出游戏时回收。系统可以执行我们引擎赋予的基本逻辑，例如监听事件、执行Tick函数、与服务端进行通讯等。
+用于将系统注册到引擎中，引擎会创建一个该系统的实例，并在退出游戏时回收。系统可以执行我们引擎赋予的基本逻辑，例如监听事件、执行Tick函数、与服务端进行通讯等。
 
 - 参数
 
-    | 参数名 | <div style="width: 4em">数据类型</div> | 说明 |
-    | :--- | :--- | :--- |
-    | nameSpace | str | 命名空间，建议为mod名字 |
-    | systemName | str | 系统名称，自定义名称，可以使用英文、拼音和下划线，建议尽量个性化 |
-    | clsPath | str | 组件类路径，路径从脚本的第一层开始算起 |
+| 参数名 | 数据类型 | 说明 |
+| --- | --- | --- |
+| nameSpace | str | 命名空间，建议为mod名字 |
+| systemName | str | 系统名称，自定义名称，可以使用英文、拼音和下划线，建议尽量个性化 |
+| clsPath | str | 组件类路径，路径从脚本的第一层开始算起 |
 
 - 返回值
 
-    | <div style="width: 4em">数据类型</div> | 说明 |
-    | :--- | :--- |
-    | ClientSystem | 返回具体系统的实例 |
+| 数据类型 | 说明 |
+| --- | --- |
+| ClientSystem | 返回具体系统的实例 |
 
 - 示例
 
@@ -209,7 +203,5 @@ import mod.client.extraClientApi as clientApi
 @Mod.InitClient()
 def TutorialClientInit(self):
     clientApi.RegisterSystem("TutorialMod", "TutorialClientSystem", "tutorialScripts.tutorialClientSystem.TutorialClientSystem")
+
 ```
-
-
-

@@ -1,12 +1,16 @@
-# OpenContainerId
+---
+source_url: "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9E%9A%E4%B8%BE%E5%80%BC/OpenContainerId.html"
+last_modified: "Wed, 28 Oct 2026 10:10:37 GMT"
+synced_from: "NetEase developer official website"
+---
+
+#  OpenContainerId
 
 class in mod.common.minecraftEnum
 
 - 描述
 
-    开放容器Id
-
-
+开放容器Id
 
 ```python
 class OpenContainerId(object):
@@ -29,8 +33,8 @@ class OpenContainerId(object):
 	CreatedOutputContainer  = 61 # 创造输出位(目前无用)
 	SmithingTableTemplateContainer = 62 # 锻造台模板位
 	CrafterLevelEntityContainer = 63 # 合成器输入位
-	NeteaseContainer = 64  # 自定义方块容器槽位 (关闭后放入物品数据存于方块实体中)
-	NeteaseUIContainer = 65 # 网易UI槽位 (数据存于玩家中，关闭ui后放入物品返回背包)
+	DynamicContainer = 64 # 收纳袋槽位
+	NeteaseContainer = 65 # 自定义方块容器槽位 (关闭后放入物品数据存于方块实体中)
+	NeteaseUIContainer = 66 # 网易UI槽位 (数据存于玩家中，关闭ui后放入物品返回背包)
 
-``` 
-
+```

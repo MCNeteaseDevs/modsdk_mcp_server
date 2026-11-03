@@ -1,12 +1,16 @@
-# EnchantType
+---
+source_url: "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9E%9A%E4%B8%BE%E5%80%BC/EnchantType.html"
+last_modified: "Wed, 28 Oct 2026 10:10:37 GMT"
+synced_from: "NetEase developer official website"
+---
+
+#  EnchantType
 
 class in mod.common.minecraftEnum
 
 - 描述
 
-    附魔类型枚举值
-
-
+附魔类型枚举值
 
 ```python
 class EnchantType(object):
@@ -51,10 +55,10 @@ class EnchantType(object):
 	WindBurst = 38				# 风爆
 	Density = 39				# 致密
 	Breach = 40					# 破甲
-	NumEnchantments = 41		# 附魔种数
-	InvalidEnchantment = 42		# 无效附魔
+	Lunge = 41					# 戳刺
+	NumEnchantments = 42		# 附魔种数
+	InvalidEnchantment = 43		# 无效附魔
 
 	ModEnchant = 255			# 自定义附魔
 
-``` 
-
+```

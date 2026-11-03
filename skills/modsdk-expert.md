@@ -15,6 +15,8 @@
 
 先取得与目标匹配的规范，再查证实际使用的 API 或事件；不得凭记忆补全签名。
 
+当前默认目标为 ModSDK 3.10 / BE 1.21.130。3.9→3.10 迁移先调用 `get_version_changes`，区分发布日志分类、实际索引变化与旧库清理。物理模拟事件使用 `PhysX` 大写 X；同名 API 必须同时核对端侧和类路径。
+
 ### 为什么需要这个规则？
 
 不同事件和 API 的参数名称不一致，凭记忆或假设编写代码会导致难以排查的 Bug。
@@ -123,7 +125,7 @@ self.UnListenForEvent(
 - `PlayerAddCustomContainerItemServerEvent` / `PlayerAddCustomContainerItemClientEvent` - 自定义容器添加物品完成
 - `PlayerRemoveCustomContainerItemServerEvent` / `PlayerRemoveCustomContainerItemClientEvent` - 自定义容器移除物品完成
 
-### 3.8 引入、3.9 继续保留的钓鱼与物理事件
+### 3.8 引入、后续版本保留的钓鱼与物理事件
 - `PlayerStartFishingServerEvent` - 玩家开始钓鱼
 - `PlayerFishingServerEvent` - 玩家钓鱼成功收杆，掉落物生成前
 - `PlayerFishingAfterServerEvent` - 玩家钓鱼成功收杆，掉落物生成后

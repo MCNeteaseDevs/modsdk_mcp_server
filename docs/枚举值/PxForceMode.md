@@ -1,12 +1,16 @@
-# PxForceMode
+---
+source_url: "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9E%9A%E4%B8%BE%E5%80%BC/PxForceMode.html"
+last_modified: "Wed, 28 Oct 2026 10:10:37 GMT"
+synced_from: "NetEase developer official website"
+---
+
+#  PxForceMode
 
 class in mod.common.minecraftEnum
 
 - 描述
 
-    添加力的模式
-
-
+添加力的模式
 
 ```python
 class PxForceMode(object):
@@ -15,5 +19,4 @@ class PxForceMode(object):
     eVELOCITY_CHANGE = 2    # 速度变化，单位为距离 / 时间，直接改变速度，与质量无关
     eACCELERATION = 3       # 加速度，单位为距离 / 时间²，直接施加加速度，与质量无关
 
-``` 
-
+```

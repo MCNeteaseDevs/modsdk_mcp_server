@@ -1,12 +1,16 @@
-# BiomeType
+---
+source_url: "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9E%9A%E4%B8%BE%E5%80%BC/BiomeType.html"
+last_modified: "Wed, 28 Oct 2026 10:10:37 GMT"
+synced_from: "NetEase developer official website"
+---
+
+#  BiomeType
 
 class in mod.common.minecraftEnum
 
 - 描述
 
-    生物群系枚举
-
-
+生物群系枚举
 
 ```python
 class BiomeType(object):
@@ -96,6 +100,6 @@ class BiomeType(object):
 	deep_dark = 190						    # 深暗之域
 	mangrove_swamp = 191					# 红树林沼泽
 	cherry_grove = 192						# 樱花树林
+	pale_garden = 193						# 苍白花园
 
-``` 
-
+```

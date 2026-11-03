@@ -1,12 +1,16 @@
-# SliderOptionId
+---
+source_url: "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9E%9A%E4%B8%BE%E5%80%BC/SliderOptionId.html"
+last_modified: "Wed, 28 Oct 2026 10:10:37 GMT"
+synced_from: "NetEase developer official website"
+---
+
+#  SliderOptionId
 
 class in mod.common.minecraftEnum
 
 - 描述
 
-    滑动条设置选项枚举值
-
-
+滑动条设置选项枚举值
 
 ```python
 class SliderOptionId(object):
@@ -23,5 +27,4 @@ class SliderOptionId(object):
 	INTERFACE_OPACITY = "INTERFACE_OPACITY"						#视频->HUD 不透明度 范围:0-1
 	FIELD_OF_VIEW = "FIELD_OF_VIEW"								#视频->视野 范围:30-110
 
-``` 
-
+```

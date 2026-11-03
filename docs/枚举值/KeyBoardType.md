@@ -1,12 +1,16 @@
-# KeyBoardType
+---
+source_url: "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9E%9A%E4%B8%BE%E5%80%BC/KeyBoardType.html"
+last_modified: "Wed, 28 Oct 2026 10:10:37 GMT"
+synced_from: "NetEase developer official website"
+---
+
+#  KeyBoardType
 
 class in mod.common.minecraftEnum
 
 - 描述
 
-    描述PC端点击键盘输入的按钮枚举值
-
-
+描述PC端点击键盘输入的按钮枚举值
 
 ```python
 class KeyBoardType:
@@ -15,12 +19,12 @@ class KeyBoardType:
 	KEY_MOUSE_RIGHT = -98 	# 鼠标右键
 	KEY_MOUSE_Middle = -97 	# 鼠标中键
 
-	KEY_BACKSPACE = 8		# Backspace键	
+	KEY_BACKSPACE = 8		# Backspace键
 	KEY_TAB = 9				# Tab键
 	KEY_RETURN = 13			# 回车键
 	KEY_PAUSE = 19			# PAUSE键
 
-	KEY_LSHIFT = 16			# SHIFT键		
+	KEY_LSHIFT = 16			# SHIFT键
 	KEY_CONTROL = 17		# CONTROL键
 	KEY_MENU = 18			# ALT键
 	KEY_CAPS_LOCK = 20		# CAPS LOCK键(大小写键)
@@ -53,7 +57,7 @@ class KeyBoardType:
 	KEY_B = 66				# B键
 	KEY_C = 67				# C键
 	KEY_D = 68				# D键
-	KEY_E = 69				# E键				
+	KEY_E = 69				# E键
 	KEY_F = 70				# F键
 	KEY_G = 71				# G键
 	KEY_H = 72				# H键
@@ -122,5 +126,4 @@ class KeyBoardType:
 	KEY_RBRACKET = 221		# ] } 键
 	KEY_APOSTRAPHE = 222	# ' " 键
 
-``` 
-
+```

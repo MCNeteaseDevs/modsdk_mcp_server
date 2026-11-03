@@ -1,12 +1,16 @@
-# TransferServerFailReason
+---
+source_url: "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9E%9A%E4%B8%BE%E5%80%BC/TransferServerFailReason.html"
+last_modified: "Wed, 28 Oct 2026 10:10:37 GMT"
+synced_from: "NetEase developer official website"
+---
+
+#  TransferServerFailReason
 
 class in mod.common.minecraftEnum
 
 - 描述
 
-    转服判定失败的错误码
-
-
+转服判定失败的错误码
 
 ```python
 class TransferServerFailReason(object):
@@ -18,5 +22,4 @@ class TransferServerFailReason(object):
 	TargetNotVaild = 15		# 目标ID的服务器不存在或者已经与控制服断开连接
 	ApiInputFail = 16		# 目标玩家不在线
 
-``` 
-
+```

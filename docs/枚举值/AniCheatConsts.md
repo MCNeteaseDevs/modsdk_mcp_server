@@ -1,12 +1,16 @@
-# AniCheatConsts
+---
+source_url: "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9E%9A%E4%B8%BE%E5%80%BC/AniCheatConsts.html"
+last_modified: "Wed, 28 Oct 2026 10:10:37 GMT"
+synced_from: "NetEase developer official website"
+---
+
+#  AniCheatConsts
 
 class in mod.common.minecraftEnum
 
 - 描述
 
-    反作弊配置开关宏定义
-
-
+反作弊配置开关宏定义
 
 ```python
 class AniCheatConsts(object):
@@ -16,5 +20,4 @@ class AniCheatConsts(object):
 	MoveOn = "server-auth"					# 服务端有位移检查，没有倒带模拟
 	MoveRewind = "server-auth-with-rewind"	# 服务端有位移检查，有倒带模拟
 
-``` 
-
+```

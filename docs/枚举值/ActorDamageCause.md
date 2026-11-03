@@ -1,12 +1,16 @@
-# ActorDamageCause
+---
+source_url: "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9E%9A%E4%B8%BE%E5%80%BC/ActorDamageCause.html"
+last_modified: "Wed, 28 Oct 2026 10:10:37 GMT"
+synced_from: "NetEase developer official website"
+---
+
+#  ActorDamageCause
 
 class in mod.common.minecraftEnum
 
 - 描述
 
-    描述实体伤害来源枚举值，及实体被伤害的原因。
-
-
+描述实体伤害来源枚举值，及实体被伤害的原因。
 
 ```python
 class ActorDamageCause(object):
@@ -45,6 +49,7 @@ class ActorDamageCause(object):
     SonicBoom = "sonic_boom"				# 音波尖啸(监守者的远程攻击)
     Campfire = "campfire"					# 营火
     SoulCampfire = "soul_campfire"			# 灵魂营火(营火的灵魂火变种)
+    MaceSmash = "mace_smash"				# 重锤粉碎攻击
+    Dehydration = "dehydration"			# 脱水
 
-``` 
-
+```

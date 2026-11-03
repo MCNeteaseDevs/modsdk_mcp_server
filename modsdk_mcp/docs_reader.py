@@ -52,6 +52,7 @@ class ApiEntry:
     source_url: str
     source_last_modified: str
     state: List[Dict[str, Any]]
+    sdk_version: str
 
 
 # ============================================================================
@@ -96,6 +97,11 @@ EN_TO_CN_MAP: Dict[str, List[str]] = {
     "fishing": ["钓鱼"], "line": ["线", "鱼线"],
     "modifier": ["修饰符"], "trigger": ["触发器"],
     "force": ["力"], "camera": ["相机", "摄像机"],
+    "joint": ["关节"], "mass": ["质量"], "damping": ["阻尼"],
+    "rigid": ["刚体"], "shape": ["碰撞体"], "buoyancy": ["浮力"],
+    "torque": ["扭矩"], "velocity": ["速度"], "gravity": ["重力"],
+    "room": ["房间", "联机大厅"], "host": ["房主"], "meta": ["元数据"],
+    "projection": ["投影"], "ray": ["射线"], "tag": ["标签"],
     "health": ["生命", "血量"], "hunger": ["饥饿"],
     "experience": ["经验"], "enchant": ["附魔"],
     "trade": ["交易"], "mob": ["生物", "怪物"],
@@ -418,6 +424,7 @@ class DocsReader:
                             source_url=method.get("source_url", ""),
                             source_last_modified=method.get("source_last_modified", ""),
                             state=method.get("state", []),
+                            sdk_version=method.get("sdk_version", ""),
                         )
                         # 端侧参与唯一键，避免同一路径下的同名双端接口相互覆盖。
                         unique_key = f"{class_path}::{entry.name}::{entry.side}"
@@ -450,6 +457,7 @@ class DocsReader:
                             source_url=event.get("source_url", ""),
                             source_last_modified=event.get("source_last_modified", ""),
                             state=event.get("state", []),
+                            sdk_version=event.get("sdk_version", ""),
                         )
                         unique_key = f"{event_path}::{entry.name}::{entry.side}"
                         self._api_entries[unique_key] = entry
@@ -663,6 +671,7 @@ class DocsReader:
                 "source_url": entry.source_url,
                 "source_last_modified": entry.source_last_modified,
                 "state": entry.state,
+                "sdk_version": entry.sdk_version,
                 "score": round(score, 2),
             })
         
@@ -976,6 +985,7 @@ class DocsReader:
                 "source_url": entry.source_url,
                 "source_last_modified": entry.source_last_modified,
                 "state": entry.state,
+                "sdk_version": entry.sdk_version,
             }
             results.append(result)
 

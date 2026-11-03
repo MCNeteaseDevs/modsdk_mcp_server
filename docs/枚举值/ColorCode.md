@@ -1,12 +1,16 @@
-# ColorCode
+---
+source_url: "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9E%9A%E4%B8%BE%E5%80%BC/ColorCode.html"
+last_modified: "Wed, 28 Oct 2026 10:10:37 GMT"
+synced_from: "NetEase developer official website"
+---
+
+#  ColorCode
 
 class in mod.common.minecraftEnum
 
 - 描述
 
-    [样式代码](https://zh.minecraft.wiki/w/%E6%A0%BC%E5%BC%8F%E5%8C%96%E4%BB%A3%E7%A0%81)
-
-
+[样式代码(opens new window)](https://zh.minecraft.wiki/w/%E6%A0%BC%E5%BC%8F%E5%8C%96%E4%BB%A3%E7%A0%81)
 
 ```python
 class ColorCode(object):
@@ -33,5 +37,4 @@ class ColorCode(object):
 	ITALIC = "\xc2\xa7" "o"         # 斜体
 	RESET = "\xc2\xa7" "r"          # 重置文字样式
 
-``` 
-
+```

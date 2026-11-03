@@ -1,12 +1,16 @@
-# CatVariantType
+---
+source_url: "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9E%9A%E4%B8%BE%E5%80%BC/CatVariantType.html"
+last_modified: "Wed, 28 Oct 2026 10:10:37 GMT"
+synced_from: "NetEase developer official website"
+---
+
+#  CatVariantType
 
 class in mod.common.minecraftEnum
 
 - 描述
 
-    描述猫的变体种类
-
-
+描述猫的变体种类
 
 ```python
 class CatVariantType:
@@ -22,5 +26,4 @@ class CatVariantType:
 	Black = 9  		# 黑猫
 	Jellie = 10  	# 金吉拉猫
 
-``` 
-
+```

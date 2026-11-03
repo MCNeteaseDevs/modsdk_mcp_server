@@ -137,7 +137,7 @@ def _verify_next(
     rules: Sequence[Mapping[str, Any]],
     request_text: str,
 ) -> List[Dict[str, Any]]:
-    query = request_text.strip() or "ModSDK 3.9 开发规则"
+    query = request_text.strip() or "ModSDK 开发规则"
     steps: List[Dict[str, Any]] = []
     api_domains = {"architecture", "api_event", "json_ui", "performance", "multiplayer"}
     if any(rule["domain"] in api_domains for rule in rules):
@@ -180,7 +180,7 @@ def _verify_next(
 def build_guidance(
     request: str,
     target: Optional[Mapping[str, Any]] = None,
-    version: str = "3.9",
+    version: str = "current",
     domains: Optional[Iterable[str]] = None,
     sides: Optional[Iterable[str]] = None,
     artifact_types: Optional[Iterable[str]] = None,
@@ -292,6 +292,7 @@ def build_guidance(
         ],
     }
     source_boundaries = {
+        "api_reference_version": manifest["default_version"],
         "version_status": version_profile["status"],
         "runtime_evidence_status": version_profile["runtime_evidence_status"],
         "runtime_boundary": version_profile["source_boundary"],
@@ -316,7 +317,7 @@ def build_guidance(
 def render_guidance_json(
     request: str,
     target: Optional[Mapping[str, Any]] = None,
-    version: str = "3.9",
+    version: str = "current",
     domains: Optional[Iterable[str]] = None,
     sides: Optional[Iterable[str]] = None,
     artifact_types: Optional[Iterable[str]] = None,

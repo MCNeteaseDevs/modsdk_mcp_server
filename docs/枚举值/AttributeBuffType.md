@@ -1,12 +1,16 @@
-# AttributeBuffType
+---
+source_url: "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9E%9A%E4%B8%BE%E5%80%BC/AttributeBuffType.html"
+last_modified: "Wed, 28 Oct 2026 10:10:37 GMT"
+synced_from: "NetEase developer official website"
+---
+
+#  AttributeBuffType
 
 class in mod.common.minecraftEnum
 
 - 描述
 
-    Buff状态类型枚举值
-
-
+Buff状态类型枚举值
 
 ```python
 class AttributeBuffType(object):
@@ -21,6 +25,7 @@ class AttributeBuffType(object):
 	FatalPoison = 8               # 致命中毒
 	SelfHeal = 9                  # 自愈
 	SelfDestruct = 10             # 自毁
+	Unknown = 11                  # 未知类型
+	None_ = 12                    # 无明确状态类型（如触发不死图腾等未归类的属性变化）
 
-``` 
-
+```

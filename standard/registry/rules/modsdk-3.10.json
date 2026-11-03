@@ -1,0 +1,685 @@
+{
+  "schema_version": "1.0",
+  "rules": [
+    {
+      "id": "SDK-RELEASE-310",
+      "title": "3.10 对应 BE 1.21.130，已提供官方稳定版文档",
+      "domain": "api_event",
+      "sides": [
+        "common"
+      ],
+      "artifact_types": [
+        "mixed"
+      ],
+      "versions": [
+        "3.10"
+      ],
+      "severity": "info",
+      "enforcement": "guide",
+      "authority": "official_doc",
+      "conditions": [
+        "以 ModSDK 3.10 开发或迁移"
+      ],
+      "do": [
+        "按 2026-10-28 上线的官方稳定版文档核对接口与来源",
+        "区分更新日志明确新增与索引首次出现；游戏行为须实机验收"
+      ],
+      "avoid": [
+        "沿用失效的 Beta 文档链接",
+        "把文档快照当作 Python 运行时源码或游戏实机证据"
+      ],
+      "positive_examples": [
+        "以官方 3.10 稳定版正文和完整版本差异为依据"
+      ],
+      "negative_examples": [
+        "继续将 3.10 标注为尚未发布的 Beta 版本"
+      ],
+      "keywords": [
+        "3.10",
+        "迁移",
+        "升级",
+        "版本",
+        "BE1.21.130",
+        "稳定版"
+      ],
+      "source_ids": [
+        "netease-modsdk-310-release",
+        "netease-modsdk-api-docs"
+      ],
+      "detector": null
+    },
+    {
+      "id": "PHYSX-EXPERIMENTAL-001",
+      "title": "3.10 物理接口仍属实验性能力",
+      "domain": "api_event",
+      "sides": [
+        "client",
+        "server"
+      ],
+      "artifact_types": [
+        "python"
+      ],
+      "versions": [
+        "3.10"
+      ],
+      "severity": "warning",
+      "enforcement": "manual",
+      "authority": "official_doc",
+      "conditions": [
+        "使用 PhysX 自定义刚体或关节"
+      ],
+      "do": [
+        "按当前 PhysxComponentServer/Client 正文查询签名、端侧与生命周期",
+        "保留可替换的业务边界，并在真实世界中验收"
+      ],
+      "avoid": [
+        "承诺后续版本接口和开发环境不会变化",
+        "混用客户端本地物理副本与服务端权威状态"
+      ],
+      "positive_examples": [
+        "客户端本地碰撞体变更按文档明确处理端侧"
+      ],
+      "negative_examples": [
+        "把客户端 AddBoxGeometry 视为自动同步到服务端"
+      ],
+      "keywords": [
+        "物理",
+        "PhysX",
+        "Physx",
+        "刚体",
+        "实验性",
+        "关节"
+      ],
+      "source_ids": [
+        "netease-modsdk-310-release",
+        "netease-modsdk-api-docs"
+      ],
+      "detector": null
+    },
+    {
+      "id": "PHYSX-SHAPE-001",
+      "title": "碰撞体支持运行时增加，并增加 density 参数",
+      "domain": "api_event",
+      "sides": [
+        "client",
+        "server"
+      ],
+      "artifact_types": [
+        "python"
+      ],
+      "versions": [
+        "3.10"
+      ],
+      "severity": "warning",
+      "enforcement": "guide",
+      "authority": "official_doc",
+      "conditions": [
+        "调用 AddBoxGeometry、AddCapsuleGeometry、AddSphereGeometry 或 AddBoxTrigger"
+      ],
+      "do": [
+        "服务端四个接口可在创建自定义刚体后的脚本时机调用，density 默认 10.0 且必须大于 0",
+        "碰撞体变化会重算质量、质心和惯性张量；触发器不参与刚体质量计算",
+        "客户端 AddBoxGeometry 仅修改本地副本，不自动同步服务端",
+        "当前世界中未移除的盒形、胶囊形、球形 Shape 与盒形触发器共同计入 8192 总数上限"
+      ],
+      "avoid": [
+        "继续套用只能在 AddEntityServerEvent 调用的旧限制",
+        "把触发器密度当作刚体质量贡献"
+      ],
+      "positive_examples": [
+        "按同端正文核对 density 的位置与约束"
+      ],
+      "negative_examples": [
+        "在客户端增加碰撞体后假定服务端已更新"
+      ],
+      "keywords": [
+        "AddBoxGeometry",
+        "AddBoxTrigger",
+        "AddCapsuleGeometry",
+        "AddSphereGeometry",
+        "density",
+        "密度",
+        "碰撞体"
+      ],
+      "source_ids": [
+        "netease-modsdk-310-release",
+        "netease-modsdk-api-docs"
+      ],
+      "detector": null
+    },
+    {
+      "id": "PHYSX-FORCE-001",
+      "title": "施力单位、运动学刚体与速度上限须遵守 3.10 约束",
+      "domain": "api_event",
+      "sides": [
+        "server"
+      ],
+      "artifact_types": [
+        "python"
+      ],
+      "versions": [
+        "3.10"
+      ],
+      "severity": "warning",
+      "enforcement": "guide",
+      "authority": "official_doc",
+      "conditions": [
+        "使用 AddForce、AddTorque 或速度上限接口"
+      ],
+      "do": [
+        "AddForce 按 PxForceMode 区分 N、N·s、m/s 和 m/s²",
+        "AddTorque 对运动学刚体返回 False；速度上限参数按正文检查有限正数"
+      ],
+      "avoid": [
+        "把所有 mode 的输入都理解为力",
+        "忽略布尔失败结果"
+      ],
+      "positive_examples": [
+        "eIMPULSE 的输入表示冲量"
+      ],
+      "negative_examples": [
+        "将 eVELOCITY_CHANGE 的参数当作牛顿力"
+      ],
+      "keywords": [
+        "AddForce",
+        "AddTorque",
+        "SetMaxAngularVelocity",
+        "PxForceMode",
+        "扭矩",
+        "施力",
+        "单位"
+      ],
+      "source_ids": [
+        "netease-modsdk-310-release",
+        "netease-modsdk-api-docs"
+      ],
+      "detector": null
+    },
+    {
+      "id": "PHYSX-JOINT-001",
+      "title": "关节阈值、类型与断裂回调按 3.10 正文处理",
+      "domain": "api_event",
+      "sides": [
+        "server"
+      ],
+      "artifact_types": [
+        "python"
+      ],
+      "versions": [
+        "3.10"
+      ],
+      "severity": "warning",
+      "enforcement": "guide",
+      "authority": "official_doc",
+      "conditions": [
+        "创建或管理固定、距离、球窝、铰链、滑动关节"
+      ],
+      "do": [
+        "SetJointBreakForce 中 -1 表示不可断裂，有限阈值须非负",
+        "GetJointType 和 PhysXJointBreakServerEvent 支持 4=Prismatic",
+        "断裂事件包含 breakForce、breakTorque；关节须 DestroyJoint 显式释放"
+      ],
+      "avoid": [
+        "把 GetJointBreakForce 的 None 结果当成有效关节数据",
+        "在断裂后永久保留关节对象"
+      ],
+      "positive_examples": [
+        "读取 jointId、jointType、breakForce、breakTorque 后按生命周期释放关节"
+      ],
+      "negative_examples": [
+        "关节断裂后不再执行任何释放"
+      ],
+      "keywords": [
+        "关节",
+        "Prismatic",
+        "SetJointBreakForce",
+        "GetJointBreakForce",
+        "GetJointType",
+        "PhysXJointBreakServerEvent"
+      ],
+      "source_ids": [
+        "netease-modsdk-310-release",
+        "netease-modsdk-api-docs"
+      ],
+      "detector": null
+    },
+    {
+      "id": "PHYSX-SIMULATION-001",
+      "title": "物理模拟前后事件大小写与同步时序必须准确",
+      "domain": "api_event",
+      "sides": [
+        "client",
+        "server"
+      ],
+      "artifact_types": [
+        "python"
+      ],
+      "versions": [
+        "3.10"
+      ],
+      "severity": "warning",
+      "enforcement": "guide",
+      "authority": "official_doc",
+      "conditions": [
+        "监听 PhysXPreSimulate/PhysXPostSimulate 客户端或服务端事件"
+      ],
+      "do": [
+        "事件名保留 PhysX 大写 X，参数为 dimensionId、deltaTime",
+        "同步高频回调只执行轻量状态读写；模拟后当帧结果从 PhysX 组件读取",
+        "按端侧与参与物理模拟的维度理解触发范围"
+      ],
+      "avoid": [
+        "写成 PhysxPreSimulateServerEvent",
+        "在回调内执行耗时 IO 或销毁实体、维度、物理场景",
+        "把普通实体位置组件视为模拟后已经完成本刻回写"
+      ],
+      "positive_examples": [
+        "PhysXPostSimulateClientEvent 的 deltaTime 固定 0.05 秒"
+      ],
+      "negative_examples": [
+        "在物理模拟同步回调中删除整个维度"
+      ],
+      "keywords": [
+        "PhysXPreSimulateServerEvent",
+        "PhysXPostSimulateServerEvent",
+        "PhysXPreSimulateClientEvent",
+        "PhysXPostSimulateClientEvent",
+        "deltaTime",
+        "高频",
+        "同步"
+      ],
+      "source_ids": [
+        "netease-modsdk-310-release",
+        "netease-modsdk-api-docs"
+      ],
+      "detector": null
+    },
+    {
+      "id": "CAMERA-PROJECTION-001",
+      "title": "屏幕与世界坐标转换使用真实渲染视口像素",
+      "domain": "api_event",
+      "sides": [
+        "client"
+      ],
+      "artifact_types": [
+        "python",
+        "ui_python"
+      ],
+      "versions": [
+        "3.10"
+      ],
+      "severity": "warning",
+      "enforcement": "guide",
+      "authority": "official_doc",
+      "conditions": [
+        "使用 GetWorldRayFromScreenPoint 或 WorldToScreenPoint"
+      ],
+      "do": [
+        "屏幕坐标以左上角为原点，使用 GetScreenViewInfo 的真实渲染视口尺寸",
+        "射线结果为 origin、direction；投影结果为 screenX、screenY、depth、isInScreen",
+        "矩阵、宽高比和近远裁剪面接口只提供基础能力，按正文自行处理计算"
+      ],
+      "avoid": [
+        "直接把 JSON UI 缩放后的逻辑坐标当作视口像素",
+        "忽略 isInScreen 或把屏幕背后目标当可见目标"
+      ],
+      "positive_examples": [
+        "使用真实视口中心像素查询准星射线"
+      ],
+      "negative_examples": [
+        "按 UI 控件本地坐标直接查询世界射线"
+      ],
+      "keywords": [
+        "投影",
+        "摄像机",
+        "射线",
+        "GetWorldRayFromScreenPoint",
+        "WorldToScreenPoint",
+        "GetViewMatrix",
+        "GetProjectionMatrix",
+        "GetNearFarPlane",
+        "GetAspectRatio"
+      ],
+      "source_ids": [
+        "netease-modsdk-310-release",
+        "netease-modsdk-api-docs"
+      ],
+      "detector": null
+    },
+    {
+      "id": "ROOM-METADATA-001",
+      "title": "房间元数据查询为异步请求，并受联机大厅边界限制",
+      "domain": "multiplayer",
+      "sides": [
+        "server"
+      ],
+      "artifact_types": [
+        "python"
+      ],
+      "versions": [
+        "3.10"
+      ],
+      "severity": "warning",
+      "enforcement": "guide",
+      "authority": "official_doc",
+      "conditions": [
+        "使用 GetRoomMeta、SetRoomMeta 或 GetPlayerRoomId"
+      ],
+      "do": [
+        "GetRoomMeta(callback, roomId) 的直接返回值仅表示是否发起请求，结果由回调返回 dict 或 None",
+        "SetRoomMeta 的 key 为 str，value 必须可 JSON 序列化",
+        "处理非联机大厅、房间不存在和请求失败"
+      ],
+      "avoid": [
+        "把 GetRoomMeta 的 bool 当元数据字典",
+        "把单机世界当作联机大厅"
+      ],
+      "positive_examples": [
+        "在 callback 中处理元数据或 None"
+      ],
+      "negative_examples": [
+        "metadata = GetRoomMeta(...) 后直接下标读取字段"
+      ],
+      "keywords": [
+        "房间",
+        "联机大厅",
+        "元数据",
+        "GetRoomInfo",
+        "GetRoomMeta",
+        "SetRoomMeta",
+        "GetPlayerRoomId",
+        "异步"
+      ],
+      "source_ids": [
+        "netease-modsdk-310-release",
+        "netease-modsdk-api-docs"
+      ],
+      "detector": null
+    },
+    {
+      "id": "ROOM-HOST-001",
+      "title": "房主 uid 与实体 id 必须区分并允许离线空实体",
+      "domain": "multiplayer",
+      "sides": [
+        "server"
+      ],
+      "artifact_types": [
+        "python"
+      ],
+      "versions": [
+        "3.10"
+      ],
+      "severity": "warning",
+      "enforcement": "guide",
+      "authority": "official_doc",
+      "conditions": [
+        "使用房主转移、踢人接口或 RoomHostChangedServerEvent"
+      ],
+      "do": [
+        "按 GetHostPlayerUid、TransferRoomHost/ByUid 和 KickPlayer/ByUid 的正文区分 uid 与 entityId",
+        "处理 RoomHostChangedServerEvent 的 newUid、newEntityId、oldUid、oldEntityId",
+        "首次设置房主 oldUid 为 0，离线实体 id 可为 None；踢人接口排除房主"
+      ],
+      "avoid": [
+        "假定 uid 就是 entityId",
+        "对离线房主直接创建实体组件"
+      ],
+      "positive_examples": [
+        "先检查 newEntityId 是否为 None 再操作实体"
+      ],
+      "negative_examples": [
+        "把 oldUid=0 当在线实体"
+      ],
+      "keywords": [
+        "房主",
+        "踢人",
+        "RoomHostChangedServerEvent",
+        "TransferRoomHost",
+        "KickPlayer",
+        "uid",
+        "entityId"
+      ],
+      "source_ids": [
+        "netease-modsdk-310-release",
+        "netease-modsdk-api-docs"
+      ],
+      "detector": null
+    },
+    {
+      "id": "TAG-LOOKUP-001",
+      "title": "自定义方块与物品标签独立注册并支持跨模组合并",
+      "domain": "json_content",
+      "sides": [
+        "common"
+      ],
+      "artifact_types": [
+        "behavior_json",
+        "python"
+      ],
+      "versions": [
+        "3.10"
+      ],
+      "severity": "warning",
+      "enforcement": "guide",
+      "authority": "official_doc",
+      "conditions": [
+        "配置 netease_tags 或按标签查询物品与方块"
+      ],
+      "do": [
+        "行为包 netease_tags 中每个 JSON 注册一个 type=item/block 的 identifier",
+        "相同标签跨模组追加并去重，支持 #identifier 引用；原版标签也能查询",
+        "使用 LookupBlocksByBlockTag 或 LookupItemsByItemTag 核对对应返回结构"
+      ],
+      "avoid": [
+        "混淆同名物品标签与方块标签",
+        "假定后加载模组覆盖前一个模组的同名标签"
+      ],
+      "positive_examples": [
+        "item 与 block 标签都使用 items 列表，type 决定标签类别"
+      ],
+      "negative_examples": [
+        "把 block 标签交给物品查询接口"
+      ],
+      "keywords": [
+        "netease_tags",
+        "标签",
+        "自定义标签",
+        "LookupBlocksByBlockTag",
+        "LookupItemsByItemTag",
+        "合并",
+        "tag"
+      ],
+      "source_ids": [
+        "netease-modsdk-310-release",
+        "netease-modsdk-api-docs"
+      ],
+      "detector": null
+    },
+    {
+      "id": "RENDER-ATLAS-001",
+      "title": "纹理图集查询区分 terrain 方块图集与物品图标",
+      "domain": "api_event",
+      "sides": [
+        "client"
+      ],
+      "artifact_types": [
+        "python"
+      ],
+      "versions": [
+        "3.10"
+      ],
+      "severity": "warning",
+      "enforcement": "guide",
+      "authority": "official_doc",
+      "conditions": [
+        "使用 GetTextureAtlasUV、GetIconInfo 或调色板几何体合并"
+      ],
+      "do": [
+        "GetTextureAtlasUV 仅用于 atlas.terrain；物品图标使用 GetIconInfo",
+        "处理图集接口获取失败时返回 None，返回 UV 为归一化坐标",
+        "调色板合并新增模型支持以 3.10 三个 CombineBlock 接口备注为准"
+      ],
+      "avoid": [
+        "把 atlas.items 的图标 key 传给仅支持 terrain 的接口",
+        "将图集 UV 当作像素坐标"
+      ],
+      "positive_examples": [
+        "按 itemDict 查询 GetIconInfo 并处理 None"
+      ],
+      "negative_examples": [
+        "用 GetTextureAtlasUV 查询任意普通物品图标"
+      ],
+      "keywords": [
+        "GetTextureAtlasUV",
+        "GetIconInfo",
+        "UV",
+        "图集",
+        "CombineBlockPaletteToGeometry",
+        "调色板",
+        "纹理"
+      ],
+      "source_ids": [
+        "netease-modsdk-310-release",
+        "netease-modsdk-api-docs"
+      ],
+      "detector": null
+    },
+    {
+      "id": "RENDER-CLOUD-001",
+      "title": "云层贴图 clouds.png 不得使用 1×1 尺寸",
+      "domain": "json_content",
+      "sides": [
+        "client"
+      ],
+      "artifact_types": [
+        "resource_json"
+      ],
+      "versions": [
+        "3.10"
+      ],
+      "severity": "warning",
+      "enforcement": "manual",
+      "authority": "official_doc",
+      "conditions": [
+        "替换云层贴图 clouds.png"
+      ],
+      "do": [
+        "使用非 1×1 尺寸云层贴图，并在目标渲染引擎中实机观察"
+      ],
+      "avoid": [
+        "用 1×1 clouds.png 实现自定义云层颜色"
+      ],
+      "positive_examples": [
+        "使用其他像素尺寸的 clouds.png"
+      ],
+      "negative_examples": [
+        "提供 1×1 云层贴图并假定不会被替换"
+      ],
+      "keywords": [
+        "clouds.png",
+        "云层",
+        "贴图",
+        "1x1",
+        "渲染"
+      ],
+      "source_ids": [
+        "netease-modsdk-310-release",
+        "netease-modsdk-api-docs"
+      ],
+      "detector": null
+    },
+    {
+      "id": "MODEL-DIMENSION-001",
+      "title": "自由模型可以绑定维度，-1 表示全维度可见",
+      "domain": "api_event",
+      "sides": [
+        "client"
+      ],
+      "artifact_types": [
+        "python"
+      ],
+      "versions": [
+        "3.10"
+      ],
+      "severity": "warning",
+      "enforcement": "guide",
+      "authority": "official_doc",
+      "conditions": [
+        "使用 CreateFreeModel 或 SetFreeModelDimensionId"
+      ],
+      "do": [
+        "按 CreateFreeModel 当前参数核对 dimensionId",
+        "使用 SetFreeModelDimensionId(modelId, dimensionId) 设置可见维度"
+      ],
+      "avoid": [
+        "假定所有自由模型都只能全维度显示"
+      ],
+      "positive_examples": [
+        "dimensionId=-1 表示全维度可见"
+      ],
+      "negative_examples": [
+        "忽略跨维度自由模型可见性配置"
+      ],
+      "keywords": [
+        "CreateFreeModel",
+        "SetFreeModelDimensionId",
+        "自由模型",
+        "维度",
+        "dimensionId"
+      ],
+      "source_ids": [
+        "netease-modsdk-310-release",
+        "netease-modsdk-api-docs"
+      ],
+      "detector": null
+    },
+    {
+      "id": "ENCHANT-ENUM-001",
+      "title": "附魔枚举新增 Lunge，结尾枚举数值顺延",
+      "domain": "api_event",
+      "sides": [
+        "client",
+        "server"
+      ],
+      "artifact_types": [
+        "python"
+      ],
+      "versions": [
+        "3.10"
+      ],
+      "severity": "warning",
+      "enforcement": "guide",
+      "authority": "official_doc",
+      "conditions": [
+        "使用 EnchantType 或存储附魔枚举数值"
+      ],
+      "do": [
+        "通过当前 EnchantType 枚举名访问附魔",
+        "3.10 新增 Lunge=41，NumEnchantments=42、InvalidEnchantment=43；迁移持久化数值时核对映射"
+      ],
+      "avoid": [
+        "继续用 41 判断附魔总数或用 42 判断无效附魔"
+      ],
+      "positive_examples": [
+        "使用 EnchantType.Lunge 表达戳刺附魔"
+      ],
+      "negative_examples": [
+        "将数值 41 当作 NumEnchantments"
+      ],
+      "keywords": [
+        "EnchantType",
+        "Lunge",
+        "NumEnchantments",
+        "InvalidEnchantment",
+        "戳刺",
+        "附魔",
+        "枚举"
+      ],
+      "source_ids": [
+        "netease-modsdk-310-release",
+        "netease-modsdk-api-docs"
+      ],
+      "detector": null
+    }
+  ]
+}

@@ -1,12 +1,16 @@
-# EntityTeleportCause
+---
+source_url: "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9E%9A%E4%B8%BE%E5%80%BC/EntityTeleportCause.html"
+last_modified: "Wed, 28 Oct 2026 10:10:37 GMT"
+synced_from: "NetEase developer official website"
+---
+
+#  EntityTeleportCause
 
 class in mod.common.minecraftEnum
 
 - 描述
 
-    传送理由枚举
-
-
+传送理由枚举
 
 ```python
 class EntityTeleportCause(object):
@@ -20,5 +24,4 @@ class EntityTeleportCause(object):
 	GateWay = "gateway"	# 传送门
 	Script = "script"	# python接口，类似SetPos，SetFootPos，ChangePlayerDimension，ChangeEntityDimension
 
-``` 
-
+```

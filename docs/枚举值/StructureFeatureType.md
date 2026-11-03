@@ -1,12 +1,16 @@
-# StructureFeatureType
+---
+source_url: "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9E%9A%E4%B8%BE%E5%80%BC/StructureFeatureType.html"
+last_modified: "Wed, 28 Oct 2026 10:10:37 GMT"
+synced_from: "NetEase developer official website"
+---
+
+#  StructureFeatureType
 
 class in mod.common.minecraftEnum
 
 - 描述
 
-    原版结构特征类型的枚举
-
-
+原版结构特征类型的枚举
 
 ```python
 class StructureFeatureType(object):
@@ -30,5 +34,4 @@ class StructureFeatureType(object):
 	TrialChambers = 17		 # 试炼密室
 	NeteaseLargeFeature = 18 # 网易版大型结构特征
 
-``` 
-
+```

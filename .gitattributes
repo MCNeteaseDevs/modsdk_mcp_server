@@ -1,2 +1,6 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# 同步产物按 UTF-8 / LF 保存，保证不同平台检出后的 SHA-256 一致。
+/docs/** text eol=lf
+/standard/registry/** text eol=lf

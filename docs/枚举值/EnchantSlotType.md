@@ -1,12 +1,16 @@
-# EnchantSlotType
+---
+source_url: "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9E%9A%E4%B8%BE%E5%80%BC/EnchantSlotType.html"
+last_modified: "Wed, 28 Oct 2026 10:10:37 GMT"
+synced_from: "NetEase developer official website"
+---
+
+#  EnchantSlotType
 
 class in mod.common.minecraftEnum
 
 - 描述
 
-    附魔槽位枚举值
-
-
+附魔槽位枚举值
 
 ```python
 class EnchantSlotType(object):
@@ -24,6 +28,7 @@ class EnchantSlotType(object):
 	SPEAR = 32768				# 三叉戟
 	CROSSBOW = 65536			# 弩
 	HEAVY_WEAPON = 4194304		# 重锤
+	MELEE_SPEAR = 8388608		# 近战长矛
 
 	# tool group
 	G_TOOL = 131520				# 剪刀、打火石、盾
@@ -47,5 +52,4 @@ class EnchantSlotType(object):
 	MUSHROOM_STICK = 1048576	# 诡异菌钓竿
 	BRUSH = 2097152				# 刷子
 
-``` 
-
+```

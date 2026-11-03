@@ -1,12 +1,16 @@
-# EffectType
+---
+source_url: "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9E%9A%E4%B8%BE%E5%80%BC/EffectType.html"
+last_modified: "Wed, 28 Oct 2026 10:10:37 GMT"
+synced_from: "NetEase developer official website"
+---
+
+#  EffectType
 
 class in mod.common.minecraftEnum
 
 - 描述
 
-    描述特效类型的枚举值
-
-
+描述特效类型的枚举值
 
 ```python
 class EffectType(object):
@@ -47,6 +51,6 @@ class EffectType(object):
 	TRIAL_OMEN = "trial_omen"				 # 试炼之兆，是不祥之兆的变种，有此效果的玩家会被不祥的trial_omen粒子包围并播放event.mob_effect.trial_omen音效
 	WEAVING = "weaving"						 # 盘丝，是一个可以让生物死亡时传播蜘蛛网以及让生物以较快速度穿过蜘蛛网的状态效果
 	RAID_OMEN = "raid_omen"					 # 袭击之兆，是带有不祥之兆的玩家进入村庄时获得的状态效果，可触发袭击。
+	BREATH_OF_THE_NAUTILUS = "breath_of_the_nautilus"  # 鹦鹉螺呼吸，骑乘鹦鹉螺时暂停氧气消耗
 
-``` 
-
+```
