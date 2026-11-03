@@ -1,6 +1,6 @@
 ---
-source_url: "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%8E%A5%E5%8F%A3/%E5%8E%9F%E7%94%9FUI.html"
-last_modified: "Thu, 24 Sep 2026 12:01:38 GMT"
+source_url: "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%8E%A5%E5%8F%A3/%E5%8E%9F%E7%94%9FUI.html"
+last_modified: "Wed, 28 Oct 2026 10:10:37 GMT"
 synced_from: "NetEase developer official website"
 ---
 
@@ -1250,7 +1250,7 @@ method in mod.client.extraClientApi
 
 - 备注
 
-- 需要在[UiInitFinished](https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/UI.html?key=UiInitFinished&docindex=2&type=0)事件触发后调用
+- 需要在[UiInitFinished](https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/UI.html?key=UiInitFinished&docindex=2&type=0)事件触发后调用
 
 - 示例
 

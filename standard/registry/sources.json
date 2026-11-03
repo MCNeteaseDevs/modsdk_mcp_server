@@ -12,29 +12,29 @@
     },
     {
       "id": "netease-modsdk-310-release",
-      "title": "网易 ModSDK 3.10 Beta 更新信息",
+      "title": "网易 ModSDK 3.10 稳定版更新信息",
       "authority": "official_doc",
-      "url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html",
-      "last_modified": "2026-09-24T12:01:38Z",
-      "retrieved_at": "2026-10-19",
-      "notes": "确认 V3.10 / BE1.21.130；当前官方文档为 Beta，稳定版计划 2026-10-28，全渠道计划 2026-10-30。新增与调整须同时核对完整 3.9/3.10 索引及正文。"
+      "url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html",
+      "last_modified": "2026-10-28T10:10:37Z",
+      "retrieved_at": "2026-11-03",
+      "notes": "已核验官方稳定版频道与正文；更新信息列出 2026-10-28 上线稳定版。逐项变更须同时核对冻结的 3.9 基线及当前 3.10 正文。"
     },
     {
       "id": "netease-modsdk-api-docs",
       "title": "网易 ModSDK 官方 API 与内容文档",
       "authority": "official_doc",
-      "url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/",
-      "last_modified": "2026-09-24T12:01:38Z",
-      "retrieved_at": "2026-10-19",
-      "notes": "当前运行时完整快照为 3.10 Beta；3.9 历史版本仅提供版本化规则。逐页来源和哈希见 snapshots/official-docs.json；完整差异见 snapshots/modsdk-3.9-to-3.10.json。"
+      "url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/",
+      "last_modified": "2026-10-28T10:10:37Z",
+      "retrieved_at": "2026-11-03",
+      "notes": "当前运行时完整快照为 3.10 稳定版；3.9 历史版本仅提供版本化规则。逐页来源和哈希见 snapshots/official-docs.json；完整差异见 snapshots/modsdk-3.9-to-3.10.json。"
     },
     {
       "id": "netease-python-module-whitelist",
       "title": "网易 Python 模块白名单",
       "authority": "official_doc",
       "url": "https://mc.163.com/dev/mcmanual/mc-dev/mcguide/36-%E5%AE%A1%E6%A0%B8%E4%B8%8E%E4%B8%8B%E6%9E%B6/%E8%AF%BE%E7%A8%8B07-Python%E6%A8%A1%E5%9D%97%E7%99%BD%E5%90%8D%E5%8D%95.html",
-      "last_modified": "2026-09-24T12:01:38Z",
-      "retrieved_at": "2026-10-19",
+      "last_modified": "2026-10-28T10:10:38Z",
+      "retrieved_at": "2026-11-03",
       "notes": "已重新抓取核对，仍为 456 个精确模块路径；包前缀与磁盘存在不构成许可。",
       "snapshot_path": "snapshots/python-module-whitelist.json"
     },

@@ -537,8 +537,6 @@ def _dotted_name(node: ast.AST) -> str:
 def _constant_string(node: Optional[ast.AST]) -> Optional[str]:
     if isinstance(node, ast.Constant) and isinstance(node.value, str):
         return node.value
-    if isinstance(node, ast.Str):
-        return node.s
     return None
 
 

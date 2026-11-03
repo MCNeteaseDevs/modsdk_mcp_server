@@ -35,9 +35,9 @@
         "假如没有自定义类似三叉戟/激流附魔的物品，那么触发此事件说明此有很大可能此玩家使用了【杀戮光环】外挂"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/玩家.html#playercheatspinattackserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/玩家.html#playercheatspinattackserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "PlayerSpinAttackServerEvent",
@@ -82,9 +82,9 @@
       "side": "Apollo",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/玩家.html#playerspinattackserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/玩家.html#playerspinattackserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     }
   ],
   "client.clientEvent": [
@@ -121,9 +121,9 @@
       "side": "客户端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/UI.html#achievementbuttonmovedclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/UI.html#achievementbuttonmovedclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "ActorAcquiredItemClientEvent",
@@ -168,9 +168,9 @@
       "side": "客户端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物品.html#actoracquireditemclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物品.html#actoracquireditemclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "ActorUseItemClientEvent",
@@ -212,9 +212,9 @@
         "注意，喝牛奶不会触发该事件，但是会触发ActorUseItemServerEvent"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物品.html#actoruseitemclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物品.html#actoruseitemclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "AddEntityClientEvent",
@@ -286,9 +286,9 @@
         "创建玩家时不会触发该事件"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/世界.html#addentityclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/世界.html#addentityclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "AddPlayerAOIClientEvent",
@@ -321,9 +321,9 @@
         "玩家加入游戏时视野内每存在一位其他玩家便触发一次该事件，若无其他玩家，则不触发"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/世界.html#addplayeraoiclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/世界.html#addplayeraoiclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "AddPlayerCreatedClientEvent",
@@ -356,9 +356,9 @@
         "当前客户端每加载好一个玩家的皮肤，就会触发一次该事件，比如刚进入世界时，localPlayer加载好会触发一次，周围的所有玩家加载好后也会分别触发一次。"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/世界.html#addplayercreatedclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/世界.html#addplayercreatedclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "AnvilCreateResultItemAfterClientEvent",
@@ -408,9 +408,9 @@
       "side": "客户端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物品.html#anvilcreateresultitemafterclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物品.html#anvilcreateresultitemafterclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "ApproachEntityClientEvent",
@@ -445,9 +445,9 @@
       "side": "客户端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/实体.html#approachentityclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/实体.html#approachentityclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "AttackAnimBeginClientEvent",
@@ -479,9 +479,9 @@
         "使用SetModel替换骨骼模型后，该事件才生效"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/模型.html#attackanimbeginclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/模型.html#attackanimbeginclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "AttackAnimEndClientEvent",
@@ -513,9 +513,9 @@
         "使用SetModel替换骨骼模型后，该事件才生效"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/模型.html#attackanimendclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/模型.html#attackanimendclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "BlockAnimateRandomTickEvent",
@@ -555,9 +555,9 @@
       "side": "客户端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/方块.html#blockanimaterandomtickevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/方块.html#blockanimaterandomtickevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "CameraMotionStartClientEvent",
@@ -587,9 +587,9 @@
       "side": "客户端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/玩家.html#cameramotionstartclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/玩家.html#cameramotionstartclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "CameraMotionStopClientEvent",
@@ -626,9 +626,9 @@
         "注意：该事件触发表示运动器播放顺利完成，手动调用的 StopCameraMotion 、 RemoveCameraMotion 不会触发该事件。"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/玩家.html#cameramotionstopclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/玩家.html#cameramotionstopclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "ChunkAcquireDiscardedClientEvent",
@@ -670,9 +670,9 @@
         "区块卸载：游戏只会加载玩家周围的区块，玩家移动到别的区域时，原来所在区域的区块会被卸载，参考 区块介绍 (opens new window)"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/世界.html#chunkacquirediscardedclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/世界.html#chunkacquirediscardedclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "ChunkLoadedClientEvent",
@@ -712,9 +712,9 @@
       "side": "客户端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/世界.html#chunkloadedclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/世界.html#chunkloadedclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "ClientBlockUseEvent",
@@ -795,9 +795,9 @@
         "import mod.client.extraClientApi as clientApi\ncomp = clientApi.GetEngineCompFactory().CreateBlockUseEventWhiteList(clientApi.GetLevelId())\ncomp.RemoveBlockItemListenForUseEvent(\"minecraft:nether_brick_stairs:2\")\n# 注意blockName格式为namespace:name:auxvalue，如果不填auxvalue，则默认为所有auxvalue\n# auxValue详细值详见官方wiki，如https://zh.minecraft.wiki/w/楼梯 中的‘方块数据值’",
         "import mod.client.extraClientApi as clientApi\ncomp = clientApi.GetEngineCompFactory().CreateBlockUseEventWhiteList(clientApi.GetLevelId())\ncomp.ClearAllListenForBlockUseEventItems()"
       ],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/方块.html#clientblockuseevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/方块.html#clientblockuseevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "ClientChestCloseEvent",
@@ -864,9 +864,9 @@
         "注：关闭时若容器管理器已提前释放，参数可能为空"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/UI.html#clientchestcloseevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/UI.html#clientchestcloseevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "ClientChestOpenEvent",
@@ -931,9 +931,9 @@
       "side": "客户端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/UI.html#clientchestopenevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/UI.html#clientchestopenevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "ClientItemTryUseEvent",
@@ -976,9 +976,9 @@
         "ServerItemTryUseEvent/ClientItemTryUseEvent不能取消对方块使用物品的行为，如使用生物蛋，使用桶倒出/收集，使用打火石点燃草等；如果想要取消这种行为，请使用ClientItemUseOnEvent和ServerItemUseOnEvent"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物品.html#clientitemtryuseevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物品.html#clientitemtryuseevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "ClientItemUseOnEvent",
@@ -1065,9 +1065,9 @@
         "事件设置ret = True 时即可取消使用，无需服务端再次设置ServerItemUseOnEvent取消，且服务端事件将不再触发。"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物品.html#clientitemuseonevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物品.html#clientitemuseonevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "ClientJumpButtonPressDownEvent",
@@ -1097,9 +1097,9 @@
       "side": "客户端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/控制.html#clientjumpbuttonpressdownevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/控制.html#clientjumpbuttonpressdownevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "ClientJumpButtonReleaseEvent",
@@ -1123,9 +1123,9 @@
       "side": "客户端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/控制.html#clientjumpbuttonreleaseevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/控制.html#clientjumpbuttonreleaseevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "ClientPlayerInventoryCloseEvent",
@@ -1149,9 +1149,9 @@
       "side": "客户端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/UI.html#clientplayerinventorycloseevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/UI.html#clientplayerinventorycloseevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "ClientPlayerInventoryOpenEvent",
@@ -1186,9 +1186,9 @@
       "side": "客户端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/UI.html#clientplayerinventoryopenevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/UI.html#clientplayerinventoryopenevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "ClientShapedRecipeTriggeredEvent",
@@ -1218,9 +1218,9 @@
       "side": "客户端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物品.html#clientshapedrecipetriggeredevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物品.html#clientshapedrecipetriggeredevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "CloseNeteaseShopEvent",
@@ -1244,9 +1244,9 @@
       "side": "客户端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/UI.html#closeneteaseshopevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/UI.html#closeneteaseshopevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "CraftUpdateResultItemClientEvent",
@@ -1284,9 +1284,9 @@
         "如果无可合成的物品，或预览的配方因材料不足而无法合成，则传递的物品参数为 minecraft:air。"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物品.html#craftupdateresultitemclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物品.html#craftupdateresultitemclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "DimensionChangeClientEvent",
@@ -1358,9 +1358,9 @@
         "当通过传送门从末地回到主世界时，toY值为32767，其他情况一般会比设置值高1.62"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/玩家.html#dimensionchangeclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/玩家.html#dimensionchangeclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "DimensionChangeFinishClientEvent",
@@ -1407,9 +1407,9 @@
         "当通过传送门从末地回到主世界时，toPos的y值为32767，其他情况一般会比设置值高1.62"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/玩家.html#dimensionchangefinishclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/玩家.html#dimensionchangefinishclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "EntityModelChangedClientEvent",
@@ -1449,9 +1449,9 @@
       "side": "客户端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/实体.html#entitymodelchangedclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/实体.html#entitymodelchangedclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "EntityStopRidingEvent",
@@ -1515,9 +1515,9 @@
         "切换维度"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/实体.html#entitystopridingevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/实体.html#entitystopridingevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "ExtinguishFireClientEvent",
@@ -1557,9 +1557,9 @@
       "side": "客户端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/玩家.html#extinguishfireclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/玩家.html#extinguishfireclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "FallingBlockCauseDamageBeforeClientEvent",
@@ -1642,9 +1642,9 @@
         "当该事件的参数数据（fallTickAmount，fallDistance，collidingEntitys，fallDamage）与服务端事件FallingBlockCauseDamageBeforeServerEvent数据有差异时，请以服务端事件数据为准。"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/方块.html#fallingblockcausedamagebeforeclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/方块.html#fallingblockcausedamagebeforeclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "GameRenderTickEvent",
@@ -1668,9 +1668,9 @@
       "side": "客户端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/世界.html#gamerendertickevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/世界.html#gamerendertickevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "GameTypeChangedClientEvent",
@@ -1712,9 +1712,9 @@
         "游戏模式：GetMinecraftEnum().GameType.*:Survival，Creative，Adventure分别为0~2 默认游戏模式发生变化时最后反映在个人游戏模式之上。"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/玩家.html#gametypechangedclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/玩家.html#gametypechangedclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "GetEntityByCoordEvent",
@@ -1738,9 +1738,9 @@
       "side": "客户端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/控制.html#getentitybycoordevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/控制.html#getentitybycoordevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "GetEntityByCoordReleaseClientEvent",
@@ -1764,9 +1764,9 @@
       "side": "客户端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/控制.html#getentitybycoordreleaseclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/控制.html#getentitybycoordreleaseclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "GridComponentSizeChangedClientEvent",
@@ -1796,9 +1796,9 @@
       "side": "客户端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/UI.html#gridcomponentsizechangedclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/UI.html#gridcomponentsizechangedclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "GrindStoneRemovedEnchantClientEvent",
@@ -1848,9 +1848,9 @@
       "side": "客户端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物品.html#grindstoneremovedenchantclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物品.html#grindstoneremovedenchantclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "GyroSensorChangedClientEvent",
@@ -1902,9 +1902,9 @@
         "该事件只适用于移动端"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/控制.html#gyrosensorchangedclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/控制.html#gyrosensorchangedclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "HealthChangeClientEvent",
@@ -1944,9 +1944,9 @@
       "side": "客户端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/实体.html#healthchangeclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/实体.html#healthchangeclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "HoldBeforeClientEvent",
@@ -1982,9 +1982,9 @@
         "点触流程的图片讲解见 TapOrHoldReleaseClientEvent 事件的备注"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/控制.html#holdbeforeclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/控制.html#holdbeforeclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "HudButtonChangedClientEvent",
@@ -2016,9 +2016,9 @@
         "修改后的按钮列表中，每个按钮的字段如下： 字段名 类型 说明 areaEnum str HUD原生UI枚举值 beforeSize tuple(float,float,float,float) (xMin, yMin, xMax, yMax)修改前原生UI的Area afterSize tuple(float,float,float,float) (xMin, yMin, xMax, yMax)修改后原生UI的Area"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/UI.html#hudbuttonchangedclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/UI.html#hudbuttonchangedclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "InventoryItemChangedClientEvent",
@@ -2067,9 +2067,9 @@
         "背包内物品移动，合堆，分堆的操作会分多次事件触发并且顺序不定，编写逻辑时请勿依赖事件触发顺序"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物品.html#inventoryitemchangedclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物品.html#inventoryitemchangedclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "ItemReleaseUsingClientEvent",
@@ -2119,9 +2119,9 @@
       "side": "客户端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物品.html#itemreleaseusingclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物品.html#itemreleaseusingclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "LeaveEntityClientEvent",
@@ -2156,9 +2156,9 @@
       "side": "客户端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/实体.html#leaveentityclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/实体.html#leaveentityclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "LeftClickBeforeClientEvent",
@@ -2190,9 +2190,9 @@
         "按键控制流程的图片讲解见 TapOrHoldReleaseClientEvent 事件的备注"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/控制.html#leftclickbeforeclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/控制.html#leftclickbeforeclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "LeftClickReleaseClientEvent",
@@ -2218,9 +2218,9 @@
         "按键控制流程的图片讲解见 TapOrHoldReleaseClientEvent 事件的备注"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/控制.html#leftclickreleaseclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/控制.html#leftclickreleaseclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "LiquidClippedClientEvent",
@@ -2273,11 +2273,13 @@
         }
       ],
       "side": "客户端",
-      "remarks": [],
+      "remarks": [
+        "需要在物品中添加netease:liquid_clipped: True组件才能触发"
+      ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物品.html#liquidclippedclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物品.html#liquidclippedclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "LoadClientAddonScriptsAfter",
@@ -2301,9 +2303,9 @@
       "side": "客户端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/世界.html#loadclientaddonscriptsafter",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/世界.html#loadclientaddonscriptsafter",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "ModBlockEntityLoadedClientEvent",
@@ -2357,9 +2359,9 @@
         "该事件在OnModBlockNeteaseEffectCreatedClientEvent后触发。"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/方块.html#modblockentityloadedclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/方块.html#modblockentityloadedclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "ModBlockEntityRemoveClientEvent",
@@ -2409,9 +2411,9 @@
       "side": "客户端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/方块.html#modblockentityremoveclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/方块.html#modblockentityremoveclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "ModBlockEntityTickClientEvent",
@@ -2464,9 +2466,9 @@
         "目前客户端实体tick范围为硬编码，范围为玩家为中心的等腰等斜边八边形，其中斜边长度为5，非斜边长度为3"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/方块.html#modblockentitytickclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/方块.html#modblockentitytickclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "MouseWheelClientEvent",
@@ -2496,9 +2498,9 @@
       "side": "客户端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/控制.html#mousewheelclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/控制.html#mousewheelclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "OnAfterFallOnBlockClientEvent",
@@ -2574,9 +2576,9 @@
         "引擎在落地之后OnAfterFallOnBlockClientEvent会一直触发，因此请在脚本层中做对应的逻辑判断"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/方块.html#onafterfallonblockclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/方块.html#onafterfallonblockclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "OnBackButtonReleaseClientEvent",
@@ -2602,9 +2604,9 @@
         "目前仅安卓平台可用"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/控制.html#onbackbuttonreleaseclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/控制.html#onbackbuttonreleaseclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "OnCarriedNewItemChangedClientEvent",
@@ -2634,9 +2636,9 @@
       "side": "客户端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物品.html#oncarriednewitemchangedclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物品.html#oncarriednewitemchangedclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "OnClientPlayerStartMove",
@@ -2660,9 +2662,9 @@
       "side": "客户端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/控制.html#onclientplayerstartmove",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/控制.html#onclientplayerstartmove",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "OnClientPlayerStopMove",
@@ -2686,9 +2688,9 @@
       "side": "客户端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/控制.html#onclientplayerstopmove",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/控制.html#onclientplayerstopmove",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "OnCommandOutputClientEvent",
@@ -2725,9 +2727,9 @@
         "部分命令在返回的时候没有命令名称，SetCommand接口需要showOutput参数为True时才会有返回"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/世界.html#oncommandoutputclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/世界.html#oncommandoutputclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "OnCustomGamepadChangedEvent",
@@ -2767,9 +2769,9 @@
       "side": "客户端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/游戏设置.html#oncustomgamepadchangedevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/游戏设置.html#oncustomgamepadchangedevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "OnCustomGamepadPressInGame",
@@ -2834,9 +2836,9 @@
       "side": "客户端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/游戏设置.html#oncustomgamepadpressingame",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/游戏设置.html#oncustomgamepadpressingame",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "OnCustomKeyChangedEvent",
@@ -2876,9 +2878,9 @@
       "side": "客户端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/游戏设置.html#oncustomkeychangedevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/游戏设置.html#oncustomkeychangedevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "OnCustomKeyPressInGame",
@@ -2928,9 +2930,9 @@
       "side": "客户端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/游戏设置.html#oncustomkeypressingame",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/游戏设置.html#oncustomkeypressingame",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "OnEntityInsideBlockClientEvent",
@@ -3015,9 +3017,9 @@
         "import mod.client.extraClientApi as clientApi\ncomp = clientApi.GetEngineCompFactory().CreateBlockInfo(levelId)\ncomp.RegisterOnEntityInside(\"minecraft:redstone_ore\")",
         "import mod.client.extraClientApi as clientApi\ncomp = clientApi.GetEngineCompFactory().CreateBlockInfo(levelId)\ncomp.UnRegisterOnEntityInside(\"minecraft:redstone_ore\")"
       ],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/方块.html#onentityinsideblockclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/方块.html#onentityinsideblockclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "OnGamepadControllerLayoutChangeClientEvent",
@@ -3057,9 +3059,9 @@
       "side": "客户端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/控制.html#ongamepadcontrollerlayoutchangeclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/控制.html#ongamepadcontrollerlayoutchangeclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "OnGamepadKeyPressClientEvent",
@@ -3099,9 +3101,9 @@
       "side": "客户端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/控制.html#ongamepadkeypressclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/控制.html#ongamepadkeypressclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "OnGamepadStickClientEvent",
@@ -3143,9 +3145,9 @@
         "触发时机：当摇杆摇动位置发生改变时"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/控制.html#ongamepadstickclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/控制.html#ongamepadstickclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "OnGamepadTriggerClientEvent",
@@ -3182,9 +3184,9 @@
         "触发时机：当扣动扳机的力度发生改变时"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/控制.html#ongamepadtriggerclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/控制.html#ongamepadtriggerclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "OnGroundClientEvent",
@@ -3216,9 +3218,9 @@
         "因为掉落是服务端与客户端各自计算的，对于掉落的方块，有时会出现服务端先着地，然后把FallingBlock实体移除掉了，导致客户端没触发着地事件的情况。"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/实体.html#ongroundclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/实体.html#ongroundclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "OnItemSlotButtonClickedEvent",
@@ -3248,9 +3250,9 @@
       "side": "客户端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/UI.html#onitemslotbuttonclickedevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/UI.html#onitemslotbuttonclickedevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "OnKeyPressInGame",
@@ -3290,9 +3292,9 @@
       "side": "客户端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/控制.html#onkeypressingame",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/控制.html#onkeypressingame",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "OnKeyboardControllerLayoutChangeClientEvent",
@@ -3332,9 +3334,9 @@
       "side": "客户端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/控制.html#onkeyboardcontrollerlayoutchangeclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/控制.html#onkeyboardcontrollerlayoutchangeclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "OnLocalPlayerActionClientEvent",
@@ -3364,9 +3366,9 @@
       "side": "客户端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/玩家.html#onlocalplayeractionclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/玩家.html#onlocalplayeractionclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "OnLocalPlayerStartJumpClientEvent",
@@ -3390,9 +3392,9 @@
       "side": "客户端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/玩家.html#onlocalplayerstartjumpclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/玩家.html#onlocalplayerstartjumpclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "OnLocalPlayerStopLoading",
@@ -3422,9 +3424,9 @@
       "side": "客户端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/世界.html#onlocalplayerstoploading",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/世界.html#onlocalplayerstoploading",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "OnMobHitMobClientEvent",
@@ -3466,9 +3468,9 @@
         "import mod.client.extraClientApi as clientApi\ncomp = clientApi.GetEngineCompFactory().CreatePlayer(playerId)\ncomp.OpenPlayerHitMobDetection()",
         "import mod.client.extraClientApi as clientApi\ncomp = clientApi.GetEngineCompFactory().CreatePlayer(playerId)\ncomp.ClosePlayerHitMobDetection()"
       ],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/实体.html#onmobhitmobclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/实体.html#onmobhitmobclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "OnModBlockNeteaseEffectCreatedClientEvent",
@@ -3513,9 +3515,9 @@
       "side": "客户端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/方块.html#onmodblockneteaseeffectcreatedclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/方块.html#onmodblockneteaseeffectcreatedclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "OnMouseMiddleDownClientEvent",
@@ -3557,9 +3559,9 @@
         "仅通过PushScreen创建的界面能够正常返回坐标，开启F11模式的时候，返回最后点击屏幕时的坐标"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/控制.html#onmousemiddledownclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/控制.html#onmousemiddledownclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "OnMusicStopClientEvent",
@@ -3589,9 +3591,9 @@
       "side": "客户端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/音效.html#onmusicstopclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/音效.html#onmusicstopclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "OnPlayerHitBlockClientEvent",
@@ -3651,9 +3653,9 @@
         "import mod.client.extraClientApi as clientApi\ncomp = clientApi.GetEngineCompFactory().CreatePlayer(entityId)\ncomp.OpenPlayerHitBlockDetection(0.0001)",
         "import mod.client.extraClientApi as clientApi\ncomp = clientApi.GetEngineCompFactory().CreatePlayer(entityId)\ncomp.ClosePlayerHitBlockDetection()"
       ],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/玩家.html#onplayerhitblockclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/玩家.html#onplayerhitblockclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "OnScriptTickClient",
@@ -3677,9 +3679,9 @@
       "side": "客户端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/世界.html#onscripttickclient",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/世界.html#onscripttickclient",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "OnStandOnBlockClientEvent",
@@ -3776,9 +3778,9 @@
         "import mod.client.extraClientApi as clientApi\ncomp = clientApi.GetEngineCompFactory().CreateBlockInfo(levelId)\ncomp.RegisterOnStandOn(\"minecraft:redstone_ore\")",
         "import mod.client.extraClientApi as clientApi\ncomp = clientApi.GetEngineCompFactory().CreateBlockInfo(levelId)\ncomp.UnRegisterOnStandOn(\"minecraft:redstone_ore\")"
       ],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/方块.html#onstandonblockclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/方块.html#onstandonblockclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "PerspChangeClientEvent",
@@ -3815,9 +3817,9 @@
         "视角数字代表含义 0: 第一人称 1: 第三人称背面 2: 第三人称正面"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/玩家.html#perspchangeclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/玩家.html#perspchangeclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "PhysXPostSimulateClientEvent",
@@ -3856,9 +3858,9 @@
         "事件名大小写敏感，名称中的 PhysX 必须使用大写 X；不要写成 PhysxPostSimulateClientEvent。旧事件 PhysxTouchClientEvent 与 PhysxTriggerClientEvent 的命名不同"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物理.html#physxpostsimulateclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物理.html#physxpostsimulateclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "PhysXPreSimulateClientEvent",
@@ -3897,9 +3899,9 @@
         "事件名大小写敏感，名称中的 PhysX 必须使用大写 X；不要写成 PhysxPreSimulateClientEvent。旧事件 PhysxTouchClientEvent 与 PhysxTriggerClientEvent 的命名不同"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物理.html#physxpresimulateclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物理.html#physxpresimulateclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "PhysxTouchClientEvent",
@@ -3940,9 +3942,9 @@
         "{\n    \"entityId0\": str,    // 一个碰撞体所属实体的entityId\n    \"identifier0\": str,  // 一个碰撞体所属实体的identifier\n    \"shape0\": str或None, // 一个碰撞体的userData\n    \"entityId1\": str,    // 另一个碰撞体所属实体的entityId\n    \"identifier1\": str,  // 另一个碰撞体所属实体的identifier\n    \"shape1\": str或None,  // 另一个碰撞体的userData\n    \"pos\": (float,float,float),  // 碰撞点的世界坐标。其中一个碰撞体在创建时使用了PxEventMask.Found_Detail才有该字段\n    \"normal\":(float,float,float)  // 碰撞产生的力的方向，由碰撞体1指向碰撞体0。其中一个碰撞体在创建时使用了PxEventMask.Found_Detail才有该字段\n}",
         "{\n    \"entityId0\": str,     // 一个碰撞体所属实体的entityId\n    \"identifier0\": str,   // 一个碰撞体所属实体的identifier\n    \"shape0\": str或None,  // 一个碰撞体的userData\n    \"entityId1\": str,     // 另一个碰撞体所属实体的entityId\n    \"identifier1\": str,   // 另一个碰撞体所属实体的identifier\n    \"shape1\": str或None   // 另一个碰撞体的userData\n}"
       ],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物理.html#physxtouchclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物理.html#physxtouchclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "PhysxTriggerClientEvent",
@@ -3982,9 +3984,9 @@
         "{\n    \"entityId0\": str,    // 触发器所属实体的entityId\n    \"identifier0\": str,  // 触发器所属实体的identifier\n    \"shape0\": dict|None, // 触发器的userData (NeEvent::Object)\n    \"entityId1\": str,    // 另一方实体的entityId\n    \"identifier1\": str,  // 另一方实体的identifier\n    \"shape1\": dict|None  // 另一方碰撞体的userData (NeEvent::Object)\n}",
         "{\n    \"entityId0\": str,     // 触发器所属实体的entityId\n    \"identifier0\": str,   // 触发器所属实体的identifier\n    \"shape0\": dict|None,  // 触发器的userData\n    \"entityId1\": str,     // 另一方实体的entityId\n    \"identifier1\": str,   // 另一方实体的identifier\n    \"shape1\": dict|None   // 另一方碰撞体的userData\n}"
       ],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物理.html#physxtriggerclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物理.html#physxtriggerclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "PlayMusicClientEvent",
@@ -4019,9 +4021,9 @@
       "side": "客户端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/音效.html#playmusicclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/音效.html#playmusicclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "PlaySoundClientEvent",
@@ -4071,9 +4073,9 @@
       "side": "客户端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/音效.html#playsoundclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/音效.html#playsoundclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "PlayerAddCustomContainerItemClientEvent",
@@ -4147,9 +4149,9 @@
         "容器内物品移动，合堆，分堆的操作会分多次事件触发并且顺序不定，编写逻辑时请勿依赖事件触发顺序"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物品.html#playeraddcustomcontaineritemclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物品.html#playeraddcustomcontaineritemclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "PlayerAttackEntityEvent",
@@ -4209,9 +4211,9 @@
       "side": "客户端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/玩家.html#playerattackentityevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/玩家.html#playerattackentityevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "PlayerChatButtonClickClientEvent",
@@ -4235,9 +4237,9 @@
       "side": "客户端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/UI.html#playerchatbuttonclickclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/UI.html#playerchatbuttonclickclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "PlayerPermissionChangeClientEvent",
@@ -4291,9 +4293,9 @@
         "如果进入游戏的玩家权限为“成员”时，不会触发此事件。"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/玩家.html#playerpermissionchangeclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/玩家.html#playerpermissionchangeclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "PlayerRemoveCustomContainerItemClientEvent",
@@ -4367,9 +4369,9 @@
         "容器内物品移动，合堆，分堆的操作会分多次事件触发并且顺序不定，编写逻辑时请勿依赖事件触发顺序"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物品.html#playerremovecustomcontaineritemclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物品.html#playerremovecustomcontaineritemclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "PlayerTryAddCustomContainerItemClientEvent",
@@ -4437,9 +4439,9 @@
         "cancel取消本次操作后不会触发对应服务端事件"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物品.html#playertryaddcustomcontaineritemclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物品.html#playertryaddcustomcontaineritemclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "PlayerTryDestroyBlockClientEvent",
@@ -4504,9 +4506,9 @@
       "side": "客户端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/方块.html#playertrydestroyblockclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/方块.html#playertrydestroyblockclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "PlayerTryDropItemClientEvent",
@@ -4546,9 +4548,9 @@
       "side": "客户端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物品.html#playertrydropitemclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物品.html#playertrydropitemclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "PlayerTryPutCustomContainerItemClientEvent",
@@ -4618,9 +4620,9 @@
         "cancel取消本次操作后不会触发对应服务端事件"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物品.html#playertryputcustomcontaineritemclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物品.html#playertryputcustomcontaineritemclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "PlayerTryRemoveCustomContainerItemClientEvent",
@@ -4689,9 +4691,9 @@
         "cancel取消本次操作后不会触发对应服务端事件"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物品.html#playertryremovecustomcontaineritemclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物品.html#playertryremovecustomcontaineritemclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "PopScreenAfterClientEvent",
@@ -4728,9 +4730,9 @@
         "与PopScreenEvent不同，PopScreenAfterClientEvent触发时机是在完全把UI弹出后，返回的参数是弹出后最顶层UI的"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/UI.html#popscreenafterclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/UI.html#popscreenafterclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "PopScreenEvent",
@@ -4767,9 +4769,9 @@
         "screenName为正在弹出的Screen名，如果需要获取下一个Screen可使用PopScreenAfterClientEvent"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/UI.html#popscreenevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/UI.html#popscreenevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "PushScreenEvent",
@@ -4804,9 +4806,9 @@
       "side": "客户端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/UI.html#pushscreenevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/UI.html#pushscreenevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "RemoveEntityClientEvent",
@@ -4838,9 +4840,9 @@
         "客户端接收到了服务端监测实体离开玩家视野时触发，原事件名 RemoveEntityPacketEvent"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/世界.html#removeentityclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/世界.html#removeentityclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "RemovePlayerAOIClientEvent",
@@ -4870,9 +4872,9 @@
       "side": "客户端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/世界.html#removeplayeraoiclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/世界.html#removeplayeraoiclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "RightClickBeforeClientEvent",
@@ -4904,14 +4906,14 @@
         "按键控制流程的图片讲解见 TapOrHoldReleaseClientEvent 事件的备注"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/控制.html#rightclickbeforeclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/控制.html#rightclickbeforeclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "RightClickReleaseClientEvent",
       "path": "client.clientEvent",
-      "desc": "玩家松开使用物品/放置方块键时触发，例如鼠标右键、手柄左扳机键",
+      "desc": "玩家松开使用物品/放置方块键时触发，例如鼠标右键、新触控交互键、手柄左扳机键",
       "doc_class_path": [
         "控制"
       ],
@@ -4932,9 +4934,9 @@
         "按键控制流程的图片讲解见 TapOrHoldReleaseClientEvent 事件的备注"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/控制.html#rightclickreleaseclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/控制.html#rightclickreleaseclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "ScreenSizeChangedClientEvent",
@@ -4981,9 +4983,9 @@
         "该事件仅支持PC"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/UI.html#screensizechangedclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/UI.html#screensizechangedclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "ShearsDestoryBlockBeforeClientEvent",
@@ -5060,9 +5062,9 @@
         "目前仅绊线会触发，需要取消剪刀效果得配合ShearsDestoryBlockBeforeServerEvent同时使用"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/方块.html#shearsdestoryblockbeforeclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/方块.html#shearsdestoryblockbeforeclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "StartDestroyBlockClientEvent",
@@ -5119,9 +5121,9 @@
         "如果是隔着火焰挖方块，即使将该事件cancel掉，火焰也会被扑灭。如果要阻止火焰扑灭，需要配合ExtinguishFireClientEvent使用"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/方块.html#startdestroyblockclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/方块.html#startdestroyblockclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "StartRidingClientEvent",
@@ -5158,9 +5160,9 @@
         "如果需要修改cancel，请通过服务端事件StartRidingServerEvent同步修改，客户端触发该事件时，实体已经骑乘成功。"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/实体.html#startridingclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/实体.html#startridingclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "StartUsingItemClientEvent",
@@ -5195,9 +5197,9 @@
       "side": "客户端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物品.html#startusingitemclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物品.html#startusingitemclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "StepOffBlockClientEvent",
@@ -5258,9 +5260,9 @@
         "import mod.client.extraClientApi as clientApi\ncomp = clientApi.GetEngineCompFactory().CreateBlockInfo(levelId)\ncomp.RegisterOnStepOff(\"minecraft:redstone_ore\")",
         "import mod.client.extraClientApi as clientApi\ncomp = clientApi.GetEngineCompFactory().CreateBlockInfo(levelId)\ncomp.UnRegisterOnStepOff(\"minecraft:redstone_ore\")"
       ],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/方块.html#stepoffblockclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/方块.html#stepoffblockclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "StepOnBlockClientEvent",
@@ -5328,9 +5330,9 @@
         "import mod.client.extraClientApi as clientApi\ncomp = clientApi.GetEngineCompFactory().CreateBlockInfo(levelId)\ncomp.RegisterOnStepOn(\"minecraft:redstone_ore\")",
         "import mod.client.extraClientApi as clientApi\ncomp = clientApi.GetEngineCompFactory().CreateBlockInfo(levelId)\ncomp.UnRegisterOnStepOn(\"minecraft:redstone_ore\")"
       ],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/方块.html#steponblockclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/方块.html#steponblockclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "StopUsingItemClientEvent",
@@ -5365,9 +5367,9 @@
       "side": "客户端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物品.html#stopusingitemclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物品.html#stopusingitemclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "TapBeforeClientEvent",
@@ -5405,9 +5407,9 @@
         "点触流程的图片讲解见 TapOrHoldReleaseClientEvent 事件的备注"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/控制.html#tapbeforeclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/控制.html#tapbeforeclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "TapOrHoldReleaseClientEvent",
@@ -5434,9 +5436,9 @@
         "一张图读懂点触和按键事件触发流程"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/控制.html#taporholdreleaseclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/控制.html#taporholdreleaseclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "UiInitFinished",
@@ -5462,9 +5464,9 @@
         "切换维度后会重新初始化UI并触发该事件"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/UI.html#uiinitfinished",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/UI.html#uiinitfinished",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "UnLoadClientAddonScriptsBefore",
@@ -5488,9 +5490,9 @@
       "side": "客户端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/世界.html#unloadclientaddonscriptsbefore",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/世界.html#unloadclientaddonscriptsbefore",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "UpdatePlayerSkinClientEvent",
@@ -5522,9 +5524,9 @@
         "此事件配合 IsOfficialSkin IsHighLevelOfficialSkin IsHighLevelMultiJointOfficialSkin 接口 用于获取玩家的皮肤信息"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/玩家.html#updateplayerskinclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/玩家.html#updateplayerskinclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "WalkAnimBeginClientEvent",
@@ -5556,9 +5558,9 @@
         "使用SetModel替换骨骼模型后，该事件才生效"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/模型.html#walkanimbeginclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/模型.html#walkanimbeginclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "WalkAnimEndClientEvent",
@@ -5590,9 +5592,9 @@
         "使用SetModel替换骨骼模型后，该事件才生效"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/模型.html#walkanimendclientevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/模型.html#walkanimendclientevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     }
   ],
   "server.serverEvent": [
@@ -5644,9 +5646,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/世界.html#achievementcompleteevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/世界.html#achievementcompleteevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "ActorAcquiredItemServerEvent",
@@ -5691,9 +5693,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物品.html#actoracquireditemserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物品.html#actoracquireditemserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "ActorHurtServerEvent",
@@ -5743,9 +5745,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/实体.html#actorhurtserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/实体.html#actorhurtserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "ActorUseItemServerEvent",
@@ -5787,9 +5789,9 @@
         "注意，喝牛奶会触发该事件，但是不会触发ActorUseItemClientEvent"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物品.html#actoruseitemserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物品.html#actoruseitemserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "ActuallyHurtServerEvent",
@@ -5860,9 +5862,9 @@
         "在无懈可击时间内，只要实体受到高于上次受击的伤害，可以连续触发不受SetHurtCD影响，如实体连续受到1伤害，如果在本事件中修改damage为0.5，则引擎会认为每次都有0.5的溢出伤害，可以通过invulnerableTime和lastHurt来判断是否取消这次伤害"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/实体.html#actuallyhurtserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/实体.html#actuallyhurtserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "AddEffectServerEvent",
@@ -5912,9 +5914,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/实体.html#addeffectserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/实体.html#addeffectserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "AddEntityServerEvent",
@@ -5986,9 +5988,9 @@
         "创建玩家时不会触发该事件"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/世界.html#addentityserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/世界.html#addentityserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "AddExpEvent",
@@ -6023,9 +6025,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/玩家.html#addexpevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/玩家.html#addexpevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "AddLevelEvent",
@@ -6065,9 +6067,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/玩家.html#addlevelevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/玩家.html#addlevelevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "AddServerPlayerEvent",
@@ -6130,9 +6132,9 @@
         "触发此事件时，玩家的实体还未加载完毕，请勿在这时切换维度。请在客户端监听OnLocalPlayerStopLoading事件并发送事件到server端再进行维度切换。"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/世界.html#addserverplayerevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/世界.html#addserverplayerevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "AttackAnimBeginServerEvent",
@@ -6164,9 +6166,9 @@
         "使用SetModel替换骨骼模型后，该事件才生效"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/模型.html#attackanimbeginserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/模型.html#attackanimbeginserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "AttackAnimEndServerEvent",
@@ -6198,9 +6200,9 @@
         "使用SetModel替换骨骼模型后，该事件才生效"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/模型.html#attackanimendserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/模型.html#attackanimendserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "BlockDestroyByLiquidServerEvent",
@@ -6262,9 +6264,9 @@
         "指令或者接口的设置不会触发该事件"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/方块.html#blockdestroybyliquidserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/方块.html#blockdestroybyliquidserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "BlockLiquidStateChangeAfterServerEvent",
@@ -6324,9 +6326,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/方块.html#blockliquidstatechangeafterserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/方块.html#blockliquidstatechangeafterserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "BlockLiquidStateChangeServerEvent",
@@ -6386,9 +6388,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/方块.html#blockliquidstatechangeserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/方块.html#blockliquidstatechangeserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "BlockNeighborChangedServerEvent",
@@ -6478,9 +6480,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/方块.html#blockneighborchangedserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/方块.html#blockneighborchangedserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "BlockRandomTickServerEvent",
@@ -6545,9 +6547,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/方块.html#blockrandomtickserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/方块.html#blockrandomtickserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "BlockRemoveServerEvent",
@@ -6607,9 +6609,9 @@
       "examples": [
         "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreateBlockInfo(levelId)\ncomp.ListenOnBlockRemoveEvent(\"minecraft:wheat\", True)"
       ],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/方块.html#blockremoveserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/方块.html#blockremoveserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "BlockSnowStateChangeAfterServerEvent",
@@ -6664,9 +6666,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/方块.html#blocksnowstatechangeafterserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/方块.html#blocksnowstatechangeafterserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "BlockSnowStateChangeServerEvent",
@@ -6721,9 +6723,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/方块.html#blocksnowstatechangeserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/方块.html#blocksnowstatechangeserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "BlockStrengthChangedServerEvent",
@@ -6788,9 +6790,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/方块.html#blockstrengthchangedserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/方块.html#blockstrengthchangedserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "ChangeLevelUpCostServerEvent",
@@ -6832,9 +6834,9 @@
       "examples": [
         "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreatePlayer(playerId)\nsuc = comp.ClearDefinedLevelUpCost(1)"
       ],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/玩家.html#changelevelupcostserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/玩家.html#changelevelupcostserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "ChangeSwimStateServerEvent",
@@ -6876,9 +6878,9 @@
         "当实体的状态没有变化时，不会触发此事件，即formState和toState必定一真一假"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/实体.html#changeswimstateserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/实体.html#changeswimstateserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "ChestBlockTryPairWithServerEvent",
@@ -6943,9 +6945,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/方块.html#chestblocktrypairwithserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/方块.html#chestblocktrypairwithserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "ChunkAcquireDiscardedServerEvent",
@@ -6997,9 +6999,9 @@
         "区块卸载：游戏只会加载玩家周围的区块，玩家移动到别的区域时，原来所在区域的区块会被卸载，参考 区块介绍 (opens new window)"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/世界.html#chunkacquirediscardedserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/世界.html#chunkacquirediscardedserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "ChunkGeneratedServerEvent",
@@ -7044,9 +7046,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/世界.html#chunkgeneratedserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/世界.html#chunkgeneratedserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "ChunkLoadedServerEvent",
@@ -7093,9 +7095,9 @@
         "注意：服务端的自定义方块实体加载完成时对应的客户端的自定义方块实体并没有初始化完成，无法使用该事件对客户端的自定义方块实体进行相关操作。"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/世界.html#chunkloadedserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/世界.html#chunkloadedserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "ClientLoadAddonsFinishServerEvent",
@@ -7125,9 +7127,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/世界.html#clientloadaddonsfinishserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/世界.html#clientloadaddonsfinishserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "CommandBlockContainerOpenEvent",
@@ -7187,9 +7189,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/方块.html#commandblockcontaineropenevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/方块.html#commandblockcontaineropenevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "CommandBlockUpdateEvent",
@@ -7261,9 +7263,9 @@
         "当修改的目标为命令方块矿车时（此时isBlock为False），设置cancel为True，依旧可以阻止修改命令方块矿车的内部指令，但是从客户端能够看到命令方块矿车的内部指令变化了，不过这仅仅是假象，重新登录或者其他客户端打开命令方块矿车的设置界面，就会发现其实内部指令没有变化"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/方块.html#commandblockupdateevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/方块.html#commandblockupdateevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "CommandEvent",
@@ -7305,9 +7307,9 @@
         "该事件是玩家请求执行指令时触发的Hook，该事件不响应命令方块的指令和通过modSDK调用的指令，阻止玩家的该条指令只需要将cancel设置为True"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/世界.html#commandevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/世界.html#commandevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "ContainerItemChangedServerEvent",
@@ -7369,9 +7371,9 @@
       "examples": [
         "import mod.server.extraServerApi as serverApi\nfrom mod_log import logger as logger\n# 监听引擎的事件\nself.ListenForEvent(serverApi.GetEngineNamespace(),\n                    serverApi.GetEngineSystemName(),\n                    \"ContainerItemChangedServerEvent\",\n                    self, self.OnContainerItemChangedServerEvent)\n\ndef OnContainerItemChangedServerEvent(self, args):\n    playerId = args['playerId']\n    logger.info(\"OnContainerItemChangedServerEvent args:%s\", args)\n    if args['containerType'] == serverApi.GetMinecraftEnum().ContainerType.SMOKER:\n        print '烟熏炉发生变化'"
       ],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物品.html#containeritemchangedserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物品.html#containeritemchangedserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "CraftItemOutputChangeServerEvent",
@@ -7424,9 +7426,9 @@
       "examples": [
         "import mod.server.extraServerApi as serverApi\nfrom mod_log import logger as logger\n# 监听引擎的事件\nself.ListenForEvent(serverApi.GetEngineNamespace(),\n                    serverApi.GetEngineSystemName(),\n                    \"CraftItemOutputChangeServerEvent\",\n                    self, self.OnCraftItemOutputChangeServerEvent)\n\ndef OnCraftItemOutputChangeServerEvent(self, args):\n    playerId = args['playerId']\n    comp = serverApi.GetEngineCompFactory().CreateItem(playerId)\n    logger.info(\"OnCraftItemOutputChangeServerEvent args:%s\", args)\n\n    # 铁砧触发\n    if args['screenContainerType'] == serverApi.GetMinecraftEnum().ContainerType.ANVIL:\n        anvilInputItem = comp.GetOpenContainerItem(playerId,serverApi.GetMinecraftEnum().OpenContainerId.AnvilInputContainer,True)\n        if anvilInputItem != None:\n            # 铁砧输入位有物品，该事件为拿出铁砧生成物触发的\n            if anvilInputItem['itenName'] != args['itemDict']['itemName']:\n                # 输入物品和生成物品不是同一类型，可能是作弊，取消物品生成\n                args['cancel'] = True"
       ],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物品.html#craftitemoutputchangeserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物品.html#craftitemoutputchangeserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "CustomCommandTriggerServerEvent",
@@ -7485,9 +7487,9 @@
         "对于玩家传入的参数，type不同则对应的value也不同，type对应value的类型和具体数据格式如下 type value类型 解释 int int 整数，如114 float float 浮点数，如5.14 bool bool 布尔值，如True str str 字符串，如'niganma' enum str 开发者在json中指定的某个字符串 enum_short str 开发者在json中指定的某个字符串 block str 方块的identifier，如'minecraft:grass' item dict 含有物品名称，如{'itemName': 'minecraft:apple'} pos tuple 含有三个float的坐标，如(-0.93, 81.25, -5.67) target tuple 含有对应的所有目标entityId，如('-139816907912', '-263852559602') entity dict 含有实体名称，如{'entityType': 'minecraft:cow'} effect dict 含有状态效果名称和对应的 EffectType 枚举，如{'name': 'absorption', 'id': 22} dimension dict 含有维度名称和对应数字id，如{'name': 'nether', 'id': 1} biome dict 含有生物群系名称和对应的 BiomeType 枚举，如{'name': 'bamboo_jungle', 'biomeType': 48} structure dict 含有结构名称和对应的 StructureFeatureType 枚举，如{'name': 'ancient_city', 'structureType': 15} enchant dict 含有附魔名称和对应的 EnchantType 枚举，如{'identifier': 'knockback', 'type': 12}"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/世界.html#customcommandtriggerserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/世界.html#customcommandtriggerserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "DamageEvent",
@@ -7565,9 +7567,9 @@
         "青蛙、山羊跳跃落地时也会触发此伤害事件，但它们的掉落伤害实际会有减免，青蛙减少5，山羊减少10"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/实体.html#damageevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/实体.html#damageevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "DelServerPlayerEvent",
@@ -7607,9 +7609,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/世界.html#delserverplayerevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/世界.html#delserverplayerevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "DestroyBlockEvent",
@@ -7681,9 +7683,9 @@
         "在生存模式或创造模式下都会触发"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/方块.html#destroyblockevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/方块.html#destroyblockevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "DimensionChangeFinishServerEvent",
@@ -7730,9 +7732,9 @@
         "当通过传送门从末地回到主世界时，toPos的y值为32767，其他情况一般会比设置值高1.62"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/玩家.html#dimensionchangefinishserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/玩家.html#dimensionchangefinishserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "DimensionChangeServerEvent",
@@ -7804,9 +7806,9 @@
         "当通过传送门从末地回到主世界时，toY值为32767，其他情况一般会比设置值高1.62"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/玩家.html#dimensionchangeserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/玩家.html#dimensionchangeserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "DirtBlockToGrassBlockServerEvent",
@@ -7853,9 +7855,9 @@
         "指令或者接口的设置不会触发该事件"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/方块.html#dirtblocktograssblockserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/方块.html#dirtblocktograssblockserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "EntityChangeDimensionServerEvent",
@@ -7928,9 +7930,9 @@
         "注意，玩家维度改变时不触发该事件，而是会触发DimensionChangeServerEvent事件"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/实体.html#entitychangedimensionserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/实体.html#entitychangedimensionserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "EntityDefinitionsEventServerEvent",
@@ -7965,9 +7967,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/实体.html#entitydefinitionseventserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/实体.html#entitydefinitionseventserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "EntityDieLoottableAfterServerEvent",
@@ -8016,9 +8018,9 @@
         "掉落物不包含玩家或生物携带以及背包内的物品，若要获取死亡后由背包扔出的物品请参考EntityDroppedItemServerEvent事件"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/实体.html#entitydieloottableafterserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/实体.html#entitydieloottableafterserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "EntityDieLoottableServerEvent",
@@ -8067,9 +8069,9 @@
         "掉落物不包含玩家或生物携带以及背包内的物品，若要获取死亡后由背包扔出的物品请参考EntityDroppedItemServerEvent事件"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/实体.html#entitydieloottableserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/实体.html#entitydieloottableserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "EntityDroppedItemServerEvent",
@@ -8109,9 +8111,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/实体.html#entitydroppeditemserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/实体.html#entitydroppeditemserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "EntityEffectDamageServerEvent",
@@ -8171,9 +8173,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/实体.html#entityeffectdamageserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/实体.html#entityeffectdamageserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "EntityLoadScriptEvent",
@@ -8205,9 +8207,9 @@
         "只有使用过extraData组件的SetExtraData接口的实体才有此事件，触发时可以通过extraData组件的GetExtraData或GetWholeExtraData接口获取该实体的自定义数据"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/实体.html#entityloadscriptevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/实体.html#entityloadscriptevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "EntityMotionStartServerEvent",
@@ -8242,9 +8244,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/实体.html#entitymotionstartserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/实体.html#entitymotionstartserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "EntityMotionStopServerEvent",
@@ -8286,9 +8288,9 @@
         "注意：该事件触发表示运动器播放顺利完成，手动调用的 StopEntityMotion 、 RemoveEntityMotion 以及实体被销毁导致的运动器停止不会触发该事件。"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/实体.html#entitymotionstopserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/实体.html#entitymotionstopserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "EntityPickupItemServerEvent",
@@ -8328,9 +8330,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/实体.html#entitypickupitemserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/实体.html#entitypickupitemserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "EntityPlaceBlockAfterServerEvent",
@@ -8397,9 +8399,9 @@
         "部分放置后会产生实体的方块、可操作的方块、带有特殊逻辑的方块，不会触发该事件，包括但不限于床、门、告示牌、花盆、红石中继器、船、炼药锅、头部模型、蛋糕、酿造台、盔甲架等。"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/方块.html#entityplaceblockafterserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/方块.html#entityplaceblockafterserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "EntityRemoveEvent",
@@ -8434,9 +8436,9 @@
         "玩家退出游戏时，EntityRemoveEvent，DelServerPlayerEvent按顺序依次触发"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/世界.html#entityremoveevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/世界.html#entityremoveevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "EntityStartRidingEvent",
@@ -8471,9 +8473,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/实体.html#entitystartridingevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/实体.html#entitystartridingevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "EntityStopRidingEvent",
@@ -8537,9 +8539,9 @@
         "切换维度"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/实体.html#entitystopridingevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/实体.html#entitystopridingevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "EntityTickServerEvent",
@@ -8576,9 +8578,9 @@
       "examples": [
         "import mod.server.extraServerApi as serverApi\n# 让牛触发EntityTickServerEvent事件\nserverApi.AddEntityTickEventWhiteList('minecraft:cow')"
       ],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/实体.html#entitytickserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/实体.html#entitytickserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "ExplosionServerEvent",
@@ -8631,9 +8633,9 @@
         "某些情况下爆炸创建者id为None，此时受伤实体id列表也为None，比如爬行者所造成的爆炸。"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/世界.html#explosionserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/世界.html#explosionserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "ExtinguishFireServerEvent",
@@ -8673,9 +8675,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/玩家.html#extinguishfireserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/玩家.html#extinguishfireserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "FallingBlockBreakServerEvent",
@@ -8742,9 +8744,9 @@
         "不是所有下落的方块都会触发该事件，需要在json中先配置触发开关（详情参考： 自定义重力方块 ）"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/方块.html#fallingblockbreakserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/方块.html#fallingblockbreakserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "FallingBlockCauseDamageBeforeServerEvent",
@@ -8827,9 +8829,9 @@
         "服务端通常触发在客户端之后，而且有时会相差一个tick，这就意味着可能发生以下现象:服务端fallTickAmount比配置强制破坏时间多1tick，下落的距离、下落的伤害计算出来比客户端时间多1tick的误差。"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/方块.html#fallingblockcausedamagebeforeserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/方块.html#fallingblockcausedamagebeforeserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "FallingBlockReturnHeavyBlockServerEvent",
@@ -8896,9 +8898,9 @@
         "不是所有下落的方块都会触发该事件，需要在json中先配置触发开关（详情参考： 自定义重力方块 ）"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/方块.html#fallingblockreturnheavyblockserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/方块.html#fallingblockreturnheavyblockserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "FarmBlockToDirtBlockServerEvent",
@@ -8950,9 +8952,9 @@
         "指令或者接口的设置不会触发该事件"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/方块.html#farmblocktodirtblockserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/方块.html#farmblocktodirtblockserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "FurnaceBurnFinishedServerEvent",
@@ -9002,9 +9004,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物品.html#furnaceburnfinishedserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物品.html#furnaceburnfinishedserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "GameTypeChangedServerEvent",
@@ -9046,9 +9048,9 @@
         "游戏模式：GetMinecraftEnum().GameType.*:Survival，Creative，Adventure分别为0~2，Spectator为6 默认游戏模式发生变化时最后反映在个人游戏模式之上。 注意：避免在该事件中调用修改ability相关的接口，比如ChangePlayerFlyState等接口，如确实需要，可加定时器延后调用"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/玩家.html#gametypechangedserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/玩家.html#gametypechangedserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "GlobalCommandServerEvent",
@@ -9104,9 +9106,9 @@
         "{\n    'cancel' : False,\n    'entityId' : '-8589934591',\n    'command' : '/kill @e',\n    'dimension' : 0,\n    'blockPos' : (227,66,569)\n}",
         "{\n    'cancel' : False,\n    'command' : '/say I am a command_block',\n    'dimension' : 0,\n    'blockPos' : (226,64,579)\n}"
       ],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/世界.html#globalcommandserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/世界.html#globalcommandserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "GrassBlockToDirtBlockServerEvent",
@@ -9153,9 +9155,9 @@
         "指令或者接口的设置不会触发该事件"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/方块.html#grassblocktodirtblockserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/方块.html#grassblocktodirtblockserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "HealthChangeBeforeServerEvent",
@@ -9205,9 +9207,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/实体.html#healthchangebeforeserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/实体.html#healthchangebeforeserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "HealthChangeServerEvent",
@@ -9252,9 +9254,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/实体.html#healthchangeserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/实体.html#healthchangeserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "HeavyBlockStartFallingServerEvent",
@@ -9311,9 +9313,9 @@
         "不是所有下落的方块都会触发该事件，需要在json中先配置触发开关（详情参考： 自定义重力方块 ）"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/方块.html#heavyblockstartfallingserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/方块.html#heavyblockstartfallingserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "HopperTryPullInServerEvent",
@@ -9378,9 +9380,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/方块.html#hoppertrypullinserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/方块.html#hoppertrypullinserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "HopperTryPullOutServerEvent",
@@ -9445,9 +9447,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/方块.html#hoppertrypulloutserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/方块.html#hoppertrypulloutserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "InventoryItemChangedServerEvent",
@@ -9497,9 +9499,9 @@
         "背包内物品移动，合堆，分堆的操作会分多次事件触发并且顺序不定，编写逻辑时请勿依赖事件触发顺序"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物品.html#inventoryitemchangedserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物品.html#inventoryitemchangedserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "ItemDurabilityChangedServerEvent",
@@ -9552,9 +9554,9 @@
         "目前铁砧修复、经验修补魔咒、SetItemDurability接口触发的耐久度变化中canChange为false，并且不支持修改变化后耐久度"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物品.html#itemdurabilitychangedserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物品.html#itemdurabilitychangedserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "ItemPullOutCustomContainerServerEvent",
@@ -9619,9 +9621,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物品.html#itempulloutcustomcontainerserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物品.html#itempulloutcustomcontainerserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "ItemPushInCustomContainerServerEvent",
@@ -9686,9 +9688,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物品.html#itempushincustomcontainerserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物品.html#itempushincustomcontainerserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "ItemReleaseUsingServerEvent",
@@ -9743,9 +9745,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物品.html#itemreleaseusingserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物品.html#itemreleaseusingserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "ItemUseAfterServerEvent",
@@ -9782,9 +9784,9 @@
         "做出使用物品这个动作之后触发，一些需要蓄力的物品使用事件(ActorUseItemServerEvent)会在之后触发。如投掷三叉戟，先触发本事件，投出去之后再触发ActorUseItemServerEvent"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物品.html#itemuseafterserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物品.html#itemuseafterserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "ItemUseOnAfterServerEvent",
@@ -9871,9 +9873,9 @@
         "在ServerItemUseOnEvent和原版物品使用事件（例如StartUsingItemClientEvent）之后触发"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物品.html#itemuseonafterserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物品.html#itemuseonafterserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "JumpAnimBeginServerEvent",
@@ -9905,9 +9907,9 @@
         "使用SetModel替换骨骼模型后，该事件才生效"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/模型.html#jumpanimbeginserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/模型.html#jumpanimbeginserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "LiquidClippedServerEvent",
@@ -9960,11 +9962,13 @@
         }
       ],
       "side": "服务端",
-      "remarks": [],
+      "remarks": [
+        "需要在物品中添加netease:liquid_clipped: True组件才能触发"
+      ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物品.html#liquidclippedserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物品.html#liquidclippedserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "LoadServerAddonScriptsAfter",
@@ -9988,9 +9992,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/世界.html#loadserveraddonscriptsafter",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/世界.html#loadserveraddonscriptsafter",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "MobDieEvent",
@@ -10037,9 +10041,9 @@
         "注意：不能在该事件回调中对此玩家手持物品进行修改，如 SpawnItemToPlayerCarried 、 ChangePlayerItemTipsAndExtraId 等接口"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/实体.html#mobdieevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/实体.html#mobdieevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "MobGriefingBlockServerEvent",
@@ -10101,9 +10105,9 @@
         "触发的时机包括：生物踩踏耕地、破坏单个方块、破门、火矢点燃方块、凋灵boss破坏方块、末影龙破坏方块、末影人捡起方块、蠹虫破坏被虫蚀的方块、蠹虫把方块变成被虫蚀的方块、凋零杀死生物生成凋零玫瑰、生物踩坏海龟蛋。"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/实体.html#mobgriefingblockserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/实体.html#mobgriefingblockserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "MountTamingEvent",
@@ -10140,9 +10144,9 @@
         "该事件是检测minecraft:tamemount行为包组件，即玩家通过不断骑乘生物，使其冒出爱心时触发"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/玩家.html#mounttamingevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/玩家.html#mounttamingevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "NewOnEntityAreaEvent",
@@ -10188,9 +10192,9 @@
         "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreateDimension(levelId)\ncomp.RegisterEntityAOIEvent(0, \"test\", (0, 0, 0, 1, 1, 1), None)",
         "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreateDimension(levelId)\ncomp.UnRegisterEntityAOIEvent(0, \"test\")"
       ],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/世界.html#newonentityareaevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/世界.html#newonentityareaevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "OnAfterFallOnBlockServerEvent",
@@ -10266,9 +10270,9 @@
         "引擎在落地之后，OnAfterFallOnBlockServerEvent会一直触发，因此请在脚本层中做对应的逻辑判断"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/方块.html#onafterfallonblockserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/方块.html#onafterfallonblockserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "OnBeforeFallOnBlockServerEvent",
@@ -10332,9 +10336,9 @@
         "可能会因为轻微的反弹触发多次，可在脚本层针对fallDistance的值进行判断"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/方块.html#onbeforefallonblockserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/方块.html#onbeforefallonblockserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "OnCarriedNewItemChangedServerEvent",
@@ -10376,9 +10380,9 @@
         "切换耐久度不同的相同物品，不会触发该事件"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物品.html#oncarriednewitemchangedserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物品.html#oncarriednewitemchangedserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "OnCommandOutputServerEvent",
@@ -10415,9 +10419,9 @@
         "部分命令在返回的时候没有命令名称，SetCommand接口需要showOutput参数为True时才会有返回"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/世界.html#oncommandoutputserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/世界.html#oncommandoutputserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "OnContainerFillLoottableServerEvent",
@@ -10465,9 +10469,9 @@
         "可疑的沙子也具有奖励箱性质，使用刷子刷可疑的沙子也会触发该事件"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/世界.html#oncontainerfillloottableserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/世界.html#oncontainerfillloottableserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "OnEntityInsideBlockServerEvent",
@@ -10546,9 +10550,9 @@
         "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreateBlockInfo(levelId)\ncomp.RegisterOnEntityInside(\"minecraft:redstone_ore\")",
         "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreateBlockInfo(levelId)\ncomp.UnRegisterOnEntityInside(\"minecraft:redstone_ore\")"
       ],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/方块.html#onentityinsideblockserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/方块.html#onentityinsideblockserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "OnFireHurtEvent",
@@ -10598,9 +10602,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/实体.html#onfirehurtevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/实体.html#onfirehurtevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "OnGroundServerEvent",
@@ -10632,9 +10636,9 @@
         "不支持抛射物实体"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/实体.html#ongroundserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/实体.html#ongroundserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "OnItemPutInEnchantingModelServerEvent",
@@ -10681,9 +10685,9 @@
         "options为包含三个dict的list，单个dict的格式形如{'cost': 1, 'enchantData': [(1,1)], 'modEnchantData': [('custom_enchant, 1')]}，cost为解锁该选项所需的玩家等级，enchantData为该附魔选项包含的原版附魔数据，modEnchantData为该选项包含的自定义附魔数据"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物品.html#onitemputinenchantingmodelserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物品.html#onitemputinenchantingmodelserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "OnKnockBackServerEvent",
@@ -10713,9 +10717,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/实体.html#onknockbackserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/实体.html#onknockbackserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "OnLightningLevelChangeServerEvent",
@@ -10750,9 +10754,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/世界.html#onlightninglevelchangeserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/世界.html#onlightninglevelchangeserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "OnLocalLightningLevelChangeServerEvent",
@@ -10792,9 +10796,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/世界.html#onlocallightninglevelchangeserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/世界.html#onlocallightninglevelchangeserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "OnLocalRainLevelChangeServerEvent",
@@ -10834,9 +10838,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/世界.html#onlocalrainlevelchangeserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/世界.html#onlocalrainlevelchangeserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "OnMobHitBlockServerEvent",
@@ -10901,9 +10905,9 @@
         "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreateGame(levelId)\ncomp.OpenMobHitBlockDetection(\"-123456\",0.0001)",
         "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreateGame(levelId)\ncomp.CloseMobHitBlockDetection(\"-123456\")"
       ],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/实体.html#onmobhitblockserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/实体.html#onmobhitblockserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "OnMobHitMobServerEvent",
@@ -10944,9 +10948,9 @@
         "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreatePlayer(playerId)\ncomp.OpenPlayerHitMobDetection()",
         "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreatePlayer(playerId)\ncomp.ClosePlayerHitMobDetection()"
       ],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/实体.html#onmobhitmobserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/实体.html#onmobhitmobserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "OnNewArmorExchangeServerEvent",
@@ -10994,9 +10998,9 @@
         "注意：避免在该事件回调中对玩家修改盔甲栏装备，如 SetEntityItem 接口，会导致事件循环触发造成堆栈溢出。"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物品.html#onnewarmorexchangeserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物品.html#onnewarmorexchangeserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "OnOffhandItemChangedServerEvent",
@@ -11038,9 +11042,9 @@
         "当原有的物品槽内容为空时， oldItemName 值为'minecraft:air'，且 oldItem 其余字段不存在 当切换原有物品，且新物品为空时，参数值同理"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物品.html#onoffhanditemchangedserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物品.html#onoffhanditemchangedserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "OnPlayerActionServerEvent",
@@ -11075,9 +11079,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/玩家.html#onplayeractionserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/玩家.html#onplayeractionserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "OnPlayerActiveShieldServerEvent",
@@ -11127,9 +11131,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物品.html#onplayeractiveshieldserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物品.html#onplayeractiveshieldserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "OnPlayerBlockedByShieldAfterServerEvent",
@@ -11174,9 +11178,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物品.html#onplayerblockedbyshieldafterserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物品.html#onplayerblockedbyshieldafterserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "OnPlayerBlockedByShieldBeforeServerEvent",
@@ -11223,9 +11227,9 @@
         "盾牌抵挡了所有伤害时，才会触发事件；部分抛射物造成的伤害无法全部抵挡，无法触发事件，例如带有穿透魔咒的弩。"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物品.html#onplayerblockedbyshieldbeforeserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物品.html#onplayerblockedbyshieldbeforeserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "OnPlayerHitBlockServerEvent",
@@ -11290,9 +11294,9 @@
         "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreatePlayer(playerId)\ncomp.OpenPlayerHitBlockDetection(0.0001)",
         "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreatePlayer(playerId)\ncomp.ClosePlayerHitBlockDetection()"
       ],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/玩家.html#onplayerhitblockserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/玩家.html#onplayerhitblockserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "OnRainLevelChangeServerEvent",
@@ -11327,9 +11331,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/世界.html#onrainlevelchangeserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/世界.html#onrainlevelchangeserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "OnScriptTickServer",
@@ -11353,9 +11357,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/世界.html#onscripttickserver",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/世界.html#onscripttickserver",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "OnStandOnBlockServerEvent",
@@ -11452,9 +11456,9 @@
         "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreateBlockInfo(levelId)\ncomp.RegisterOnStandOn(\"minecraft:redstone_ore\")",
         "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreateBlockInfo(levelId)\ncomp.UnRegisterOnStandOn(\"minecraft:redstone_ore\")"
       ],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/方块.html#onstandonblockserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/方块.html#onstandonblockserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "PhysXJointBreakServerEvent",
@@ -11516,9 +11520,9 @@
         "事件在PhysX模拟完成后同步触发。同一关节最多触发一次；事件触发后关节仍可通过IsJointBroken查询，并应使用DestroyJoint显式释放"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物理.html#physxjointbreakserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物理.html#physxjointbreakserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "PhysXPostSimulateServerEvent",
@@ -11557,9 +11561,9 @@
         "事件名大小写敏感，名称中的 PhysX 必须使用大写 X；不要写成 PhysxPostSimulateServerEvent。旧事件 PhysxTouchServerEvent 与 PhysxTriggerServerEvent 的命名不同"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物理.html#physxpostsimulateserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物理.html#physxpostsimulateserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "PhysXPreSimulateServerEvent",
@@ -11597,9 +11601,9 @@
         "事件名大小写敏感，名称中的 PhysX 必须使用大写 X；不要写成 PhysxPreSimulateServerEvent。旧事件 PhysxTouchServerEvent 与 PhysxTriggerServerEvent 的命名不同"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物理.html#physxpresimulateserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物理.html#physxpresimulateserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "PhysxTouchServerEvent",
@@ -11640,9 +11644,9 @@
         "{\n    \"entityId0\": str,    // 一个碰撞体所属实体的entityId\n    \"identifier0\": str,  // 一个碰撞体所属实体的identifier\n    \"shape0\": str或None, // 一个碰撞体的userData\n    \"entityId1\": str,    // 另一个碰撞体所属实体的entityId\n    \"identifier1\": str,  // 另一个碰撞体所属实体的identifier\n    \"shape1\": str或None,  // 另一个碰撞体的userData\n    \"pos\": (float,float,float),  // 碰撞点的世界坐标。其中一个碰撞体在创建时使用了PxEventMask.Found_Detail才有该字段\n    \"normal\":(float,float,float)  // 碰撞产生的力的方向，由碰撞体1指向碰撞体0。其中一个碰撞体在创建时使用了PxEventMask.Found_Detail才有该字段\n}",
         "{\n    \"entityId0\": str,     // 一个碰撞体所属实体的entityId\n    \"identifier0\": str,   // 一个碰撞体所属实体的identifier\n    \"shape0\": str或None,  // 一个碰撞体的userData\n    \"entityId1\": str,     // 另一个碰撞体所属实体的entityId\n    \"identifier1\": str,   // 另一个碰撞体所属实体的identifier\n    \"shape1\": str或None   // 另一个碰撞体的userData\n}"
       ],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物理.html#physxtouchserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物理.html#physxtouchserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "PhysxTriggerServerEvent",
@@ -11683,9 +11687,9 @@
         "{\n    \"entityId0\": str,    // 触发器所属实体的entityId\n    \"identifier0\": str,  // 触发器所属实体的identifier\n    \"shape0\": str或None, // 触发器的userData (NeEvent::Object)\n    \"entityId1\": str,    // 进入触发器的碰撞体所属实体的entityId\n    \"identifier1\": str,  // 进入触发器的碰撞体所属实体的identifier\n    \"shape1\": str或None  // 进入触发器的碰撞体的userData (NeEvent::Object)\n}",
         "{\n    \"entityId0\": str,     // 触发器所属实体的entityId\n    \"identifier0\": str,   // 触发器所属实体的identifier\n    \"shape0\": str或None,  // 触发器的userData (NeEvent::Object)\n    \"entityId1\": str,     // 离开触发器的碰撞体所属实体的entityId\n    \"identifier1\": str,   // 离开触发器的碰撞体所属实体的identifier\n    \"shape1\": str或None   // 离开触发器的碰撞体的userData (NeEvent::Object)\n}"
       ],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物理.html#physxtriggerserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物理.html#physxtriggerserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "PistonActionServerEvent",
@@ -11765,9 +11769,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/方块.html#pistonactionserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/方块.html#pistonactionserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "PlaceNeteaseLargeFeatureServerEvent",
@@ -11829,9 +11833,9 @@
         "1.使用PlaceNeteaseLargeFeature接口触发此事件时，可正常调用其他Mod SDK接口 2.使用自定义大型特征功能，配置Json的方式触发此事件时，调用其他Mod SDK接口将无法生效，强烈建议仅用于设置结构放置与否"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/世界.html#placeneteaselargefeatureserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/世界.html#placeneteaselargefeatureserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "PlaceNeteaseStructureFeatureEvent",
@@ -11902,9 +11906,9 @@
         "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreateFeature(levelId)\n# 注意structureName格式为floderName:structureName\ncomp.RemoveNeteaseFeatureWhiteList(\"test:pumpkins\")",
         "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreateFeature(levelId)\ncomp.ClearAllNeteaseFeatureWhiteList()"
       ],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/世界.html#placeneteasestructurefeatureevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/世界.html#placeneteasestructurefeatureevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "PlayerAddCustomContainerItemServerEvent",
@@ -11982,9 +11986,9 @@
         "当目标槽位接近满仓时，实际添加的数量可能小于请求添加的数量，changedItemDict反映实际添加的物品信息。"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物品.html#playeraddcustomcontaineritemserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物品.html#playeraddcustomcontaineritemserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "PlayerAttackEntityEvent",
@@ -12044,9 +12048,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/玩家.html#playerattackentityevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/玩家.html#playerattackentityevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "PlayerDieEvent",
@@ -12091,9 +12095,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/玩家.html#playerdieevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/玩家.html#playerdieevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "PlayerDoInteractServerEvent",
@@ -12133,9 +12137,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/玩家.html#playerdointeractserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/玩家.html#playerdointeractserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "PlayerDropItemServerEvent",
@@ -12170,9 +12174,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物品.html#playerdropitemserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物品.html#playerdropitemserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "PlayerEatFoodServerEvent",
@@ -12219,9 +12223,9 @@
         "由于牛奶本身并没有饱食度的概念，因此，当喝牛奶触发该事件时，饥饿度、营养价值字段无效并始终为0"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/玩家.html#playereatfoodserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/玩家.html#playereatfoodserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "PlayerFeedEntityServerEvent",
@@ -12268,9 +12272,9 @@
         "1.对于幼年生物，用对应的物品喂养后就可以触发事件，例如用小麦喂养幼年牛、用生鲑鱼喂养幼年猫； 2.对于成年生物，用对应的物品喂养后，该生物要进入“求爱模式”（持续散发红心粒子），才可以触发事件。特殊的成年生物列举如下： a.可骑乘生物，例如马，玩家要驯服马后，再给它喂养食物（例如金苹果、金萝卜），才可以触发事件；已驯服的马受伤后，用金苹果喂养时会治疗马，不触发事件，马的血量回满时，再喂养金苹果，才会触发事件； b.可驯服生物，例如狼，玩家要用骨头驯服狼后，再给它喂养肉类物品（例如熟猪排），才可以触发事件； c.需要在特定环境下才能繁殖的生物，例如熊猫，玩家用竹子喂养熊猫时，熊猫的5格内至少要有8根竹子，喂养后才可以触发事件。 3.该事件中如需调用使用手持物相关的接口，如PlayerUseItemToEntity或其他设置物品数量的接口，会导致接口正常调用但是物品数量计算异常，建议通过timer延迟调用。"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/玩家.html#playerfeedentityserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/玩家.html#playerfeedentityserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "PlayerFishingAfterServerEvent",
@@ -12322,9 +12326,9 @@
         "此事件在掉落物实体生成后触发，可通过itemEntityIdList获取生成的掉落物实体id进行后续操作"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/玩家.html#playerfishingafterserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/玩家.html#playerfishingafterserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "PlayerFishingServerEvent",
@@ -12382,9 +12386,9 @@
         "修改itemList后必须设置itemChange为True，否则修改不会生效"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/玩家.html#playerfishingserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/玩家.html#playerfishingserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "PlayerHungerChangeServerEvent",
@@ -12432,9 +12436,9 @@
         "当通过/hunger等指令设置饥饿度设置时，hunger字段值可能会超过最大饥饿度"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/玩家.html#playerhungerchangeserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/玩家.html#playerhungerchangeserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "PlayerHurtEvent",
@@ -12479,9 +12483,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/玩家.html#playerhurtevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/玩家.html#playerhurtevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "PlayerIntendLeaveServerEvent",
@@ -12513,9 +12517,9 @@
         "与【DelServerPlayerEvent】事件不同，此时可以通过各种API获取玩家的当前状态。"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/世界.html#playerintendleaveserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/世界.html#playerintendleaveserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "PlayerInteractServerEvent",
@@ -12560,9 +12564,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/玩家.html#playerinteractserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/玩家.html#playerinteractserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "PlayerInventoryOpenScriptServerEvent",
@@ -12599,9 +12603,9 @@
         "可以监听此事件判定客户端是否打开了创造背包"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/UI.html#playerinventoryopenscriptserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/UI.html#playerinventoryopenscriptserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "PlayerJoinMessageEvent",
@@ -12648,9 +12652,9 @@
         "对于联机类游戏（如联机大厅、网络游戏等），请勿在此事件的回调函数中使用SetFootPos接口修改玩家的位置，否则可能会因为触发服务端反作弊机制而传送失败。如需要在进入游戏时使用SetFootPos接口，建议监听AddServerPlayerEvent并设置位置。"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/世界.html#playerjoinmessageevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/世界.html#playerjoinmessageevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "PlayerLeftMessageServerEvent",
@@ -12695,9 +12699,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/世界.html#playerleftmessageserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/世界.html#playerleftmessageserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "PlayerNamedEntityServerEvent",
@@ -12747,9 +12751,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/玩家.html#playernamedentityserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/玩家.html#playernamedentityserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "PlayerPermissionChangeServerEvent",
@@ -12806,9 +12810,9 @@
         "具体权限说明： 权限字段 类型 说明 build bool 放置方块 mine bool 采集方块 doorsandswitches bool 使用门和开关 opencontainers bool 打开容器 attackplayers bool 攻击玩家 attackmobs bool 攻击生物 op bool 操作员命令 teleport bool 使用传送"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/玩家.html#playerpermissionchangeserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/玩家.html#playerpermissionchangeserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "PlayerPickupArrowServerEvent",
@@ -12858,9 +12862,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物品.html#playerpickuparrowserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物品.html#playerpickuparrowserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "PlayerRemoveCustomContainerItemServerEvent",
@@ -12937,9 +12941,9 @@
         "该事件仅在操作成功后触发，且不可取消。事件提供三个物品字典：操作前状态、实际变化的物品、操作后状态，便于精确追踪物品变化。"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物品.html#playerremovecustomcontaineritemserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物品.html#playerremovecustomcontaineritemserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "PlayerRespawnEvent",
@@ -12971,9 +12975,9 @@
         "该事件为玩家点击重生按钮时触发，但是触发时玩家可能尚未完成复活，此时请勿对玩家进行切维度或设置生命值等操作 一般情况下推荐使用PlayerRespawnFinishServerEvent"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/玩家.html#playerrespawnevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/玩家.html#playerrespawnevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "PlayerRespawnFinishServerEvent",
@@ -13006,9 +13010,9 @@
         "通过末地传送门回到主世界时也算重生，同样也会触发该事件"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/玩家.html#playerrespawnfinishserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/玩家.html#playerrespawnfinishserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "PlayerSleepServerEvent",
@@ -13068,9 +13072,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/玩家.html#playersleepserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/玩家.html#playersleepserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "PlayerStartFishingServerEvent",
@@ -13117,9 +13121,9 @@
         "此事件在鱼钩实体生成后触发，设置cancel为True可取消本次抛竿操作"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/玩家.html#playerstartfishingserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/玩家.html#playerstartfishingserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "PlayerStopSleepServerEvent",
@@ -13179,9 +13183,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/玩家.html#playerstopsleepserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/玩家.html#playerstopsleepserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "PlayerTeleportEvent",
@@ -13211,9 +13215,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/玩家.html#playerteleportevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/玩家.html#playerteleportevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "PlayerTryAddCustomContainerItemServerEvent",
@@ -13280,9 +13284,9 @@
         "容器内物品移动，合堆，分堆的操作会分多次事件触发并且顺序不定，编写逻辑时请勿依赖事件触发顺序"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物品.html#playertryaddcustomcontaineritemserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物品.html#playertryaddcustomcontaineritemserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "PlayerTryPutCustomContainerItemServerEvent",
@@ -13356,9 +13360,9 @@
         "容器内物品移动，合堆，分堆的操作会分多次事件触发并且顺序不定，编写逻辑时请勿依赖事件触发顺序"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物品.html#playertryputcustomcontaineritemserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物品.html#playertryputcustomcontaineritemserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "PlayerTryRemoveCustomContainerItemServerEvent",
@@ -13425,9 +13429,9 @@
         "容器内物品移动，合堆，分堆的操作会分多次事件触发并且顺序不定，编写逻辑时请勿依赖事件触发顺序"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物品.html#playertryremovecustomcontaineritemserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物品.html#playertryremovecustomcontaineritemserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "PlayerTrySleepServerEvent",
@@ -13462,9 +13466,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/玩家.html#playertrysleepserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/玩家.html#playertrysleepserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "ProjectileCritHitEvent",
@@ -13502,9 +13506,9 @@
         "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreatePlayer(playerId)\ncomp.OpenPlayerCritBox()",
         "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreatePlayer(playerId)\ncomp.ClosePlayerCritBox()"
       ],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/实体.html#projectilecrithitevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/实体.html#projectilecrithitevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "ProjectileDoHitEffectEvent",
@@ -13591,9 +13595,9 @@
       "examples": [
         "# ServerSystem\nimport mod.server.extraServerApi as serverApi\n# 监听引擎的事件 ：self指ServerSystem类的实例  ProjectileDoHitEffectEvent是系统事件\nself.ListenForEvent(serverApi.GetEngineNamespace(), serverApi.GetEngineSystemName(),\n                    \"ProjectileDoHitEffectEvent\", self, self.OnProjectileDoHitEffectEvent)\ndef OnProjectileDoHitEffectEvent(self, args):\n    # 设为True后，将取消这次的抛射物碰撞事件\n    args[\"cancel\"] = True"
       ],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/实体.html#projectiledohiteffectevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/实体.html#projectiledohiteffectevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "RefreshEffectServerEvent",
@@ -13643,9 +13647,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/实体.html#refresheffectserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/实体.html#refresheffectserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "RemoveEffectServerEvent",
@@ -13690,9 +13694,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/实体.html#removeeffectserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/实体.html#removeeffectserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "RoomHostChangedServerEvent",
@@ -13740,9 +13744,9 @@
         "newEntityId/oldEntityId 依赖对应玩家是否在线，离线时为None；uid字段则始终有效。"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/联机大厅.html#roomhostchangedserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/联机大厅.html#roomhostchangedserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "ServerBlockEntityTickEvent",
@@ -13795,9 +13799,9 @@
         "触发本事件时，若正在退出游戏，将无法获取到抛出本事件的方块实体数据（GetBlockEntityData函数返回None），也无法对其进行操作"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/方块.html#serverblockentitytickevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/方块.html#serverblockentitytickevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "ServerBlockUseEvent",
@@ -13895,9 +13899,9 @@
         "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreateBlockUseEventWhiteList(levelId)\ncomp.RemoveBlockItemListenForUseEvent(\"minecraft:nether_brick_stairs:2\")\n# 注意blockName格式为namespace:name:auxvalue，如果不填auxvalue，则默认为所有auxvalue\n# auxValue详细值详见官方wiki，如https://zh.minecraft.wiki/w/楼梯 中的‘方块数据值’",
         "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreateBlockUseEventWhiteList(levelId)\ncomp.ClearAllListenForBlockUseEventItems()"
       ],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/方块.html#serverblockuseevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/方块.html#serverblockuseevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "ServerChatEvent",
@@ -13979,9 +13983,9 @@
       "examples": [
         "# ServerSystem\nimport mod.server.extraServerApi as serverApi\nfrom mod_log import logger as logger\n# 监听引擎的事件 ：self指ServerSystem类的实例  ServerChatEvent是系统事件\nself.ListenForEvent(serverApi.GetEngineNamespace(),\n                    serverApi.GetEngineSystemName(),\n                    \"ServerChatEvent\",\n                    self, self.OnServerChat)\ndef OnServerChat(self, args):\n    #可以设置username或者message的样式代码 详见mc维基 样式代码\n    args[\"username\"] = \"§rl\"+args[username]+\"§r\"\n    args[\"message\"] = \"test\"\n    args[\"gameChatPrefix\"] = \"史蒂夫1号\" # 最终显示前缀：史蒂夫1\n    args[\"gameChatPrefixColorR\"] = 1.0\n    args[\"gameChatPrefixColorG\"] = 0.0\n    args[\"gameChatPrefixColorB\"] = 0.0 # 最终前缀底板颜色rgb：(1.0, 0.0, 0.0) 红色\n    logger.info(\"ServerChatEvent %s\" % args)"
       ],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/世界.html#serverchatevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/世界.html#serverchatevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "ServerEntityTryPlaceBlockEvent",
@@ -14069,9 +14073,9 @@
         "修改放置方块信息只对一般方块有效，对一些特殊方块无效，会导致放置取消，特殊方块包括：钟、蜡烛、管珊瑚扇、台阶、青蛙卵、脚手架、海泡菜、顶层雪、睡莲"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/方块.html#serverentitytryplaceblockevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/方块.html#serverentitytryplaceblockevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "ServerItemTryUseEvent",
@@ -14114,9 +14118,9 @@
         "ServerItemTryUseEvent/ClientItemTryUseEvent不能取消对方块使用物品的行为，如使用生物蛋，使用桶倒出/收集，使用打火石点燃草等；如果想要取消这种行为，请使用ClientItemUseOnEvent和ServerItemUseOnEvent"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物品.html#serveritemtryuseevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物品.html#serveritemtryuseevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "ServerItemUseOnEvent",
@@ -14209,9 +14213,9 @@
         "当对原生方块进行使用时，如堆肥桶等类似有 使用 功能的方块使用物品时，不会触发该事件。而当原生方块加入监听后，ServerBlockUseEvent会触发。当需要获取触发时使用的物品时，可以通过item组件（例如GetPlayerItem接口）获取手中持有的物品，对应的客户端事件同理。"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物品.html#serveritemuseonevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物品.html#serveritemuseonevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "ServerPlaceBlockEntityEvent",
@@ -14261,9 +14265,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/方块.html#serverplaceblockentityevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/方块.html#serverplaceblockentityevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "ServerPlayerGetExperienceOrbEvent",
@@ -14305,9 +14309,9 @@
         "cancel 值设为True时，捡起的经验球不会增加经验值，但是经验球一样会消失。"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/玩家.html#serverplayergetexperienceorbevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/玩家.html#serverplayergetexperienceorbevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "ServerPlayerTryDestroyBlockEvent",
@@ -14386,9 +14390,9 @@
         "可通过 minecraft:destroy_time 方块组件来修改方块的破坏时间"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/方块.html#serverplayertrydestroyblockevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/方块.html#serverplayertrydestroyblockevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "ServerPlayerTryTouchEvent",
@@ -14438,9 +14442,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物品.html#serverplayertrytouchevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物品.html#serverplayertrytouchevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "ServerPostBlockPatternEvent",
@@ -14495,9 +14499,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/世界.html#serverpostblockpatternevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/世界.html#serverpostblockpatternevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "ServerPreBlockPatternEvent",
@@ -14552,9 +14556,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/世界.html#serverpreblockpatternevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/世界.html#serverpreblockpatternevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "ServerSpawnMobEvent",
@@ -14631,9 +14635,9 @@
         "如果通过MOD API生成，identifier命名空间为custom。如果需要屏蔽原版的生物生成，可以判断identifier命名空间不为custom时设置cancel为True"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/世界.html#serverspawnmobevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/世界.html#serverspawnmobevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "ShearsDestoryBlockBeforeServerEvent",
@@ -14712,9 +14716,9 @@
         "绊线取消剪刀效果需要配合ShearsDestoryBlockBeforeClientEvent同时使用，否则在表现上可能展现出来的还是剪刀剪断后的效果。绊线取消剪刀效果后依然会掉落成线。"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/方块.html#shearsdestoryblockbeforeserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/方块.html#shearsdestoryblockbeforeserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "ShearsUseToBlockBeforeServerEvent",
@@ -14793,9 +14797,9 @@
         "和ServerItemUseOnEvent一样该事件判定在tick执行，意味着如果取消剪刀效果该事件可能会多次触发（取决于玩家按下使用键时长）"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物品.html#shearsusetoblockbeforeserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物品.html#shearsusetoblockbeforeserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "SpawnProjectileServerEvent",
@@ -14837,9 +14841,9 @@
         "该事件里无法获取弹射物实体的auxvalue。如有需要可以延迟一帧获取，或者在ProjectileDoHitEffectEvent获取"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/实体.html#spawnprojectileserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/实体.html#spawnprojectileserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "StartDestroyBlockServerEvent",
@@ -14903,9 +14907,9 @@
         "秒破方块在本事件触发前已经被服务端删除，此时本事件获取到的blockName为minecraft:air，且无法通过本事件进行取消操作,以下是两个解决方法： （1）用ServerPlayerTryDestroyBlockEvent获取到正确的方块信息或取消操作。 （2）通过 minecraft:destroy_time 方块组件来修改方块的破坏时间。"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/方块.html#startdestroyblockserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/方块.html#startdestroyblockserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "StartRidingServerEvent",
@@ -14945,9 +14949,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/实体.html#startridingserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/实体.html#startridingserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "StepOffBlockServerEvent",
@@ -15008,9 +15012,9 @@
         "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreateBlockInfo(levelId)\ncomp.RegisterOnStepOff(\"minecraft:redstone_ore\")",
         "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreateBlockInfo(levelId)\ncomp.UnRegisterOnStepOff(\"minecraft:redstone_ore\")"
       ],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/方块.html#stepoffblockserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/方块.html#stepoffblockserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "StepOnBlockServerEvent",
@@ -15078,9 +15082,9 @@
         "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreateBlockInfo(levelId)\ncomp.RegisterOnStepOn(\"minecraft:redstone_ore\")",
         "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreateBlockInfo(levelId)\ncomp.UnRegisterOnStepOn(\"minecraft:redstone_ore\")"
       ],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/方块.html#steponblockserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/方块.html#steponblockserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "StoreBuySuccServerEvent",
@@ -15112,9 +15116,9 @@
       "examples": [
         "import mod.server.extraServerApi as serverApi\nself.ListenForEvent(serverApi.GetEngineNamespace(),serverApi.GetEngineSystemName(),\n    \"StoreBuySuccServerEvent\",\n    self, self.OnStoreBuySucc)\ndef OnStoreBuySucc(self, args):\n    entityId = args['playerId']\n    print 'Ship Item.EntityId:', playerId"
       ],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/玩家.html#storebuysuccserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/玩家.html#storebuysuccserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "UIContainerItemChangedServerEvent",
@@ -15166,9 +15170,9 @@
       "examples": [
         "import mod.server.extraServerApi as serverApi\nfrom mod_log import logger as logger\n# 监听引擎的事件\nself.ListenForEvent(serverApi.GetEngineNamespace(),\n                    serverApi.GetEngineSystemName(),\n                    \"UIContainerItemChangedServerEvent\",\n                    self, self.OnUIContainerItemChangedServerEvent)\n\ndef OnUIContainerItemChangedServerEvent(self, args):\n    playerId = args['playerId']\n    logger.info(\"OnUIContainerItemChangedServerEvent args:%s\", args)\n    if args['slot'] == serverApi.GetMinecraftEnum().PlayerUISlot.GrindstoneInput:\n        print '砂轮输入位发生变化'"
       ],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物品.html#uicontaineritemchangedserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物品.html#uicontaineritemchangedserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "UrgeShipEvent",
@@ -15198,9 +15202,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/UI.html#urgeshipevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/UI.html#urgeshipevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "WalkAnimBeginServerEvent",
@@ -15232,9 +15236,9 @@
         "使用SetModel替换骨骼模型后，该事件才生效"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/模型.html#walkanimbeginserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/模型.html#walkanimbeginserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "WalkAnimEndServerEvent",
@@ -15266,9 +15270,9 @@
         "使用SetModel替换骨骼模型后，该事件才生效"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/模型.html#walkanimendserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/模型.html#walkanimendserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "WillAddEffectServerEvent",
@@ -15323,9 +15327,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/实体.html#willaddeffectserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/实体.html#willaddeffectserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "WillTeleportToServerEvent",
@@ -15407,9 +15411,9 @@
         "假如目标维度尚未在内存中创建（即服务器启动之后，到传送之前，没有玩家进入过这个维度），那么此时事件中返回的目标地点坐标是算法生成的，不能保证正确。"
       ],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/实体.html#willteleporttoserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/实体.html#willteleporttoserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     },
     {
       "name": "lobbyGoodBuySucServerEvent",
@@ -15444,9 +15448,9 @@
       "side": "服务端",
       "remarks": [],
       "examples": [],
-      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/联机大厅.html#lobbygoodbuysucserverevent",
+      "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/联机大厅.html#lobbygoodbuysucserverevent",
       "sdk_version": "3.10",
-      "source_last_modified": "Thu, 24 Sep 2026 12:01:38 GMT"
+      "source_last_modified": "Wed, 28 Oct 2026 10:10:37 GMT"
     }
   ]
 }

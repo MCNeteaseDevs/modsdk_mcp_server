@@ -1,6 +1,6 @@
 ---
 source_url: "https://mc.163.com/dev/mcmanual/mc-dev/mcguide/36-%E5%AE%A1%E6%A0%B8%E4%B8%8E%E4%B8%8B%E6%9E%B6/%E8%AF%BE%E7%A8%8B07-Python%E6%A8%A1%E5%9D%97%E7%99%BD%E5%90%8D%E5%8D%95.html"
-last_modified: "Thu, 24 Sep 2026 12:01:38 GMT"
+last_modified: "Wed, 28 Oct 2026 10:10:38 GMT"
 synced_from: "NetEase developer official website"
 ---
 

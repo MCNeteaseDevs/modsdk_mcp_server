@@ -19,7 +19,7 @@ import time
 import urllib.parse
 import urllib.request
 from concurrent.futures import ThreadPoolExecutor
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from email.utils import parsedate_to_datetime
 from html import unescape
@@ -58,6 +58,7 @@ class OfficialSnapshot:
     api_entries: List[Dict[str, Any]]
     event_entries: List[Dict[str, Any]]
     tutorials: Dict[str, Dict[str, Any]]
+    reference_aliases: List[Dict[str, str]] = field(default_factory=list)
 
 
 class MarkdownConverter(HTMLParser):
@@ -749,6 +750,7 @@ def fetch_snapshot(
     base_url = profile["docs_base_url"]
     version = profile["version"]
     pages: Dict[str, Dict[str, Any]] = {}
+    reference_aliases: Dict[Tuple[str, str], Dict[str, str]] = {}
 
     def get_page(doc_path: str) -> Tuple[str, Dict[str, Any]]:
         url = official_url(doc_path, base_url)
@@ -759,11 +761,42 @@ def fetch_snapshot(
     seeds = [API_INDEX_PATH, EVENT_INDEX_PATH, "更新信息/" + version]
     with ThreadPoolExecutor(max_workers=workers) as executor:
         pages.update(executor.map(get_page, seeds))
+        # 同一个官网频道会随稳定版发布整体滚动，旧更新页仍在不代表接口仍属于旧版。
+        channel_path = urllib.parse.urlsplit(base_url).path.rstrip("/") + "/更新信息/"
+        published_versions = set()
+        for href in re.findall(r'href=["\']([^"\']+)["\']', pages[API_INDEX_PATH]["html"]):
+            path = urllib.parse.unquote(urllib.parse.urlsplit(urllib.parse.urljoin(base_url + "/", href)).path)
+            if path.startswith(channel_path):
+                match = re.fullmatch(r"(\d+\.\d+)\.html", path[len(channel_path):])
+                if match:
+                    published_versions.add(match.group(1))
+        active_version = max(published_versions, key=lambda value: tuple(map(int, value.split(".")))) if published_versions else None
+        if active_version != version:
+            raise ValueError("官网频道当前版本为 {}，拒绝作为 {} 快照；历史比较必须使用冻结基线".format(active_version, version))
         paths: Set[str] = set(seeds)
         for page in pages.values():
             paths.update(_discover_pages(page["html"], base_url))
         for path, page in executor.map(get_page, sorted(paths - pages.keys())):
             pages[path] = page
+        # 分类页之外还可引用专门的详情页，按正文引用补齐；导航里的页面不再是唯一发现来源。
+        while True:
+            discovered = set()
+            for source_path, page in pages.items():
+                for referenced_path in _discover_pages(extract_main_html(page["html"]), base_url):
+                    # 官方部分物理参数链接误多写“接口/”；仅在正确枚举页已经实际抓取时归并。
+                    canonical = referenced_path.removeprefix("接口/")
+                    if referenced_path.startswith("接口/枚举值/") and canonical in pages:
+                        reference_aliases[(source_path, referenced_path)] = {
+                            "source_path": source_path, "original_url": official_url(referenced_path, base_url),
+                            "resolved_url": pages[canonical]["url"],
+                        }
+                        referenced_path = canonical
+                    discovered.add(referenced_path)
+            missing = sorted(discovered - pages.keys())
+            if not missing:
+                break
+            for path, page in executor.map(get_page, missing):
+                pages[path] = page
     api_rows = parse_index_rows(pages[API_INDEX_PATH]["html"])
     event_rows = parse_index_rows(pages[EVENT_INDEX_PATH]["html"])
     if not api_rows or not event_rows:
@@ -796,7 +829,7 @@ def fetch_snapshot(
         relative = urllib.parse.unquote(parts.path.split("/mcguide/", 1)[1]).removesuffix(".html")
         tutorials["教程/" + relative] = {"url": url, "html": html, "headers": dict(headers), "markdown": html_to_markdown(main, url)}
     print("已抓取官方 {}: {} 文档，{} API，{} 事件，{} 关联教程".format(version, len(pages), len(entries[0]), len(entries[1]), len(tutorials)), flush=True)
-    return OfficialSnapshot(profile, pages, entries[0], entries[1], tutorials)
+    return OfficialSnapshot(profile, pages, entries[0], entries[1], tutorials, [reference_aliases[key] for key in sorted(reference_aliases)])
 
 
 def _entry_key(entry: Mapping[str, Any]) -> Tuple[str, str, str]:
@@ -829,7 +862,7 @@ def _enum_values(page: Mapping[str, Any]) -> Dict[str, str]:
 
 def compare_snapshots(before: OfficialSnapshot, after: OfficialSnapshot) -> Dict[str, Any]:
     """正文与索引双重比较；分类迁移不算删除，源地址和同步时间不算契约修改。"""
-    report: Dict[str, Any] = {"schema_version": "1.0", "from_version": before.profile["version"], "to_version": after.profile["version"], "scope": "网易官网稳定版与 Beta 版在本次抓取时的完整公开文档，非运行时行为证明"}
+    report: Dict[str, Any] = {"schema_version": "1.0", "from_version": before.profile["version"], "to_version": after.profile["version"], "scope": "冻结的官方 {} 基线与当前官方 {} {} 文档的完整比较，非运行时行为证明".format(before.profile["version"], after.profile["version"], after.profile["status"])}
     for kind, old_entries, new_entries in (("api", before.api_entries, after.api_entries), ("event", before.event_entries, after.event_entries)):
         old = {_entry_key(entry): entry for entry in old_entries}
         new = {_entry_key(entry): entry for entry in new_entries}
@@ -883,8 +916,9 @@ def compare_snapshots(before: OfficialSnapshot, after: OfficialSnapshot) -> Dict
     report["caveats"] = [
         "按端侧、类路径和名称计数，双端方法分别计数；官网重复分类引用已去重。",
         "索引新出现不等于 SDK 首次引入；更新日志分类、两版快照差异与旧仓库资料分别保留。",
-        "3.10 当前为 Beta；官方计划稳定版时间不代表已经发布。",
+        "当前文档版本 {}、状态 {}，以本次核验的官方频道为准；计划发布日期不能单独证明发布。".format(after.profile["version"], after.profile["status"]),
         "分类页迁移与历史更新页的频道差异不代表接口删除。",
+        "官网稳定版频道会滚动更新；旧版签名以冻结基线正文为准，历史来源链接当前内容不能替代旧版证据。",
         "教程为非版本化官方页面，只能证明当前公开配置，不能直接归因于 3.9→3.10。",
         "文档、构建和文件核对不构成游戏功能验收。",
     ]
@@ -909,6 +943,8 @@ def render_comparison_report(repo_root: Path, before: OfficialSnapshot, after: O
         p = snapshot.profile
         lines.append("| {} | {} | {} | [官方更新信息]({}) |".format(p["version"], p["bedrock_version"], p["status"], snapshot.pages["更新信息/" + p["version"]]["url"]))
     p = after.profile
+    if p["status"] == "stable":
+        lines.extend(["", "已核验官方稳定版频道，更新信息列出的稳定版上线日期为 {}。".format(p["released_at"])])
     if p.get("scheduled_stable_at"):
         lines.extend(["", "官方计划稳定版：{}；计划全渠道更新：{}。这些日期不代表已经发布。".format(p["scheduled_stable_at"], p["scheduled_rollout_at"])])
     lines.extend(["", "逐页抓取 {} 份旧版参考文档、{} 份目标版参考文档及 {} 篇关联教程；另外重新抓取 Python 白名单。".format(len(before.pages), len(after.pages), len(after.tutorials)),
@@ -990,7 +1026,7 @@ def render_comparison_report(repo_root: Path, before: OfficialSnapshot, after: O
         for item in comparison["documents"][operation]:
             lines.append("| {} | [{}]({}) |".format(label, item["path"], item.get("source_url") or item["after_url"]))
     lines.extend(["", "## 本工具升级方式", "",
-                  "- 默认 ModSDK、BE 上限与 Beta 状态统一读取版本注册表；3.9 保留历史规则入口，API 检索明确使用当前完整快照。",
+                  "- 默认 ModSDK、BE 上限与发布状态统一读取版本注册表；历史版本保留规则入口，API 检索明确使用当前完整快照。",
                   "- 全量重建接口、事件和官方导航；按类路径、名称、端侧去重，保留不同类的同名方法。",
                   "- 已消失的旧官方分类正文从当前全文索引移除，旧条目清单单独保留，不混入当前 API。",
                   "- 官方事件生成器使用查证后的标准名称，保留 PhysX 大写 X，并明确排除普通双端生成器不支持的独立服务器事件。",
@@ -1024,7 +1060,7 @@ def _reconcile_repository(repo_root: Path, snapshot: OfficialSnapshot, compariso
 
 
 def _snapshot_sources(snapshot: OfficialSnapshot) -> Dict[str, Any]:
-    return {"version": snapshot.profile["version"], "status": snapshot.profile["status"], "docs_base_url": snapshot.profile["docs_base_url"], "api_count": len(snapshot.api_entries), "event_count": len(snapshot.event_entries), "documents": [
+    return {"version": snapshot.profile["version"], "status": snapshot.profile["status"], "docs_base_url": snapshot.profile["docs_base_url"], "api_count": len(snapshot.api_entries), "event_count": len(snapshot.event_entries), "reference_aliases": snapshot.reference_aliases, "documents": [
         {"path": path, "source_url": page["url"], "last_modified": _header_value(page["headers"], "Last-Modified"), "source_sha256": page.get("source_sha256") or _sha256(page["html"]), "markdown_sha256": _sha256(page["markdown"])}
         for path, page in sorted({**snapshot.pages, **snapshot.tutorials}.items())]}
 
@@ -1032,7 +1068,7 @@ def _snapshot_sources(snapshot: OfficialSnapshot) -> Dict[str, Any]:
 def freeze_snapshot(snapshot: OfficialSnapshot) -> Dict[str, Any]:
     def pages(values: Mapping[str, Any]) -> Dict[str, Any]:
         return {path: {"url": page["url"], "headers": {key: value for key, value in page["headers"].items() if key.casefold() in {"last-modified", "etag"}}, "markdown": page["markdown"], "source_sha256": page.get("source_sha256") or _sha256(page["html"])} for path, page in sorted(values.items())}
-    return {"schema_version": "1.0", "frozen_at": datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z"), "profile": snapshot.profile, "pages": pages(snapshot.pages), "tutorials": pages(snapshot.tutorials), "api_entries": snapshot.api_entries, "event_entries": snapshot.event_entries}
+    return {"schema_version": "1.0", "frozen_at": datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z"), "profile": snapshot.profile, "pages": pages(snapshot.pages), "tutorials": pages(snapshot.tutorials), "api_entries": snapshot.api_entries, "event_entries": snapshot.event_entries, "reference_aliases": snapshot.reference_aliases}
 
 
 def load_frozen_snapshot(path: Path, version: str) -> OfficialSnapshot:
@@ -1040,7 +1076,7 @@ def load_frozen_snapshot(path: Path, version: str) -> OfficialSnapshot:
     if payload.get("schema_version") != "1.0" or payload["profile"]["version"] != version:
         raise ValueError("冻结基线版本不匹配: " + str(path))
     print("已载入冻结的官方 {} 基线（{}）".format(version, payload["frozen_at"]), flush=True)
-    return OfficialSnapshot(payload["profile"], payload["pages"], payload["api_entries"], payload["event_entries"], payload["tutorials"])
+    return OfficialSnapshot(payload["profile"], payload["pages"], payload["api_entries"], payload["event_entries"], payload["tutorials"], payload.get("reference_aliases", []))
 
 
 def build_sync_plan(

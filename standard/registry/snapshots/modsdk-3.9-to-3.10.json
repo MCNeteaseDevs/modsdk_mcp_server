@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "from_version": "3.9",
   "to_version": "3.10",
-  "scope": "网易官网稳定版与 Beta 版在本次抓取时的完整公开文档，非运行时行为证明",
+  "scope": "冻结的官方 3.9 基线与当前官方 3.10 stable 文档的完整比较，非运行时行为证明",
   "api": {
     "before_count": 1612,
     "after_count": 1702,
@@ -33,7 +33,7 @@
         "desc": "使用四元数设置实体的方块几何体模型的旋转，避免欧拉角万向锁问题。",
         "remarks": [],
         "examples": [],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/方块/方块几何体模型.html#setactorblockgeometryrotationquat",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/方块/方块几何体模型.html#setactorblockgeometryrotationquat",
         "declared_operation": "新增"
       },
       {
@@ -59,7 +59,7 @@
         "examples": [
           "import mod.client.extraClientApi as clientApi\ncomp = clientApi.GetEngineCompFactory().CreateBlock(levelId)\ncomp.LookupBlocksByBlockTag(\"common:stone_tag\")"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/世界/方块组合.html#lookupblocksbyblocktag",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/世界/方块组合.html#lookupblocksbyblocktag",
         "declared_operation": "新增"
       },
       {
@@ -88,7 +88,7 @@
         "examples": [
           "import mod.client.extraClientApi as clientApi\ncomp = clientApi.GetEngineCompFactory().CreateBlockInfo(levelId)\nuv = comp.GetTextureAtlasUV(\"grass_top\")\n# uv = (0.80078125, 0.26953125, 0.0078125, 0.0078125)"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/方块/渲染.html#gettextureatlasuv",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/方块/渲染.html#gettextureatlasuv",
         "declared_operation": "新增"
       },
       {
@@ -122,7 +122,7 @@
         "desc": "在指定位置播放指定方块的破坏爆发粒子效果（一次性，强度与原版一致）。",
         "remarks": [],
         "examples": [],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/世界/渲染.html#spawndestroyparticleeffect",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/世界/渲染.html#spawndestroyparticleeffect",
         "declared_operation": "新增"
       },
       {
@@ -142,7 +142,7 @@
         "examples": [
           "import mod.client.extraClientApi as clientApi\ncomp = clientApi.GetEngineCompFactory().CreateCamera(levelId)\naspect = comp.GetAspectRatio()"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/玩家/摄像机.html#getaspectratio",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/玩家/摄像机.html#getaspectratio",
         "declared_operation": "新增"
       },
       {
@@ -162,7 +162,7 @@
         "examples": [
           "import mod.client.extraClientApi as clientApi\ncomp = clientApi.GetEngineCompFactory().CreateCamera(levelId)\nnear, far = comp.GetNearFarPlane()"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/玩家/摄像机.html#getnearfarplane",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/玩家/摄像机.html#getnearfarplane",
         "declared_operation": "新增"
       },
       {
@@ -182,7 +182,7 @@
         "examples": [
           "import mod.client.extraClientApi as clientApi\ncomp = clientApi.GetEngineCompFactory().CreateCamera(levelId)\nprojMat = comp.GetProjectionMatrix()\n# 取出第1行第1列元素（索引从0开始计算）\nelement = projMat[0][0]"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/玩家/摄像机.html#getprojectionmatrix",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/玩家/摄像机.html#getprojectionmatrix",
         "declared_operation": "新增"
       },
       {
@@ -204,7 +204,7 @@
         "examples": [
           "import mod.client.extraClientApi as clientApi\ncomp = clientApi.GetEngineCompFactory().CreateCamera(levelId)\nviewMat = comp.GetViewMatrix()\n# 取出第2行第3列元素（索引从0开始计算）\nelement = viewMat[1][2]"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/玩家/摄像机.html#getviewmatrix",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/玩家/摄像机.html#getviewmatrix",
         "declared_operation": "新增"
       },
       {
@@ -239,7 +239,7 @@
         "examples": [
           "import mod.client.extraClientApi as clientApi\ncomp = clientApi.GetEngineCompFactory().CreateCamera(levelId)\nwidth, height, _, _ = clientApi.GetEngineCompFactory().CreateGame(levelId).GetScreenViewInfo()\nray = comp.GetWorldRayFromScreenPoint(width / 2, height / 2)\norigin = ray['origin']\ndirection = ray['direction']"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/玩家/摄像机.html#getworldrayfromscreenpoint",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/玩家/摄像机.html#getworldrayfromscreenpoint",
         "declared_operation": "新增"
       },
       {
@@ -278,7 +278,7 @@
         "examples": [
           "import mod.client.extraClientApi as clientApi\ncomp = clientApi.GetEngineCompFactory().CreateCamera(levelId)\nscreenData = comp.WorldToScreenPoint(10, 60, 10)\nisInScreen = screenData['isInScreen']"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/玩家/摄像机.html#worldtoscreenpoint",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/玩家/摄像机.html#worldtoscreenpoint",
         "declared_operation": "新增"
       },
       {
@@ -304,7 +304,7 @@
         "examples": [
           "import mod.client.extraClientApi as clientApi\ncomp = clientApi.GetEngineCompFactory().CreateFishingLine(playerId)\ncolor = comp.GetFishingLineColor(\"mymod:custom_fishing_rod\")\nprint color"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物品.html#getfishinglinecolor",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物品.html#getfishinglinecolor",
         "declared_operation": "未列入该版本更新日志",
         "historical_repository_entry": true
       },
@@ -331,7 +331,7 @@
         "examples": [
           "import mod.client.extraClientApi as clientApi\ncomp = clientApi.GetEngineCompFactory().CreateFishingLine(playerId)\nmaxLen = comp.GetFishingLineMax(\"mymod:custom_fishing_rod\")"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物品.html#getfishinglinemax",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物品.html#getfishinglinemax",
         "declared_operation": "未列入该版本更新日志",
         "historical_repository_entry": true
       },
@@ -360,7 +360,7 @@
         "examples": [
           "import mod.client.extraClientApi as clientApi\ncomp = clientApi.GetEngineCompFactory().CreateItem(levelId)\nuv = comp.GetIconInfo({\"itemName\": \"minecraft:apple\", \"auxValue\": 0})\n# uv = (0.1064453125, 0.0009765625, 0.015625, 0.015625)"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物品.html#geticoninfo",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物品.html#geticoninfo",
         "declared_operation": "新增"
       },
       {
@@ -386,7 +386,7 @@
         "examples": [
           "import mod.client.extraClientApi as clientApi\ncomp = clientApi.GetEngineCompFactory().CreateItem(levelId)\ncomp.LookupItemsByItemTag(\"common:apple\")"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物品.html#lookupitemsbyitemtag",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物品.html#lookupitemsbyitemtag",
         "declared_operation": "新增"
       },
       {
@@ -417,7 +417,7 @@
         "examples": [
           "import mod.client.extraClientApi as clientApi\ncomp = clientApi.GetEngineCompFactory().CreateModel(levelId)\n# 将模型设置为仅在主世界可见\ncomp.SetFreeModelDimensionId(modelId, 0)\n# 将模型设置为全维度可见\ncomp.SetFreeModelDimensionId(modelId, -1)"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/模型.html#setfreemodeldimensionid",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/模型.html#setfreemodeldimensionid",
         "declared_operation": "未列入该版本更新日志"
       },
       {
@@ -488,7 +488,7 @@
           "仅添加到客户端本地 PhysX 副本，不会自动同步到服务端；世界中同时存在的碰撞体上限为8192个"
         ],
         "examples": [],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/碰撞体.html#addboxgeometry",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/碰撞体.html#addboxgeometry",
         "declared_operation": "新增"
       },
       {
@@ -508,7 +508,7 @@
         "examples": [
           "import mod.client.extraClientApi as clientApi\ncomp = clientApi.GetEngineCompFactory().CreatePhysx(entityId)\nprint comp.GetAngularVelocity()"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/刚体.html#getangularvelocity",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/刚体.html#getangularvelocity",
         "declared_operation": "新增"
       },
       {
@@ -528,7 +528,7 @@
         "examples": [
           "import mod.client.extraClientApi as clientApi\ncomp = clientApi.GetEngineCompFactory().CreatePhysx(entityId)\nprint comp.GetLinearVelocity()"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/刚体.html#getlinearvelocity",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/刚体.html#getlinearvelocity",
         "declared_operation": "新增"
       },
       {
@@ -546,7 +546,7 @@
         "desc": "获取客户端本地自定义刚体当前的碰撞 shape 数量",
         "remarks": [],
         "examples": [],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/碰撞体.html#getshapecount",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/碰撞体.html#getshapecount",
         "declared_operation": "新增"
       },
       {
@@ -570,7 +570,7 @@
         "desc": "获取客户端本地指定碰撞 shape 的信息",
         "remarks": [],
         "examples": [],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/碰撞体.html#getshapeinfo",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/碰撞体.html#getshapeinfo",
         "declared_operation": "新增"
       },
       {
@@ -596,7 +596,7 @@
           "仅操作客户端本地 PhysX 副本，不会同步删除服务端 Shape；删除后后续 Shape 的索引可能变化"
         ],
         "examples": [],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/碰撞体.html#removeshape",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/碰撞体.html#removeshape",
         "declared_operation": "新增"
       },
       {
@@ -622,7 +622,7 @@
           "仅操作客户端本地 PhysX 副本，不会同步删除服务端 Shape"
         ],
         "examples": [],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/碰撞体.html#removeshapebyuserdata",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/碰撞体.html#removeshapebyuserdata",
         "declared_operation": "新增"
       },
       {
@@ -653,7 +653,7 @@
           "仅更新客户端本地 PhysX 副本，可用于视觉预测；不会同步到服务端权威刚体"
         ],
         "examples": [],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/刚体.html#setglobalpose",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/刚体.html#setglobalpose",
         "declared_operation": "新增"
       },
       {
@@ -679,7 +679,7 @@
         "examples": [
           "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreateBlock(levelId)\ncomp.LookupBlocksByBlockTag(\"common:stone_tag\")"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/世界/方块组合.html#lookupblocksbyblocktag",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/世界/方块组合.html#lookupblocksbyblocktag",
         "declared_operation": "新增"
       },
       {
@@ -705,7 +705,7 @@
         "examples": [
           "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreateFishingLine(playerId)\ncolor = comp.GetFishingLineColor(\"mymod:custom_fishing_rod\")\nprint color"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物品.html#getfishinglinecolor",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物品.html#getfishinglinecolor",
         "declared_operation": "未列入该版本更新日志",
         "historical_repository_entry": true
       },
@@ -732,7 +732,7 @@
         "examples": [
           "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreateFishingLine(playerId)\nmaxLen = comp.GetFishingLineMax(\"mymod:custom_fishing_rod\")"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物品.html#getfishinglinemax",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物品.html#getfishinglinemax",
         "declared_operation": "未列入该版本更新日志",
         "historical_repository_entry": true
       },
@@ -764,7 +764,7 @@
         "examples": [
           "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreateFishingLine(playerId)\ncomp.SetFishingLineColor(\"mymod:custom_fishing_rod\", (1.0, 0.0, 0.0))"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物品.html#setfishinglinecolor",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物品.html#setfishinglinecolor",
         "declared_operation": "未列入该版本更新日志",
         "historical_repository_entry": true
       },
@@ -796,7 +796,7 @@
         "examples": [
           "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreateFishingLine(playerId)\ncomp.SetFishingLineMax(\"mymod:custom_fishing_rod\", 64.0)"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物品.html#setfishinglinemax",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物品.html#setfishinglinemax",
         "declared_operation": "未列入该版本更新日志",
         "historical_repository_entry": true
       },
@@ -823,7 +823,7 @@
         "examples": [
           "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreateItem(levelId)\ncomp.LookupItemsByItemTag(\"common:apple\")"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物品.html#lookupitemsbyitemtag",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物品.html#lookupitemsbyitemtag",
         "declared_operation": "新增"
       },
       {
@@ -843,7 +843,7 @@
         "examples": [
           "import mod.server.extraServerApi as serverApi\nlevelId = serverApi.GetLevelId()\nlobbyComp = serverApi.GetEngineCompFactory().CreateLobbyGame(levelId)\nuid = lobbyComp.GetHostPlayerUid()"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/联机大厅.html#gethostplayeruid",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/联机大厅.html#gethostplayeruid",
         "declared_operation": "新增"
       },
       {
@@ -877,7 +877,7 @@
         "examples": [
           "import mod.server.extraServerApi as serverApi\nlevelId = serverApi.GetLevelId()\nlobbyComp = serverApi.GetEngineCompFactory().CreateLobbyGame(levelId)\ndef cb(roomId):\n    if roomId is None:\n        print(\"获取失败或玩家不在联机大厅\")\n    else:\n        print(roomId)\nlobbyComp.GetPlayerRoomId(cb, playerUid)"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/联机大厅.html#getplayerroomid",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/联机大厅.html#getplayerroomid",
         "declared_operation": "新增"
       },
       {
@@ -900,7 +900,7 @@
         "examples": [
           "import mod.server.extraServerApi as serverApi\nlevelId = serverApi.GetLevelId()\nlobbyComp = serverApi.GetEngineCompFactory().CreateLobbyGame(levelId)\nroomInfo = lobbyComp.GetRoomInfo()\nif roomInfo:\n    roomId = roomInfo[\"roomId\"]\n    modId = roomInfo[\"modId\"]\n    ownerEntityId = roomInfo[\"ownerEntityId\"]"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/联机大厅.html#getroominfo",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/联机大厅.html#getroominfo",
         "declared_operation": "新增"
       },
       {
@@ -931,7 +931,7 @@
         "examples": [
           "import mod.server.extraServerApi as serverApi\nlevelId = serverApi.GetLevelId()\nlobbyComp = serverApi.GetEngineCompFactory().CreateLobbyGame(levelId)\ndef cb(meta):\n    if meta is None:\n        print(\"获取失败或房间不存在\")\n    else:\n        print(meta)\nroomInfo = lobbyComp.GetRoomInfo()\nif roomInfo:\n    lobbyComp.GetRoomMeta(cb, roomInfo[\"roomId\"])"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/联机大厅.html#getroommeta",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/联机大厅.html#getroommeta",
         "declared_operation": "新增"
       },
       {
@@ -965,7 +965,7 @@
         "examples": [
           "import mod.server.extraServerApi as serverApi\nlevelId = serverApi.GetLevelId()\nlobbyComp = serverApi.GetEngineCompFactory().CreateLobbyGame(levelId)\n# 使用默认提示踢出玩家\nlobbyComp.KickPlayer(playerId)\n# 使用自定义提示踢出玩家\nlobbyComp.KickPlayer(playerId, \"自定义踢出信息\")"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/联机大厅.html#kickplayer",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/联机大厅.html#kickplayer",
         "declared_operation": "新增"
       },
       {
@@ -999,7 +999,7 @@
         "examples": [
           "import mod.server.extraServerApi as serverApi\nlevelId = serverApi.GetLevelId()\nlobbyComp = serverApi.GetEngineCompFactory().CreateLobbyGame(levelId)\nlobbyComp.KickPlayerByUid(uid, \"自定义踢出信息\")"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/联机大厅.html#kickplayerbyuid",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/联机大厅.html#kickplayerbyuid",
         "declared_operation": "新增"
       },
       {
@@ -1032,7 +1032,7 @@
         "examples": [
           "import mod.server.extraServerApi as serverApi\nlevelId = serverApi.GetLevelId()\nlobbyComp = serverApi.GetEngineCompFactory().CreateLobbyGame(levelId)\nlobbyComp.SetRoomMeta(\"seasonId\", 2026)\nlobbyComp.SetRoomMeta(\"scores\", {\"p1\": 10})"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/联机大厅.html#setroommeta",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/联机大厅.html#setroommeta",
         "declared_operation": "新增"
       },
       {
@@ -1058,7 +1058,7 @@
         "examples": [
           "import mod.server.extraServerApi as serverApi\nlevelId = serverApi.GetLevelId()\nlobbyComp = serverApi.GetEngineCompFactory().CreateLobbyGame(levelId)\nlobbyComp.TransferRoomHost(targetPlayerId)"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/联机大厅.html#transferroomhost",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/联机大厅.html#transferroomhost",
         "declared_operation": "新增"
       },
       {
@@ -1084,7 +1084,7 @@
         "examples": [
           "import mod.server.extraServerApi as serverApi\nlevelId = serverApi.GetLevelId()\nlobbyComp = serverApi.GetEngineCompFactory().CreateLobbyGame(levelId)\nlobbyComp.TransferRoomHostByUid(targetUid)"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/联机大厅.html#transferroomhostbyuid",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/联机大厅.html#transferroomhostbyuid",
         "declared_operation": "新增"
       },
       {
@@ -1115,7 +1115,7 @@
         "examples": [
           "import mod.server.extraServerApi as serverApi\nfrom common.minecraftEnum import PxForceMode\ncomp = serverApi.GetEngineCompFactory().CreatePhysx(entityId)\ncomp.AddTorque((0,5000,0), PxForceMode.eFORCE)"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/刚体.html#addtorque",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/刚体.html#addtorque",
         "declared_operation": "调整"
       },
       {
@@ -1146,7 +1146,7 @@
         "examples": [
           "import mod.server.extraServerApi as serverApi\nfrom common.minecraftEnum import PxForceMode\ncomp = serverApi.GetEngineCompFactory().CreatePhysx(entityId)\ncomp.AddTorqueLocal((100,0,0), PxForceMode.eIMPULSE)"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/刚体.html#addtorquelocal",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/刚体.html#addtorquelocal",
         "declared_operation": "新增"
       },
       {
@@ -1166,7 +1166,7 @@
         "examples": [
           "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreatePhysx(entityId)\ncomp.ClearRemoteVisualSync()"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/场景.html#clearremotevisualsync",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/场景.html#clearremotevisualsync",
         "declared_operation": "新增"
       },
       {
@@ -1188,7 +1188,7 @@
         "examples": [
           "import mod.server.extraServerApi as serverApi\nlevelComp = serverApi.GetEngineCompFactory().CreatePhysx(serverApi.GetLevelId())\nlevelComp.ConnectPvd()"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/场景.html#connectpvd",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/场景.html#connectpvd",
         "declared_operation": "新增"
       },
       {
@@ -1229,7 +1229,7 @@
         "examples": [
           "import mod.server.extraServerApi as serverApi\nlevelComp = serverApi.GetEngineCompFactory().CreatePhysx(serverApi.GetLevelId())\njointId = levelComp.CreateDistanceJoint(entityId0, entityId1, (0, 80, 0), (0, 77, 0))\nlevelComp.SetDistanceJointParams(jointId, 2.0, 4.0, 200.0, 30.0, 14)"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/关节.html#createdistancejoint",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/关节.html#createdistancejoint",
         "declared_operation": "新增"
       },
       {
@@ -1270,7 +1270,7 @@
         "examples": [
           "import mod.server.extraServerApi as serverApi\nlevelComp = serverApi.GetEngineCompFactory().CreatePhysx(serverApi.GetLevelId())\njointId = levelComp.CreateFixedJoint(entityId0, entityId1, (0, 80, 0), (0, 80, 0))"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/关节.html#createfixedjoint",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/关节.html#createfixedjoint",
         "declared_operation": "新增"
       },
       {
@@ -1316,7 +1316,7 @@
         "examples": [
           "import mod.server.extraServerApi as serverApi\nlevelComp = serverApi.GetEngineCompFactory().CreatePhysx(serverApi.GetLevelId())\njointId = levelComp.CreatePrismaticJoint(entityId0, entityId1, (0, 80, 0), (0, 80, 0), (1, 0, 0))"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/关节.html#createprismaticjoint",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/关节.html#createprismaticjoint",
         "declared_operation": "新增"
       },
       {
@@ -1362,7 +1362,7 @@
         "examples": [
           "import mod.server.extraServerApi as serverApi\nlevelComp = serverApi.GetEngineCompFactory().CreatePhysx(serverApi.GetLevelId())\njointId = levelComp.CreateRevoluteJoint(entityId0, entityId1, (0, 80, 0), (0, 80, 0), (0, 1, 0))"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/关节.html#createrevolutejoint",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/关节.html#createrevolutejoint",
         "declared_operation": "新增"
       },
       {
@@ -1403,7 +1403,7 @@
         "examples": [
           "import mod.server.extraServerApi as serverApi\nlevelComp = serverApi.GetEngineCompFactory().CreatePhysx(serverApi.GetLevelId())\njointId = levelComp.CreateSphericalJoint(entityId0, entityId1, (0, 80, 0), (0, 80, 0))"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/关节.html#createsphericaljoint",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/关节.html#createsphericaljoint",
         "declared_operation": "新增"
       },
       {
@@ -1423,7 +1423,7 @@
         "examples": [
           "import mod.server.extraServerApi as serverApi\nlevelComp = serverApi.GetEngineCompFactory().CreatePhysx(serverApi.GetLevelId())\nlevelComp.DestroyAllJoints()"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/关节.html#destroyalljoints",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/关节.html#destroyalljoints",
         "declared_operation": "新增"
       },
       {
@@ -1449,7 +1449,7 @@
         "examples": [
           "import mod.server.extraServerApi as serverApi\nlevelComp = serverApi.GetEngineCompFactory().CreatePhysx(serverApi.GetLevelId())\nlevelComp.DestroyJoint(jointId)"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/关节.html#destroyjoint",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/关节.html#destroyjoint",
         "declared_operation": "新增"
       },
       {
@@ -1475,7 +1475,7 @@
         "examples": [
           "import mod.server.extraServerApi as serverApi\nlevelComp = serverApi.GetEngineCompFactory().CreatePhysx(serverApi.GetLevelId())\ndestroyedCount = levelComp.DestroyJointsForEntity(entityId)"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/关节.html#destroyjointsforentity",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/关节.html#destroyjointsforentity",
         "declared_operation": "新增"
       },
       {
@@ -1497,7 +1497,7 @@
         "examples": [
           "import mod.server.extraServerApi as serverApi\nlevelComp = serverApi.GetEngineCompFactory().CreatePhysx(serverApi.GetLevelId())\nlevelComp.DisconnectPvd()"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/场景.html#disconnectpvd",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/场景.html#disconnectpvd",
         "declared_operation": "新增"
       },
       {
@@ -1512,12 +1512,12 @@
           "return_type": "int",
           "return_comment": "Actor 标记；非自定义刚体时返回None"
         },
-        "desc": "获取 actor 当前 ActorFlags(诊断接口,bit1=eDISABLE_SIMULATION,bit3=eDISABLE_GRAVITY)",
+        "desc": "获取 actor 当前 ActorFlags(诊断接口,bit1=eDISABLE_GRAVITY,bit2=eSEND_SLEEP_NOTIFIES,bit3=eDISABLE_SIMULATION)",
         "remarks": [],
         "examples": [
           "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreatePhysx(entityId)\nprint comp.GetActorFlags()"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/刚体.html#getactorflags",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/刚体.html#getactorflags",
         "declared_operation": "新增"
       },
       {
@@ -1537,7 +1537,7 @@
         "examples": [
           "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreatePhysx(entityId)\nprint comp.GetAngularVelocity()"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/刚体.html#getangularvelocity",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/刚体.html#getangularvelocity",
         "declared_operation": "新增"
       },
       {
@@ -1563,7 +1563,7 @@
         "examples": [
           "import mod.server.extraServerApi as serverApi\nlevelComp = serverApi.GetEngineCompFactory().CreatePhysx(serverApi.GetLevelId())\nprint levelComp.GetJointBreakForce(jointId)"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/关节.html#getjointbreakforce",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/关节.html#getjointbreakforce",
         "declared_operation": "调整"
       },
       {
@@ -1589,7 +1589,7 @@
         "examples": [
           "import mod.server.extraServerApi as serverApi\nlevelComp = serverApi.GetEngineCompFactory().CreatePhysx(serverApi.GetLevelId())\nprint levelComp.GetJointFrames(jointId)"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/关节.html#getjointframes",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/关节.html#getjointframes",
         "declared_operation": "新增"
       },
       {
@@ -1615,7 +1615,7 @@
         "examples": [
           "import mod.server.extraServerApi as serverApi\nlevelComp = serverApi.GetEngineCompFactory().CreatePhysx(serverApi.GetLevelId())\nprint levelComp.GetJointType(jointId)"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/关节.html#getjointtype",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/关节.html#getjointtype",
         "declared_operation": "调整"
       },
       {
@@ -1635,7 +1635,7 @@
         "examples": [
           "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreatePhysx(entityId)\nprint comp.GetLinearVelocity()"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/刚体.html#getlinearvelocity",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/刚体.html#getlinearvelocity",
         "declared_operation": "新增"
       },
       {
@@ -1655,7 +1655,7 @@
         "examples": [
           "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreatePhysx(entityId)\nprint comp.GetMass()"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/刚体.html#getmass",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/刚体.html#getmass",
         "declared_operation": "新增"
       },
       {
@@ -1675,7 +1675,7 @@
         "examples": [
           "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreatePhysx(entityId)\nprint comp.GetMassSpaceInertiaTensor()"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/刚体.html#getmassspaceinertiatensor",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/刚体.html#getmassspaceinertiatensor",
         "declared_operation": "新增"
       },
       {
@@ -1701,7 +1701,7 @@
         "examples": [
           "import mod.server.extraServerApi as serverApi\nlevelComp = serverApi.GetEngineCompFactory().CreatePhysx(serverApi.GetLevelId())\nprint levelComp.GetRevoluteJointAngle(jointId)"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/关节.html#getrevolutejointangle",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/关节.html#getrevolutejointangle",
         "declared_operation": "新增"
       },
       {
@@ -1727,7 +1727,7 @@
         "examples": [
           "import mod.server.extraServerApi as serverApi\nlevelComp = serverApi.GetEngineCompFactory().CreatePhysx(serverApi.GetLevelId())\nprint levelComp.GetRevoluteJointVelocity(jointId)"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/关节.html#getrevolutejointvelocity",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/关节.html#getrevolutejointvelocity",
         "declared_operation": "新增"
       },
       {
@@ -1747,7 +1747,7 @@
         "examples": [
           "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreatePhysx(entityId)\nprint comp.GetRigidBodyFlags()"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/刚体.html#getrigidbodyflags",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/刚体.html#getrigidbodyflags",
         "declared_operation": "新增"
       },
       {
@@ -1767,7 +1767,7 @@
         "examples": [
           "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreatePhysx(entityId)\nprint comp.GetRigidDynamicLockFlags()"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/刚体.html#getrigiddynamiclockflags",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/刚体.html#getrigiddynamiclockflags",
         "declared_operation": "新增"
       },
       {
@@ -1787,7 +1787,7 @@
         "examples": [
           "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreatePhysx(entityId)\nprint comp.GetShapeCount()"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/碰撞体.html#getshapecount",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/碰撞体.html#getshapecount",
         "declared_operation": "新增"
       },
       {
@@ -1813,7 +1813,7 @@
         "examples": [
           "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreatePhysx(entityId)\nprint comp.GetShapeInfo(0) # 返回第一个 shape 的 localTransform、userData 等信息"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/碰撞体.html#getshapeinfo",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/碰撞体.html#getshapeinfo",
         "declared_operation": "新增"
       },
       {
@@ -1833,7 +1833,7 @@
         "examples": [
           "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreatePhysx(entityId)\nprint comp.IsDefaultPxActor()"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/刚体.html#isdefaultpxactor",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/刚体.html#isdefaultpxactor",
         "declared_operation": "新增"
       },
       {
@@ -1859,7 +1859,7 @@
         "examples": [
           "import mod.server.extraServerApi as serverApi\nlevelComp = serverApi.GetEngineCompFactory().CreatePhysx(serverApi.GetLevelId())\nprint levelComp.IsJointBroken(jointId)"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/关节.html#isjointbroken",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/关节.html#isjointbroken",
         "declared_operation": "新增"
       },
       {
@@ -1879,7 +1879,7 @@
         "examples": [
           "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreatePhysx(entityId)\nprint comp.IsSleeping()"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/刚体.html#issleeping",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/刚体.html#issleeping",
         "declared_operation": "新增"
       },
       {
@@ -1899,7 +1899,7 @@
         "examples": [
           "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreatePhysx(entityId)\ncomp.PutToSleep()"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/刚体.html#puttosleep",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/刚体.html#puttosleep",
         "declared_operation": "新增"
       },
       {
@@ -1927,7 +1927,7 @@
         "examples": [
           "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreatePhysx(entityId)\ncomp.RemoveShape(0) # 删除第一个已添加的碰撞 shape"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/碰撞体.html#removeshape",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/碰撞体.html#removeshape",
         "declared_operation": "新增"
       },
       {
@@ -1953,7 +1953,7 @@
         "examples": [
           "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreatePhysx(entityId)\nremovedCount = comp.RemoveShapeByUserData(\"wheel\")"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/碰撞体.html#removeshapebyuserdata",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/碰撞体.html#removeshapebyuserdata",
         "declared_operation": "新增"
       },
       {
@@ -2001,7 +2001,7 @@
         "examples": [
           "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreatePhysx(entityId)\nresult = comp.SampleBuoyancy(\n    [(0.0, 0.0, 0.0, 1.0)],\n    -1.5,\n    {\"minecraft:water\": 90.0, \"minecraft:flowing_water\": 90.0}\n)"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/场景.html#samplebuoyancy",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/场景.html#samplebuoyancy",
         "declared_operation": "新增"
       },
       {
@@ -2027,7 +2027,7 @@
         "examples": [
           "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreatePhysx(entityId)\ncomp.SetAngularDamping(1.0) # 角速度衰减系数"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/刚体.html#setangulardamping",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/刚体.html#setangulardamping",
         "declared_operation": "新增"
       },
       {
@@ -2053,7 +2053,7 @@
         "examples": [
           "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreatePhysx(entityId)\ncomp.SetAngularVelocity((0.0, 3.14, 0.0)) # 绕世界 Y 轴旋转"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/刚体.html#setangularvelocity",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/刚体.html#setangularvelocity",
         "declared_operation": "新增"
       },
       {
@@ -2079,7 +2079,7 @@
         "examples": [
           "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreatePhysx(entityId)\ncomp.SetCMassLocalPose((0.0, -0.5, 0.0)) # 将重心下移半格"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/刚体.html#setcmasslocalpose",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/刚体.html#setcmasslocalpose",
         "declared_operation": "新增"
       },
       {
@@ -2130,7 +2130,7 @@
         "examples": [
           "import mod.server.extraServerApi as serverApi\nlevelComp = serverApi.GetEngineCompFactory().CreatePhysx(serverApi.GetLevelId())\n# 2=最大距离，4=最小距离，8=弹簧；14 表示三项全部开启\nlevelComp.SetDistanceJointParams(jointId, 2.0, 4.0, 200.0, 30.0, 14)"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/关节.html#setdistancejointparams",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/关节.html#setdistancejointparams",
         "declared_operation": "新增"
       },
       {
@@ -2166,7 +2166,7 @@
         "examples": [
           "import mod.server.extraServerApi as serverApi\nlevelComp = serverApi.GetEngineCompFactory().CreatePhysx(serverApi.GetLevelId())\nlevelComp.SetJointBreakForce(jointId, 500.0, 100.0)"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/关节.html#setjointbreakforce",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/关节.html#setjointbreakforce",
         "declared_operation": "调整"
       },
       {
@@ -2197,7 +2197,7 @@
         "examples": [
           "import mod.server.extraServerApi as serverApi\nlevelComp = serverApi.GetEngineCompFactory().CreatePhysx(serverApi.GetLevelId())\nlevelComp.SetJointCollisionEnabled(jointId, False)"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/关节.html#setjointcollisionenabled",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/关节.html#setjointcollisionenabled",
         "declared_operation": "新增"
       },
       {
@@ -2223,7 +2223,7 @@
         "examples": [
           "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreatePhysx(entityId)\ncomp.SetLinearDamping(0.5) # 线速度衰减系数"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/刚体.html#setlineardamping",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/刚体.html#setlineardamping",
         "declared_operation": "新增"
       },
       {
@@ -2249,7 +2249,7 @@
         "examples": [
           "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreatePhysx(entityId)\ncomp.SetLinearVelocity((0.0, 0.0, 8.0)) # 立即设为向 +Z 匀速运动"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/刚体.html#setlinearvelocity",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/刚体.html#setlinearvelocity",
         "declared_operation": "新增"
       },
       {
@@ -2275,7 +2275,7 @@
         "examples": [
           "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreatePhysx(entityId)\ncomp.SetMass(20.0)"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/刚体.html#setmass",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/刚体.html#setmass",
         "declared_operation": "新增"
       },
       {
@@ -2301,7 +2301,7 @@
         "examples": [
           "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreatePhysx(entityId)\ncomp.SetMaxAngularVelocity(20.0) # 限制为 20 rad/s"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/刚体.html#setmaxangularvelocity",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/刚体.html#setmaxangularvelocity",
         "declared_operation": "新增"
       },
       {
@@ -2327,7 +2327,7 @@
         "examples": [
           "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreatePhysx(entityId)\ncomp.SetMaxLinearVelocity(30.0)"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/刚体.html#setmaxlinearvelocity",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/刚体.html#setmaxlinearvelocity",
         "declared_operation": "新增"
       },
       {
@@ -2363,7 +2363,7 @@
         "examples": [
           "import mod.server.extraServerApi as serverApi\nlevelComp = serverApi.GetEngineCompFactory().CreatePhysx(serverApi.GetLevelId())\nlevelComp.SetPrismaticJointLimit(jointId, -3.0, 3.0)"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/关节.html#setprismaticjointlimit",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/关节.html#setprismaticjointlimit",
         "declared_operation": "新增"
       },
       {
@@ -2394,7 +2394,7 @@
         "examples": [
           "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreatePhysx(entityId)\ncomp.SetRemoteVisualSync(80.0, 0) # 80 格内不丢同步 tick"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/场景.html#setremotevisualsync",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/场景.html#setremotevisualsync",
         "declared_operation": "新增"
       },
       {
@@ -2430,7 +2430,7 @@
         "examples": [
           "import mod.server.extraServerApi as serverApi\nlevelComp = serverApi.GetEngineCompFactory().CreatePhysx(serverApi.GetLevelId())\nlevelComp.SetRevoluteJointDrive(jointId, 1.5, 100000.0)"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/关节.html#setrevolutejointdrive",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/关节.html#setrevolutejointdrive",
         "declared_operation": "新增"
       },
       {
@@ -2466,7 +2466,7 @@
         "examples": [
           "import math\nimport mod.server.extraServerApi as serverApi\nlevelComp = serverApi.GetEngineCompFactory().CreatePhysx(serverApi.GetLevelId())\nlevelComp.SetRevoluteJointLimit(jointId, -math.pi / 3.0, math.pi / 3.0)"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/关节.html#setrevolutejointlimit",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/关节.html#setrevolutejointlimit",
         "declared_operation": "新增"
       },
       {
@@ -2497,7 +2497,7 @@
         "examples": [
           "import mod.server.extraServerApi as serverApi\nlevelComp = serverApi.GetEngineCompFactory().CreatePhysx(serverApi.GetLevelId())\nlevelComp.SetSceneGravity(0, (0.0, -9.8, 0.0))"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/场景.html#setscenegravity",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/场景.html#setscenegravity",
         "declared_operation": "新增"
       },
       {
@@ -2533,7 +2533,7 @@
         "examples": [
           "import math\nimport mod.server.extraServerApi as serverApi\nlevelComp = serverApi.GetEngineCompFactory().CreatePhysx(serverApi.GetLevelId())\nlevelComp.SetSphericalJointLimitCone(jointId, math.pi / 4.0, math.pi / 4.0)"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/关节.html#setsphericaljointlimitcone",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/关节.html#setsphericaljointlimitcone",
         "declared_operation": "新增"
       },
       {
@@ -2553,7 +2553,7 @@
         "examples": [
           "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreatePhysx(entityId)\ncomp.WakeUp()"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/刚体.html#wakeup",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/刚体.html#wakeup",
         "declared_operation": "新增"
       }
     ],
@@ -2566,7 +2566,7 @@
         "changed_fields": [
           "remarks"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/方块/方块几何体模型.html#combineblockbetweenpostogeometry",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/方块/方块几何体模型.html#combineblockbetweenpostogeometry",
         "before": {
           "name": "CombineBlockBetweenPosToGeometry",
           "side": "客户端",
@@ -2676,7 +2676,7 @@
           "examples": [
             "import mod.client.extraClientApi as clientApi\nblockGeometryComp = clientApi.GetEngineCompFactory().CreateBlockGeometry(levelId)\npalette = blockGeometryComp.CombineBlockBetweenPosToGeometry((200,64,200),(201,65,202),\"my_block_geometry\")"
           ],
-          "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/方块/方块几何体模型.html#combineblockbetweenpostogeometry"
+          "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/方块/方块几何体模型.html#combineblockbetweenpostogeometry"
         }
       },
       {
@@ -2686,7 +2686,7 @@
         "changed_fields": [
           "remarks"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/方块/方块几何体模型.html#combineblockfromposlisttogeometry",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/方块/方块几何体模型.html#combineblockfromposlisttogeometry",
         "before": {
           "name": "CombineBlockFromPosListToGeometry",
           "side": "客户端",
@@ -2786,7 +2786,7 @@
           "examples": [
             "import mod.client.extraClientApi as clientApi\nblockGeometryComp = clientApi.GetEngineCompFactory().CreateBlockGeometry(levelId)\npalette = blockGeometryComp.CombineBlockFromPosListToGeometry([(200,64,200),(201,65,202)],\"my_block_geometry\")"
           ],
-          "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/方块/方块几何体模型.html#combineblockfromposlisttogeometry"
+          "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/方块/方块几何体模型.html#combineblockfromposlisttogeometry"
         }
       },
       {
@@ -2797,7 +2797,7 @@
           "param",
           "remarks"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/方块/方块几何体模型.html#combineblockpalettetogeometry",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/方块/方块几何体模型.html#combineblockpalettetogeometry",
         "before": {
           "name": "CombineBlockPaletteToGeometry",
           "side": "客户端",
@@ -2887,7 +2887,7 @@
           "examples": [
             "import mod.client.extraClientApi as clientApi\nblockComp = clientApi.GetEngineCompFactory().CreateBlock(levelId)\npalette = blockComp.GetBlockPaletteBetweenPos((200,64,200),(201,65,202))\nblockGeometryComp = clientApi.GetEngineCompFactory().CreateBlockGeometry(levelId)\ngeometryName = blockGeometryComp.CombineBlockPaletteToGeometry(palette,\"my_block_geometry\")\nprint geometryName"
           ],
-          "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/方块/方块几何体模型.html#combineblockpalettetogeometry"
+          "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/方块/方块几何体模型.html#combineblockpalettetogeometry"
         }
       },
       {
@@ -2897,7 +2897,7 @@
         "changed_fields": [
           "desc"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物品.html#getitemtags",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物品.html#getitemtags",
         "before": {
           "name": "GetItemTags",
           "side": "客户端",
@@ -2956,7 +2956,7 @@
           "examples": [
             "import mod.client.extraClientApi as clientApi\ncomp = clientApi.GetEngineCompFactory().CreateItem(levelId)\ncomp.GetItemTags(\"minecraft:apple\")"
           ],
-          "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物品.html#getitemtags"
+          "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物品.html#getitemtags"
         }
       },
       {
@@ -2967,7 +2967,7 @@
           "param",
           "examples"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/模型.html#createfreemodel",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/模型.html#createfreemodel",
         "before": {
           "name": "CreateFreeModel",
           "side": "客户端",
@@ -3021,7 +3021,7 @@
           "examples": [
             "import mod.client.extraClientApi as clientApi\n## 当需要自由模型时，建议使用LevelId\ncomp = clientApi.GetEngineCompFactory().CreateModel(levelId)\n# 创建全维度可见的自由模型\nmodel = comp.CreateFreeModel(modelName)\n# 创建仅在主世界可见的自由模型\nmodel = comp.CreateFreeModel(modelName, 0)"
           ],
-          "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/模型.html#createfreemodel"
+          "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/模型.html#createfreemodel"
         }
       },
       {
@@ -3031,7 +3031,7 @@
         "changed_fields": [
           "doc_class_path"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/刚体.html#getquaternion",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/刚体.html#getquaternion",
         "before": {
           "name": "GetQuaternion",
           "side": "客户端",
@@ -3072,7 +3072,7 @@
           "examples": [
             "import mod.client.extraClientApi as clientApi\ncomp = clientApi.GetEngineCompFactory().CreatePhysx(entityId)\nprint comp.GetQuaternion()"
           ],
-          "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/刚体.html#getquaternion"
+          "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/刚体.html#getquaternion"
         }
       },
       {
@@ -3082,7 +3082,7 @@
         "changed_fields": [
           "doc_class_path"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/场景.html#raycast",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/场景.html#raycast",
         "before": {
           "name": "Raycast",
           "side": "客户端",
@@ -3165,91 +3165,7 @@
           "examples": [
             "import mod.client.extraClientApi as clientApi\ncomp = clientApi.GetEngineCompFactory().CreatePhysx(levelId)\nprint comp.Raycast(0, (0,80,0), (0,1,0), 5)"
           ],
-          "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/场景.html#raycast"
-        }
-      },
-      {
-        "name": "SetCommand",
-        "side": "服务端",
-        "path": "server.component.commandCompServer.CommandCompServer",
-        "changed_fields": [
-          "remarks"
-        ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/世界/指令.html#setcommand",
-        "before": {
-          "name": "SetCommand",
-          "side": "服务端",
-          "path": "server.component.commandCompServer.CommandCompServer",
-          "doc_class_path": [
-            "世界/指令"
-          ],
-          "param": [
-            {
-              "param_comment": "指令",
-              "param_name": "cmdStr",
-              "param_type": "str"
-            },
-            {
-              "param_comment": "实体Id:可选，如果不设置，则随机选择玩家",
-              "param_name": "entityId",
-              "param_type": "str"
-            },
-            {
-              "param_comment": "是否输出到聊天窗口：可选，默认False，如果为True的话，指令正确时，才会和聊天框输入原生指令一样输出返回信息。只有当该参数为True的时候会触发OnCommandOutputServerEvent与OnCommandOutputClientEvent",
-              "param_name": "showOutput",
-              "param_type": "bool"
-            }
-          ],
-          "return": {
-            "return_type": "bool",
-            "return_comment": "命令是否执行成功"
-          },
-          "desc": "使用游戏内指令",
-          "remarks": [
-            "entityId 为非玩家时，即使showOutput为true，也不会输出到聊天窗口，且OnCommandOutputClientEvent 事件不会被触发",
-            "极限模式下 需要开启作弊的指令无法调用"
-          ],
-          "examples": [
-            "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreateCommand(levelId)\ncomp.SetCommand(\"/tp @p 100 5 100\")#传送指令"
-          ],
-          "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/世界/指令.html#setcommand"
-        },
-        "after": {
-          "name": "SetCommand",
-          "side": "服务端",
-          "path": "server.component.commandCompServer.CommandCompServer",
-          "doc_class_path": [
-            "世界/指令"
-          ],
-          "param": [
-            {
-              "param_comment": "指令",
-              "param_name": "cmdStr",
-              "param_type": "str"
-            },
-            {
-              "param_comment": "实体Id:可选，如果不设置，则随机选择玩家",
-              "param_name": "entityId",
-              "param_type": "str"
-            },
-            {
-              "param_comment": "是否输出到聊天窗口：可选，默认False，如果为True的话，指令正确时，才会和聊天框输入原生指令一样输出返回信息。只有当该参数为True的时候会触发OnCommandOutputServerEvent与OnCommandOutputClientEvent",
-              "param_name": "showOutput",
-              "param_type": "bool"
-            }
-          ],
-          "return": {
-            "return_type": "bool",
-            "return_comment": "命令是否执行成功"
-          },
-          "desc": "使用游戏内指令",
-          "remarks": [
-            "entityId 为非玩家时，即使showOutput为true，也不会输出到聊天窗口，且OnCommandOutputClientEvent 事件不会被触发"
-          ],
-          "examples": [
-            "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreateCommand(levelId)\ncomp.SetCommand(\"/tp @p 100 5 100\")#传送指令"
-          ],
-          "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/世界/指令.html#setcommand"
+          "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/场景.html#raycast"
         }
       },
       {
@@ -3259,7 +3175,7 @@
         "changed_fields": [
           "desc"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物品.html#getitemtags",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物品.html#getitemtags",
         "before": {
           "name": "GetItemTags",
           "side": "服务端",
@@ -3318,7 +3234,7 @@
           "examples": [
             "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreateItem(levelId)\ncomp.GetItemTags(\"minecraft:apple\")"
           ],
-          "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物品.html#getitemtags"
+          "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物品.html#getitemtags"
         }
       },
       {
@@ -3330,7 +3246,7 @@
           "remarks",
           "doc_class_path"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/碰撞体.html#addboxgeometry",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/碰撞体.html#addboxgeometry",
         "before": {
           "name": "AddBoxGeometry",
           "side": "服务端",
@@ -3465,12 +3381,12 @@
           "desc": "给自定义刚体创建盒形碰撞体",
           "remarks": [
             "可在创建刚体后的任意服务端脚本时机调用，运行时添加后会自动重算刚体质量、质心和惯性张量；碰撞体配置本身不存档",
-            "世界中同时存在的碰撞体上限为8192个"
+            "当前世界中通过 PhysX 脚本接口创建且未移除的 Shape 总数上限为8192个，盒形、胶囊形、球形碰撞体和盒形触发器共同计数"
           ],
           "examples": [
             "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreatePhysx(entityId)\ncomp.AddBoxGeometry((0, 0.9, 0), 0.3, 0.9, 0.3, 0.05, 0.05, 0)"
           ],
-          "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/碰撞体.html#addboxgeometry"
+          "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/碰撞体.html#addboxgeometry"
         }
       },
       {
@@ -3482,7 +3398,7 @@
           "remarks",
           "doc_class_path"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/碰撞体.html#addboxtrigger",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/碰撞体.html#addboxtrigger",
         "before": {
           "name": "AddBoxTrigger",
           "side": "服务端",
@@ -3586,12 +3502,12 @@
           "desc": "给自定义刚体创建盒子形触发器",
           "remarks": [
             "可在创建刚体后的任意服务端脚本时机调用；触发器本身不参与刚体质量计算，碰撞体配置本身不存档",
-            "世界中同时存在的碰撞体上限为8192个"
+            "当前世界中通过 PhysX 脚本接口创建且未移除的 Shape 总数上限为8192个，盒形、胶囊形、球形碰撞体和盒形触发器共同计数"
           ],
           "examples": [
             "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreatePhysx(entityId)\ncomp.AddBoxTrigger((0, 0.9, 0), 0.3, 0.9, 0.3)"
           ],
-          "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/碰撞体.html#addboxtrigger"
+          "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/碰撞体.html#addboxtrigger"
         }
       },
       {
@@ -3603,7 +3519,7 @@
           "remarks",
           "doc_class_path"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/碰撞体.html#addcapsulegeometry",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/碰撞体.html#addcapsulegeometry",
         "before": {
           "name": "AddCapsuleGeometry",
           "side": "服务端",
@@ -3728,12 +3644,12 @@
           "desc": "给自定义刚体创建胶囊形碰撞体",
           "remarks": [
             "可在创建刚体后的任意服务端脚本时机调用，运行时添加后会自动重算刚体质量、质心和惯性张量；碰撞体配置本身不存档",
-            "世界中同时存在的碰撞体上限为8192个"
+            "当前世界中通过 PhysX 脚本接口创建且未移除的 Shape 总数上限为8192个，盒形、胶囊形、球形碰撞体和盒形触发器共同计数"
           ],
           "examples": [
             "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreatePhysx(entityId)\ncomp.AddCapsuleGeometry((0, 0.9, 0), 0.3, 0.9, 0.05, 0.05, 0)"
           ],
-          "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/碰撞体.html#addcapsulegeometry"
+          "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/碰撞体.html#addcapsulegeometry"
         }
       },
       {
@@ -3745,7 +3661,7 @@
           "desc",
           "doc_class_path"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/刚体.html#addforce",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/刚体.html#addforce",
         "before": {
           "name": "AddForce",
           "side": "服务端",
@@ -3804,7 +3720,7 @@
           "examples": [
             "import mod.server.extraServerApi as serverApi\nfrom common.minecraftEnum import PxForceMode\ncomp = serverApi.GetEngineCompFactory().CreatePhysx(entityId)\n# 添加一个向上的速度\ncomp.AddForce((0,1,0), PxForceMode.eVELOCITY_CHANGE)"
           ],
-          "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/刚体.html#addforce"
+          "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/刚体.html#addforce"
         }
       },
       {
@@ -3814,7 +3730,7 @@
         "changed_fields": [
           "doc_class_path"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/刚体.html#addforceatpos",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/刚体.html#addforceatpos",
         "before": {
           "name": "AddForceAtPos",
           "side": "服务端",
@@ -3883,7 +3799,7 @@
           "examples": [
             "import mod.server.extraServerApi as serverApi\nfrom common.minecraftEnum import PxForceMode\ncomp = serverApi.GetEngineCompFactory().CreatePhysx(entityId)\n# 添加一个向上的速度\ncomp.AddForceAtPos((0,1,0), PxForceMode.eVELOCITY_CHANGE, (0,81,0))"
           ],
-          "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/刚体.html#addforceatpos"
+          "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/刚体.html#addforceatpos"
         }
       },
       {
@@ -3893,7 +3809,7 @@
         "changed_fields": [
           "doc_class_path"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/刚体.html#addforceatposlocal",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/刚体.html#addforceatposlocal",
         "before": {
           "name": "AddForceAtPosLocal",
           "side": "服务端",
@@ -3962,7 +3878,7 @@
           "examples": [
             "import mod.server.extraServerApi as serverApi\nfrom common.minecraftEnum import PxForceMode\ncomp = serverApi.GetEngineCompFactory().CreatePhysx(entityId)\n# 对实体左侧位置添加一个向前的力\ncomp.AddForceAtPosLocal((0,0,1000), PxForceMode.eFORCE, (1,0,0))"
           ],
-          "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/刚体.html#addforceatposlocal"
+          "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/刚体.html#addforceatposlocal"
         }
       },
       {
@@ -3974,7 +3890,7 @@
           "remarks",
           "doc_class_path"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/碰撞体.html#addspheregeometry",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/碰撞体.html#addspheregeometry",
         "before": {
           "name": "AddSphereGeometry",
           "side": "服务端",
@@ -4089,12 +4005,12 @@
           "desc": "给自定义刚体创建球形碰撞体",
           "remarks": [
             "可在创建刚体后的任意服务端脚本时机调用，运行时添加后会自动重算刚体质量、质心和惯性张量；碰撞体配置本身不存档",
-            "世界中同时存在的碰撞体上限为8192个"
+            "当前世界中通过 PhysX 脚本接口创建且未移除的 Shape 总数上限为8192个，盒形、胶囊形、球形碰撞体和盒形触发器共同计数"
           ],
           "examples": [
             "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreatePhysx(entityId)\ncomp.AddSphereGeometry((0, 0.9, 0), 0.3, 0.05, 0.05, 0)"
           ],
-          "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/碰撞体.html#addspheregeometry"
+          "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/碰撞体.html#addspheregeometry"
         }
       },
       {
@@ -4104,7 +4020,7 @@
         "changed_fields": [
           "doc_class_path"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/刚体.html#createpxactor",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/刚体.html#createpxactor",
         "before": {
           "name": "CreatePxActor",
           "side": "服务端",
@@ -4147,7 +4063,7 @@
           "examples": [
             "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreatePhysx(entityId)\ncomp.CreatePxActor()"
           ],
-          "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/刚体.html#createpxactor"
+          "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/刚体.html#createpxactor"
         }
       },
       {
@@ -4157,7 +4073,7 @@
         "changed_fields": [
           "doc_class_path"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/刚体.html#getquaternion",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/刚体.html#getquaternion",
         "before": {
           "name": "GetQuaternion",
           "side": "服务端",
@@ -4198,7 +4114,7 @@
           "examples": [
             "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreatePhysx(entityId)\nprint comp.GetQuaternion()"
           ],
-          "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/刚体.html#getquaternion"
+          "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/刚体.html#getquaternion"
         }
       },
       {
@@ -4208,7 +4124,7 @@
         "changed_fields": [
           "doc_class_path"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/场景.html#raycast",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/场景.html#raycast",
         "before": {
           "name": "Raycast",
           "side": "服务端",
@@ -4301,7 +4217,7 @@
           "examples": [
             "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreatePhysx(levelId)\nprint comp.Raycast(0, (0,80,0), (0,1,0), 5)"
           ],
-          "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/场景.html#raycast"
+          "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/场景.html#raycast"
         }
       },
       {
@@ -4311,7 +4227,7 @@
         "changed_fields": [
           "doc_class_path"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/刚体.html#setactorflag",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/刚体.html#setactorflag",
         "before": {
           "name": "SetActorFlag",
           "side": "服务端",
@@ -4360,7 +4276,7 @@
           "examples": [
             "import mod.server.extraServerApi as serverApi\nfrom common.minecraftEnum import PxActorFlag\ncomp = serverApi.GetEngineCompFactory().CreatePhysx(entityId)\n# 不受重力\ncomp.SetActorFlag(PxActorFlag.eDISABLE_GRAVITY, True)"
           ],
-          "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/刚体.html#setactorflag"
+          "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/刚体.html#setactorflag"
         }
       },
       {
@@ -4370,7 +4286,7 @@
         "changed_fields": [
           "doc_class_path"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/刚体.html#setglobalpose",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/刚体.html#setglobalpose",
         "before": {
           "name": "SetGlobalPose",
           "side": "服务端",
@@ -4429,7 +4345,7 @@
           "examples": [
             "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreatePhysx(entityId)\n# 瞬移到0,80,0，旋转不变\ncomp.SetGlobalPose((0,80,0), None)"
           ],
-          "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/刚体.html#setglobalpose"
+          "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/刚体.html#setglobalpose"
         }
       },
       {
@@ -4439,7 +4355,7 @@
         "changed_fields": [
           "doc_class_path"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/刚体.html#setkinematictarget",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/刚体.html#setkinematictarget",
         "before": {
           "name": "SetKinematicTarget",
           "side": "服务端",
@@ -4498,7 +4414,7 @@
           "examples": [
             "import mod.server.extraServerApi as serverApi\ncomp = serverApi.GetEngineCompFactory().CreatePhysx(entityId)\n# 位置移动到0,80,0，旋转不变\ncomp.SetKinematicTarget((0,80,0), None)"
           ],
-          "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/刚体.html#setkinematictarget"
+          "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/刚体.html#setkinematictarget"
         }
       },
       {
@@ -4508,7 +4424,7 @@
         "changed_fields": [
           "doc_class_path"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/刚体.html#setrigidbodyflag",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/刚体.html#setrigidbodyflag",
         "before": {
           "name": "SetRigidBodyFlag",
           "side": "服务端",
@@ -4567,7 +4483,7 @@
           "examples": [
             "import mod.server.extraServerApi as serverApi\nfrom common.minecraftEnum import PxRigidBodyFlag\ncomp = serverApi.GetEngineCompFactory().CreatePhysx(entityId)\ncomp.SetRigidBodyFlag(PxRigidBodyFlag.eKINEMATIC, True) # 设置为运动学刚体"
           ],
-          "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/刚体.html#setrigidbodyflag"
+          "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/刚体.html#setrigidbodyflag"
         }
       },
       {
@@ -4577,7 +4493,7 @@
         "changed_fields": [
           "doc_class_path"
         ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/刚体.html#setrigiddynamiclockflags",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/刚体.html#setrigiddynamiclockflags",
         "before": {
           "name": "SetRigidDynamicLockFlags",
           "side": "服务端",
@@ -4626,7 +4542,7 @@
           "examples": [
             "import mod.server.extraServerApi as serverApi\nfrom common.minecraftEnum import PxRigidDynamicLockFlag\ncomp = serverApi.GetEngineCompFactory().CreatePhysx(entityId)\n# 锁定xyz轴旋转\ncomp.SetRigidDynamicLockFlags(PxRigidDynamicLockFlag.eLOCK_ANGULAR_X | PxRigidDynamicLockFlag.eLOCK_ANGULAR_Y | PxRigidDynamicLockFlag.eLOCK_ANGULAR_Z)"
           ],
-          "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物理/刚体.html#setrigiddynamiclockflags"
+          "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物理/刚体.html#setrigiddynamiclockflags"
         }
       }
     ]
@@ -4665,7 +4581,7 @@
           "事件名大小写敏感，名称中的 PhysX 必须使用大写 X；不要写成 PhysxPostSimulateClientEvent。旧事件 PhysxTouchClientEvent 与 PhysxTriggerClientEvent 的命名不同"
         ],
         "examples": [],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物理.html#physxpostsimulateclientevent",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物理.html#physxpostsimulateclientevent",
         "declared_operation": "新增"
       },
       {
@@ -4698,7 +4614,7 @@
           "事件名大小写敏感，名称中的 PhysX 必须使用大写 X；不要写成 PhysxPreSimulateClientEvent。旧事件 PhysxTouchClientEvent 与 PhysxTriggerClientEvent 的命名不同"
         ],
         "examples": [],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物理.html#physxpresimulateclientevent",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物理.html#physxpresimulateclientevent",
         "declared_operation": "新增"
       },
       {
@@ -4754,7 +4670,7 @@
           "事件在PhysX模拟完成后同步触发。同一关节最多触发一次；事件触发后关节仍可通过IsJointBroken查询，并应使用DestroyJoint显式释放"
         ],
         "examples": [],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物理.html#physxjointbreakserverevent",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物理.html#physxjointbreakserverevent",
         "declared_operation": "调整"
       },
       {
@@ -4787,7 +4703,7 @@
           "事件名大小写敏感，名称中的 PhysX 必须使用大写 X；不要写成 PhysxPostSimulateServerEvent。旧事件 PhysxTouchServerEvent 与 PhysxTriggerServerEvent 的命名不同"
         ],
         "examples": [],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物理.html#physxpostsimulateserverevent",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物理.html#physxpostsimulateserverevent",
         "declared_operation": "新增"
       },
       {
@@ -4819,7 +4735,7 @@
           "事件名大小写敏感，名称中的 PhysX 必须使用大写 X；不要写成 PhysxPreSimulateServerEvent。旧事件 PhysxTouchServerEvent 与 PhysxTriggerServerEvent 的命名不同"
         ],
         "examples": [],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物理.html#physxpresimulateserverevent",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物理.html#physxpresimulateserverevent",
         "declared_operation": "新增"
       },
       {
@@ -4861,274 +4777,12 @@
           "newEntityId/oldEntityId 依赖对应玩家是否在线，离线时为None；uid字段则始终有效。"
         ],
         "examples": [],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/联机大厅.html#roomhostchangedserverevent",
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/联机大厅.html#roomhostchangedserverevent",
         "declared_operation": "新增"
       }
     ],
     "removed": [],
-    "changed": [
-      {
-        "name": "LiquidClippedClientEvent",
-        "side": "客户端",
-        "path": "client.clientEvent",
-        "changed_fields": [
-          "remarks"
-        ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物品.html#liquidclippedclientevent",
-        "before": {
-          "name": "LiquidClippedClientEvent",
-          "side": "客户端",
-          "path": "client.clientEvent",
-          "doc_class_path": [
-            "物品"
-          ],
-          "param": [
-            {
-              "param_comment": "玩家Id",
-              "param_name": "playerId",
-              "param_type": "str"
-            },
-            {
-              "param_comment": "方块的identifier，包含命名空间及名称",
-              "param_name": "blockName",
-              "param_type": "str"
-            },
-            {
-              "param_comment": "方块附加值",
-              "param_name": "aux",
-              "param_type": "int"
-            },
-            {
-              "param_comment": "方块坐标(x,y,z)",
-              "param_name": "blockPos",
-              "param_type": "tuple(int,int,int)"
-            },
-            {
-              "param_comment": "维度id",
-              "param_name": "dimensionId",
-              "param_type": "int"
-            },
-            {
-              "param_comment": "点击的精准坐标(x,y,z)",
-              "param_name": "floatPos",
-              "param_type": "tuple(float,float,float)"
-            }
-          ],
-          "return": {
-            "return_type": "",
-            "return_comment": "无"
-          },
-          "desc": "玩家客户端点击流体时触发（支持原版流体与自定义流体）",
-          "remarks": [
-            "需要在物品中添加netease:liquid_clipped: True组件才能触发"
-          ],
-          "examples": [],
-          "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物品.html#liquidclippedclientevent"
-        },
-        "after": {
-          "name": "LiquidClippedClientEvent",
-          "side": "客户端",
-          "path": "client.clientEvent",
-          "doc_class_path": [
-            "物品"
-          ],
-          "param": [
-            {
-              "param_comment": "玩家Id",
-              "param_name": "playerId",
-              "param_type": "str"
-            },
-            {
-              "param_comment": "方块的identifier，包含命名空间及名称",
-              "param_name": "blockName",
-              "param_type": "str"
-            },
-            {
-              "param_comment": "方块附加值",
-              "param_name": "aux",
-              "param_type": "int"
-            },
-            {
-              "param_comment": "方块坐标(x,y,z)",
-              "param_name": "blockPos",
-              "param_type": "tuple(int,int,int)"
-            },
-            {
-              "param_comment": "维度id",
-              "param_name": "dimensionId",
-              "param_type": "int"
-            },
-            {
-              "param_comment": "点击的精准坐标(x,y,z)",
-              "param_name": "floatPos",
-              "param_type": "tuple(float,float,float)"
-            }
-          ],
-          "return": {
-            "return_type": "",
-            "return_comment": "无"
-          },
-          "desc": "玩家客户端点击流体时触发（支持原版流体与自定义流体）",
-          "remarks": [],
-          "examples": [],
-          "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物品.html#liquidclippedclientevent"
-        }
-      },
-      {
-        "name": "RightClickReleaseClientEvent",
-        "side": "客户端",
-        "path": "client.clientEvent",
-        "changed_fields": [
-          "desc"
-        ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/控制.html#rightclickreleaseclientevent",
-        "before": {
-          "name": "RightClickReleaseClientEvent",
-          "side": "客户端",
-          "path": "client.clientEvent",
-          "doc_class_path": [
-            "控制"
-          ],
-          "param": [],
-          "return": {
-            "return_type": "",
-            "return_comment": "无"
-          },
-          "desc": "玩家松开使用物品/放置方块键时触发，例如鼠标右键、新触控交互键、手柄左扳机键",
-          "remarks": [
-            "按键控制流程的图片讲解见 TapOrHoldReleaseClientEvent 事件的备注"
-          ],
-          "examples": [],
-          "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/控制.html#rightclickreleaseclientevent"
-        },
-        "after": {
-          "name": "RightClickReleaseClientEvent",
-          "side": "客户端",
-          "path": "client.clientEvent",
-          "doc_class_path": [
-            "控制"
-          ],
-          "param": [],
-          "return": {
-            "return_type": "",
-            "return_comment": "无"
-          },
-          "desc": "玩家松开使用物品/放置方块键时触发，例如鼠标右键、手柄左扳机键",
-          "remarks": [
-            "按键控制流程的图片讲解见 TapOrHoldReleaseClientEvent 事件的备注"
-          ],
-          "examples": [],
-          "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/控制.html#rightclickreleaseclientevent"
-        }
-      },
-      {
-        "name": "LiquidClippedServerEvent",
-        "side": "服务端",
-        "path": "server.serverEvent",
-        "changed_fields": [
-          "remarks"
-        ],
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物品.html#liquidclippedserverevent",
-        "before": {
-          "name": "LiquidClippedServerEvent",
-          "side": "服务端",
-          "path": "server.serverEvent",
-          "doc_class_path": [
-            "物品"
-          ],
-          "param": [
-            {
-              "param_comment": "玩家Id",
-              "param_name": "playerId",
-              "param_type": "str"
-            },
-            {
-              "param_comment": "方块的identifier，包含命名空间及名称",
-              "param_name": "blockName",
-              "param_type": "str"
-            },
-            {
-              "param_comment": "方块附加值",
-              "param_name": "aux",
-              "param_type": "int"
-            },
-            {
-              "param_comment": "方块坐标(x,y,z)",
-              "param_name": "blockPos",
-              "param_type": "tuple(int,int,int)"
-            },
-            {
-              "param_comment": "维度id",
-              "param_name": "dimensionId",
-              "param_type": "int"
-            },
-            {
-              "param_comment": "点击的精准坐标(x,y,z)",
-              "param_name": "floatPos",
-              "param_type": "tuple(float,float,float)"
-            }
-          ],
-          "return": {
-            "return_type": "",
-            "return_comment": "无"
-          },
-          "desc": "玩家服务端点击流体时触发（支持原版流体与自定义流体）",
-          "remarks": [
-            "需要在物品中添加netease:liquid_clipped: True组件才能触发"
-          ],
-          "examples": [],
-          "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/事件/物品.html#liquidclippedserverevent"
-        },
-        "after": {
-          "name": "LiquidClippedServerEvent",
-          "side": "服务端",
-          "path": "server.serverEvent",
-          "doc_class_path": [
-            "物品"
-          ],
-          "param": [
-            {
-              "param_comment": "玩家Id",
-              "param_name": "playerId",
-              "param_type": "str"
-            },
-            {
-              "param_comment": "方块的identifier，包含命名空间及名称",
-              "param_name": "blockName",
-              "param_type": "str"
-            },
-            {
-              "param_comment": "方块附加值",
-              "param_name": "aux",
-              "param_type": "int"
-            },
-            {
-              "param_comment": "方块坐标(x,y,z)",
-              "param_name": "blockPos",
-              "param_type": "tuple(int,int,int)"
-            },
-            {
-              "param_comment": "维度id",
-              "param_name": "dimensionId",
-              "param_type": "int"
-            },
-            {
-              "param_comment": "点击的精准坐标(x,y,z)",
-              "param_name": "floatPos",
-              "param_type": "tuple(float,float,float)"
-            }
-          ],
-          "return": {
-            "return_type": "",
-            "return_comment": "无"
-          },
-          "desc": "玩家服务端点击流体时触发（支持原版流体与自定义流体）",
-          "remarks": [],
-          "examples": [],
-          "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/事件/物品.html#liquidclippedserverevent"
-        }
-      }
-    ]
+    "changed": []
   },
   "documents": {
     "before_count": 191,
@@ -5136,27 +4790,27 @@
     "added": [
       {
         "path": "接口/物理/关节",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%8E%A5%E5%8F%A3/%E7%89%A9%E7%90%86/%E5%85%B3%E8%8A%82.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%8E%A5%E5%8F%A3/%E7%89%A9%E7%90%86/%E5%85%B3%E8%8A%82.html"
       },
       {
         "path": "接口/物理/刚体",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%8E%A5%E5%8F%A3/%E7%89%A9%E7%90%86/%E5%88%9A%E4%BD%93.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%8E%A5%E5%8F%A3/%E7%89%A9%E7%90%86/%E5%88%9A%E4%BD%93.html"
       },
       {
         "path": "接口/物理/场景",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%8E%A5%E5%8F%A3/%E7%89%A9%E7%90%86/%E5%9C%BA%E6%99%AF.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%8E%A5%E5%8F%A3/%E7%89%A9%E7%90%86/%E5%9C%BA%E6%99%AF.html"
       },
       {
         "path": "接口/物理/碰撞体",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%8E%A5%E5%8F%A3/%E7%89%A9%E7%90%86/%E7%A2%B0%E6%92%9E%E4%BD%93.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%8E%A5%E5%8F%A3/%E7%89%A9%E7%90%86/%E7%A2%B0%E6%92%9E%E4%BD%93.html"
       },
       {
         "path": "接口/物理/索引",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%8E%A5%E5%8F%A3/%E7%89%A9%E7%90%86/%E7%B4%A2%E5%BC%95.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%8E%A5%E5%8F%A3/%E7%89%A9%E7%90%86/%E7%B4%A2%E5%BC%95.html"
       },
       {
         "path": "更新信息/3.10",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       }
     ],
     "removed": [
@@ -5173,168 +4827,140 @@
       {
         "path": "事件/事件索引表",
         "before_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E4%BA%8B%E4%BB%B6/%E4%BA%8B%E4%BB%B6%E7%B4%A2%E5%BC%95%E8%A1%A8.html",
-        "after_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E4%BA%8B%E4%BB%B6/%E4%BA%8B%E4%BB%B6%E7%B4%A2%E5%BC%95%E8%A1%A8.html",
+        "after_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E4%BA%8B%E4%BB%B6/%E4%BA%8B%E4%BB%B6%E7%B4%A2%E5%BC%95%E8%A1%A8.html",
         "before_sha256": "e6f750dcb6904f9ee3d221b4a8097627063109a977d0efbd3c45591e8d7a2efe",
-        "after_sha256": "28f3522b799565ec85e8aec7cb2967ffce8dd978c809540c161c930f176af021"
-      },
-      {
-        "path": "事件/控制",
-        "before_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E4%BA%8B%E4%BB%B6/%E6%8E%A7%E5%88%B6.html",
-        "after_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E4%BA%8B%E4%BB%B6/%E6%8E%A7%E5%88%B6.html",
-        "before_sha256": "ea0b9421d57a8920a61759c04044e5cb19298f454d6d4971a8c3761f051b6c91",
-        "after_sha256": "1af4fb2ee560f71987753a780dafa137f4e9bcdbbee341df559bb1daca4782f5"
-      },
-      {
-        "path": "事件/物品",
-        "before_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E4%BA%8B%E4%BB%B6/%E7%89%A9%E5%93%81.html",
-        "after_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E4%BA%8B%E4%BB%B6/%E7%89%A9%E5%93%81.html",
-        "before_sha256": "c95a29c92659e3d4bca78bbdec4410af86126280b4613dfed3e1bb1c9a1f2c0a",
-        "after_sha256": "b8c36cdc8634fe8d694bc38cd1c9e4bf21132c5219b677ef7f93e32a64f45905"
+        "after_sha256": "2cfd598c4c390029cad5a57df301152599bc11471fc45b5f9c2b868e5782dbf6"
       },
       {
         "path": "事件/物理",
         "before_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E4%BA%8B%E4%BB%B6/%E7%89%A9%E7%90%86.html",
-        "after_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E4%BA%8B%E4%BB%B6/%E7%89%A9%E7%90%86.html",
+        "after_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E4%BA%8B%E4%BB%B6/%E7%89%A9%E7%90%86.html",
         "before_sha256": "50e0dc6584035eb0c91c866cd54d8b5b7c41a411916b7f4b930894fbad07aae2",
         "after_sha256": "3f8bb21b3b945e9d4790abb612794b8bc6473183c112501a5978d43a3ee2ec0c"
       },
       {
         "path": "事件/联机大厅",
         "before_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E4%BA%8B%E4%BB%B6/%E8%81%94%E6%9C%BA%E5%A4%A7%E5%8E%85.html",
-        "after_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E4%BA%8B%E4%BB%B6/%E8%81%94%E6%9C%BA%E5%A4%A7%E5%8E%85.html",
+        "after_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E4%BA%8B%E4%BB%B6/%E8%81%94%E6%9C%BA%E5%A4%A7%E5%8E%85.html",
         "before_sha256": "96c12eb65ce2799b85755f5f83e34fb4d04c7e2f718f4241dc7cb1bea62453b3",
         "after_sha256": "855566611cd92b9d31636596a0b6b23b9958679ee34e7bdcf19cdc19c70066b3"
       },
       {
         "path": "接口/Api索引表",
         "before_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%8E%A5%E5%8F%A3/Api%E7%B4%A2%E5%BC%95%E8%A1%A8.html",
-        "after_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%8E%A5%E5%8F%A3/Api%E7%B4%A2%E5%BC%95%E8%A1%A8.html",
+        "after_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%8E%A5%E5%8F%A3/Api%E7%B4%A2%E5%BC%95%E8%A1%A8.html",
         "before_sha256": "a4185818bfa5bc3fb498f176ccd58bf9edf98f07c9f68c0f534bb67a10b63ccc",
-        "after_sha256": "1801990dc0d33107e31349db12033ff03bd1fdbd736b0037bcdc740d97a63903"
-      },
-      {
-        "path": "接口/世界/指令",
-        "before_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%8E%A5%E5%8F%A3/%E4%B8%96%E7%95%8C/%E6%8C%87%E4%BB%A4.html",
-        "after_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%8E%A5%E5%8F%A3/%E4%B8%96%E7%95%8C/%E6%8C%87%E4%BB%A4.html",
-        "before_sha256": "27fe1c72bf7331c2b81ce5998d7c81b15dc33ceda302cc996f9f005b8ca940f9",
-        "after_sha256": "579a401a66131aaedccff9d41b2ed06ca9ee5a28bea744a28748fb0dec43dd59"
+        "after_sha256": "dd1961d38395eddb771cabd2f315b8ba71f232bf4bcf5d4ec71469a0c378f6a1"
       },
       {
         "path": "接口/世界/方块组合",
         "before_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%8E%A5%E5%8F%A3/%E4%B8%96%E7%95%8C/%E6%96%B9%E5%9D%97%E7%BB%84%E5%90%88.html",
-        "after_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%8E%A5%E5%8F%A3/%E4%B8%96%E7%95%8C/%E6%96%B9%E5%9D%97%E7%BB%84%E5%90%88.html",
+        "after_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%8E%A5%E5%8F%A3/%E4%B8%96%E7%95%8C/%E6%96%B9%E5%9D%97%E7%BB%84%E5%90%88.html",
         "before_sha256": "ecc0f44d3e03e9655dd69ce630bed1f02cb9d5b39be590149c291d26a46f2ba5",
         "after_sha256": "95b1e3986590bd02ae5aa3fbe4957f37284709ccf46c949197e53c0e155f4b6c"
       },
       {
         "path": "接口/世界/渲染",
         "before_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%8E%A5%E5%8F%A3/%E4%B8%96%E7%95%8C/%E6%B8%B2%E6%9F%93.html",
-        "after_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%8E%A5%E5%8F%A3/%E4%B8%96%E7%95%8C/%E6%B8%B2%E6%9F%93.html",
+        "after_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%8E%A5%E5%8F%A3/%E4%B8%96%E7%95%8C/%E6%B8%B2%E6%9F%93.html",
         "before_sha256": "82a9a592efa517aff034a2dac6badc9d240ec0b79dd466c7ed7cb9400acaba79",
         "after_sha256": "0d41be97f97d92db56d38d54ac3e4478f363007a6afae43edc2f2bcb82fc73d5"
       },
       {
         "path": "接口/世界/索引",
         "before_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%8E%A5%E5%8F%A3/%E4%B8%96%E7%95%8C/%E7%B4%A2%E5%BC%95.html",
-        "after_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%8E%A5%E5%8F%A3/%E4%B8%96%E7%95%8C/%E7%B4%A2%E5%BC%95.html",
+        "after_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%8E%A5%E5%8F%A3/%E4%B8%96%E7%95%8C/%E7%B4%A2%E5%BC%95.html",
         "before_sha256": "749c3be4c58f0f4155684dafb996623810da89d9fa6761e745943aeaaf4c8a53",
-        "after_sha256": "9952c980b2e94704e1032db174d7b4e57aae2bdf526227b39d3145d5af772f39"
+        "after_sha256": "0095dae6a980073f433290d6b870fc7310b338d637bb2878712a72cc56670d7d"
       },
       {
         "path": "接口/方块/方块几何体模型",
         "before_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%8E%A5%E5%8F%A3/%E6%96%B9%E5%9D%97/%E6%96%B9%E5%9D%97%E5%87%A0%E4%BD%95%E4%BD%93%E6%A8%A1%E5%9E%8B.html",
-        "after_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%8E%A5%E5%8F%A3/%E6%96%B9%E5%9D%97/%E6%96%B9%E5%9D%97%E5%87%A0%E4%BD%95%E4%BD%93%E6%A8%A1%E5%9E%8B.html",
+        "after_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%8E%A5%E5%8F%A3/%E6%96%B9%E5%9D%97/%E6%96%B9%E5%9D%97%E5%87%A0%E4%BD%95%E4%BD%93%E6%A8%A1%E5%9E%8B.html",
         "before_sha256": "8be5bddad7929545390a2ffb8b3b756c2b6d373874ff073a6c72abeda23d73df",
         "after_sha256": "6192613265bf8961cab9e424a48829a392db869cae30779001161d9ae0d1e02b"
       },
       {
         "path": "接口/方块/渲染",
         "before_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%8E%A5%E5%8F%A3/%E6%96%B9%E5%9D%97/%E6%B8%B2%E6%9F%93.html",
-        "after_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%8E%A5%E5%8F%A3/%E6%96%B9%E5%9D%97/%E6%B8%B2%E6%9F%93.html",
+        "after_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%8E%A5%E5%8F%A3/%E6%96%B9%E5%9D%97/%E6%B8%B2%E6%9F%93.html",
         "before_sha256": "790dd7ef411dcdd2b7b69bfafd33a8b43a6e7033e2bf91d4e3a2d96797fe5933",
         "after_sha256": "7226cd67b8afd84859d5553602e16ae38def7c7927860bc3f6bc823b60e495c5"
       },
       {
         "path": "接口/方块/索引",
         "before_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%8E%A5%E5%8F%A3/%E6%96%B9%E5%9D%97/%E7%B4%A2%E5%BC%95.html",
-        "after_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%8E%A5%E5%8F%A3/%E6%96%B9%E5%9D%97/%E7%B4%A2%E5%BC%95.html",
+        "after_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%8E%A5%E5%8F%A3/%E6%96%B9%E5%9D%97/%E7%B4%A2%E5%BC%95.html",
         "before_sha256": "8ce4e9249d2a4f34a3993b57897a3a8ec3f8c389ec22dadb307babf2f7b4529c",
-        "after_sha256": "f178f18f307bc62629eac84d6ba72441de5b8325bd8118633c0366d3aa17e956"
+        "after_sha256": "0a9a0c64a9f56aed336b27aa07e41ec8d86c8232d6e886f0ff96159ddcee533b"
       },
       {
         "path": "接口/模型",
         "before_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%8E%A5%E5%8F%A3/%E6%A8%A1%E5%9E%8B.html",
-        "after_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%8E%A5%E5%8F%A3/%E6%A8%A1%E5%9E%8B.html",
+        "after_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%8E%A5%E5%8F%A3/%E6%A8%A1%E5%9E%8B.html",
         "before_sha256": "c5f25a23eccf5a6b11f24afa9ef6b5250abc3d63117694b42b6f4a09e5824ab0",
-        "after_sha256": "df829c9767a939175ecaac4b252717b33c44cd8773c70e3bf092262857bb68cd"
+        "after_sha256": "3401f6844ab07e12372745489677660c5835a43b8ce0acbbc50ce18aba1fd953"
       },
       {
         "path": "接口/物品",
         "before_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%8E%A5%E5%8F%A3/%E7%89%A9%E5%93%81.html",
-        "after_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%8E%A5%E5%8F%A3/%E7%89%A9%E5%93%81.html",
+        "after_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%8E%A5%E5%8F%A3/%E7%89%A9%E5%93%81.html",
         "before_sha256": "1e4bd9f93640dc6df9beafa4c41c457fdc9c5a07ca50173cefad9772bc675b36",
-        "after_sha256": "250dcfb2b3cecd0cee5b4f2c745a60fcf6917c8cfbba3fc387510f0d9b29717d"
+        "after_sha256": "2df7728be82ad1a05257eb1b2037ebce05ec373e3217ff845dd1f7774bce1a92"
       },
       {
         "path": "接口/玩家/摄像机",
         "before_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%8E%A5%E5%8F%A3/%E7%8E%A9%E5%AE%B6/%E6%91%84%E5%83%8F%E6%9C%BA.html",
-        "after_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%8E%A5%E5%8F%A3/%E7%8E%A9%E5%AE%B6/%E6%91%84%E5%83%8F%E6%9C%BA.html",
+        "after_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%8E%A5%E5%8F%A3/%E7%8E%A9%E5%AE%B6/%E6%91%84%E5%83%8F%E6%9C%BA.html",
         "before_sha256": "1012b00b83753680f3fbe26633f4798c8a094775baa6b67bf42d05897ad73632",
-        "after_sha256": "d6b5e63303f207a64c8533198270b4b3b928ba77b3ffb633b346b1aba6484a82"
+        "after_sha256": "9ba3fb2c405d5d566f81e2e87915632f8a90d6f3fcef37ff5ef07b76781271eb"
       },
       {
         "path": "接口/玩家/索引",
         "before_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%8E%A5%E5%8F%A3/%E7%8E%A9%E5%AE%B6/%E7%B4%A2%E5%BC%95.html",
-        "after_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%8E%A5%E5%8F%A3/%E7%8E%A9%E5%AE%B6/%E7%B4%A2%E5%BC%95.html",
+        "after_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%8E%A5%E5%8F%A3/%E7%8E%A9%E5%AE%B6/%E7%B4%A2%E5%BC%95.html",
         "before_sha256": "30095f180e369d1a9dabb9580c5e248e4dbfe3e5382ba004c05f4a2a37c2aba3",
-        "after_sha256": "20d0214a36ff5847ff93435eb686ef96bda50bdc9cbe450aeeae9a306a6f33c4"
+        "after_sha256": "9dfd532c7f01828d57eaf538f577ef275e85a3f7ea96e1737484fcec4fa12194"
       },
       {
         "path": "接口/联机大厅",
         "before_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%8E%A5%E5%8F%A3/%E8%81%94%E6%9C%BA%E5%A4%A7%E5%8E%85.html",
-        "after_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%8E%A5%E5%8F%A3/%E8%81%94%E6%9C%BA%E5%A4%A7%E5%8E%85.html",
+        "after_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%8E%A5%E5%8F%A3/%E8%81%94%E6%9C%BA%E5%A4%A7%E5%8E%85.html",
         "before_sha256": "b6c43e2c2419d0eef5c9b5e141c536990f7eea34631c7fca28c2b81c8b71dd1f",
-        "after_sha256": "84faabfd767c6dc010cbaac3237b610eb9daddfe16f6497025b01fbdc781f1d4"
-      },
-      {
-        "path": "接口/自定义UI/通用设置",
-        "before_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%8E%A5%E5%8F%A3/%E8%87%AA%E5%AE%9A%E4%B9%89UI/%E9%80%9A%E7%94%A8%E8%AE%BE%E7%BD%AE.html",
-        "after_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%8E%A5%E5%8F%A3/%E8%87%AA%E5%AE%9A%E4%B9%89UI/%E9%80%9A%E7%94%A8%E8%AE%BE%E7%BD%AE.html",
-        "before_sha256": "f103d52004179e412627e80ec905003116c66cae9f21242c96d1f137cfa2fd68",
-        "after_sha256": "eca35f4ccc9175bef59638147653139e6742bff6cc19cdb344f6aa98f731fa0f"
+        "after_sha256": "811ef82f064893b447584fd6768f18595dcbfc0543d2c2efd81e69ab2ee6fac0"
       },
       {
         "path": "枚举值/ActorDamageCause",
         "before_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9E%9A%E4%B8%BE%E5%80%BC/ActorDamageCause.html",
-        "after_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9E%9A%E4%B8%BE%E5%80%BC/ActorDamageCause.html",
+        "after_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9E%9A%E4%B8%BE%E5%80%BC/ActorDamageCause.html",
         "before_sha256": "2ea909503e29d0daa76ce5637e3837098ff49a1a78f44fd39475f1b3695a3df6",
         "after_sha256": "1913a5a6a3c6b2896b66f79a98bed6500d5a59826bdfb278d27f0e9033cfb4ab"
       },
       {
         "path": "枚举值/EffectType",
         "before_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9E%9A%E4%B8%BE%E5%80%BC/EffectType.html",
-        "after_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9E%9A%E4%B8%BE%E5%80%BC/EffectType.html",
+        "after_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9E%9A%E4%B8%BE%E5%80%BC/EffectType.html",
         "before_sha256": "58f155cf946b2abb01c06f7066b1022ebc1117013e74d08a6553ed218ae33eea",
         "after_sha256": "ca94f5b40e0c2b69db572f6a29c97a2aa71303edae1c97778a88fe6e8527f6f5"
       },
       {
         "path": "枚举值/EnchantSlotType",
         "before_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9E%9A%E4%B8%BE%E5%80%BC/EnchantSlotType.html",
-        "after_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9E%9A%E4%B8%BE%E5%80%BC/EnchantSlotType.html",
+        "after_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9E%9A%E4%B8%BE%E5%80%BC/EnchantSlotType.html",
         "before_sha256": "7d6293f5b053fca0b37e967dd3da0fc07e03218be80dd90b1ef5edfd708d563c",
         "after_sha256": "b1abb8a9cd855f96f2fde45113015ac2498f9388acc10489c9063256d77be076"
       },
       {
         "path": "枚举值/EnchantType",
         "before_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9E%9A%E4%B8%BE%E5%80%BC/EnchantType.html",
-        "after_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9E%9A%E4%B8%BE%E5%80%BC/EnchantType.html",
+        "after_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9E%9A%E4%B8%BE%E5%80%BC/EnchantType.html",
         "before_sha256": "6305a34c68bc433e49a1711f519163f686b55d07b9cbadfbfced2aad394648af",
         "after_sha256": "d2b2c4b4b51a8edc820ec220dd5705a5abb086aa9c7dc48937586a117dcae867"
       },
       {
         "path": "枚举值/EntityType",
         "before_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9E%9A%E4%B8%BE%E5%80%BC/EntityType.html",
-        "after_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9E%9A%E4%B8%BE%E5%80%BC/EntityType.html",
+        "after_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9E%9A%E4%B8%BE%E5%80%BC/EntityType.html",
         "before_sha256": "124fd8445ab9001c03c82121f2f4b18ed85fd99921298d9dba287f65d1a01275",
         "after_sha256": "9da2565212ad55f6e5dd3452ad638847b03a98ca2fb6c1ac5c71182a0c6ef336"
       }
@@ -5349,56 +4975,56 @@
         "name": "Dehydration",
         "before_value": null,
         "after_value": "\"dehydration\"",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9E%9A%E4%B8%BE%E5%80%BC/ActorDamageCause.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9E%9A%E4%B8%BE%E5%80%BC/ActorDamageCause.html"
       },
       {
         "path": "枚举值/EffectType",
         "name": "BREATH_OF_THE_NAUTILUS",
         "before_value": null,
         "after_value": "\"breath_of_the_nautilus\"",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9E%9A%E4%B8%BE%E5%80%BC/EffectType.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9E%9A%E4%B8%BE%E5%80%BC/EffectType.html"
       },
       {
         "path": "枚举值/EnchantSlotType",
         "name": "MELEE_SPEAR",
         "before_value": null,
         "after_value": "8388608",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9E%9A%E4%B8%BE%E5%80%BC/EnchantSlotType.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9E%9A%E4%B8%BE%E5%80%BC/EnchantSlotType.html"
       },
       {
         "path": "枚举值/EnchantType",
         "name": "Lunge",
         "before_value": null,
         "after_value": "41",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9E%9A%E4%B8%BE%E5%80%BC/EnchantType.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9E%9A%E4%B8%BE%E5%80%BC/EnchantType.html"
       },
       {
         "path": "枚举值/EntityType",
         "name": "CamelHusk",
         "before_value": null,
         "after_value": "152 | UndeadMob",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9E%9A%E4%B8%BE%E5%80%BC/EntityType.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9E%9A%E4%B8%BE%E5%80%BC/EntityType.html"
       },
       {
         "path": "枚举值/EntityType",
         "name": "Nautilus",
         "before_value": null,
         "after_value": "149 | WaterAnimal",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9E%9A%E4%B8%BE%E5%80%BC/EntityType.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9E%9A%E4%B8%BE%E5%80%BC/EntityType.html"
       },
       {
         "path": "枚举值/EntityType",
         "name": "Parched",
         "before_value": null,
         "after_value": "151 | SkeletonMonster",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9E%9A%E4%B8%BE%E5%80%BC/EntityType.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9E%9A%E4%B8%BE%E5%80%BC/EntityType.html"
       },
       {
         "path": "枚举值/EntityType",
         "name": "ZombieNautilus",
         "before_value": null,
         "after_value": "150 | WaterAnimal | UndeadMob",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9E%9A%E4%B8%BE%E5%80%BC/EntityType.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9E%9A%E4%B8%BE%E5%80%BC/EntityType.html"
       }
     ],
     "removed": [],
@@ -5408,14 +5034,14 @@
         "name": "InvalidEnchantment",
         "before_value": "42",
         "after_value": "43",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9E%9A%E4%B8%BE%E5%80%BC/EnchantType.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9E%9A%E4%B8%BE%E5%80%BC/EnchantType.html"
       },
       {
         "path": "枚举值/EnchantType",
         "name": "NumEnchantments",
         "before_value": "41",
         "after_value": "42",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9E%9A%E4%B8%BE%E5%80%BC/EnchantType.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9E%9A%E4%B8%BE%E5%80%BC/EnchantType.html"
       }
     ]
   },
@@ -5426,679 +5052,679 @@
         "name": "LookupBlocksByBlockTag",
         "side": "服务端",
         "comment": "根据方块tag查找方块列表",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "LookupItemsByItemTag",
         "side": "服务端",
         "comment": "根据物品tag查找物品列表",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "GetRoomInfo",
         "side": "服务端",
         "comment": "获取联机大厅房间信息",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "KickPlayer",
         "side": "服务端",
         "comment": "踢出玩家接口，可自定义踢出信息",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "KickPlayerByUid",
         "side": "服务端",
         "comment": "支持传uid踢出玩家",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "GetHostPlayerUid",
         "side": "服务端",
         "comment": "获取联机大厅房主uid",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "TransferRoomHost",
         "side": "服务端",
         "comment": "转移联机大厅房主",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "TransferRoomHostByUid",
         "side": "服务端",
         "comment": "通过uid转移联机大厅房主",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "SetRoomMeta",
         "side": "服务端",
         "comment": "设置联机大厅房间元数据",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "GetRoomMeta",
         "side": "服务端",
         "comment": "异步获取指定联机大厅房间的元数据",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "GetPlayerRoomId",
         "side": "服务端",
         "comment": "根据玩家uid获取所在房间id",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "ConnectPvd",
         "side": "服务端",
         "comment": "连接 PhysX Visual Debugger",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "DisconnectPvd",
         "side": "服务端",
         "comment": "断开 PhysX Visual Debugger",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "RemoveShape",
         "side": "服务端",
         "comment": "删除指定碰撞 shape",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "GetShapeCount",
         "side": "服务端",
         "comment": "获取碰撞 shape 数量",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "GetShapeInfo",
         "side": "服务端",
         "comment": "获取碰撞 shape 信息",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "RemoveShapeByUserData",
         "side": "服务端",
         "comment": "按 userData 删除碰撞 shape",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "SetLinearDamping",
         "side": "服务端",
         "comment": "设置线性阻尼",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "SetAngularDamping",
         "side": "服务端",
         "comment": "设置角阻尼",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "SetMass",
         "side": "服务端",
         "comment": "设置刚体质量",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "GetRigidBodyFlags",
         "side": "服务端",
         "comment": "获取刚体标记",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "GetRigidDynamicLockFlags",
         "side": "服务端",
         "comment": "获取动态刚体锁定标记",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "GetActorFlags",
         "side": "服务端",
         "comment": "获取 Actor 标记",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "IsDefaultPxActor",
         "side": "服务端",
         "comment": "判断是否为默认 PxActor",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "GetMass",
         "side": "服务端",
         "comment": "获取刚体质量",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "GetLinearVelocity",
         "side": "服务端",
         "comment": "获取线速度",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "SetLinearVelocity",
         "side": "服务端",
         "comment": "设置线速度",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "AddTorqueLocal",
         "side": "服务端",
         "comment": "在刚体本地坐标系中添加扭矩",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "GetAngularVelocity",
         "side": "服务端",
         "comment": "获取角速度",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "SetAngularVelocity",
         "side": "服务端",
         "comment": "设置角速度",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "SetMaxAngularVelocity",
         "side": "服务端",
         "comment": "设置最大角速度；maxVel 必须为有限正数，否则返回 False",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "SetMaxLinearVelocity",
         "side": "服务端",
         "comment": "设置最大线速度",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "SetSceneGravity",
         "side": "服务端",
         "comment": "设置指定维度的 PhysX 场景重力",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "SampleBuoyancy",
         "side": "服务端",
         "comment": "采样刚体在水面下的体积和浮力",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "SetRemoteVisualSync",
         "side": "服务端",
         "comment": "配置远距离物理刚体的视觉同步降帧",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "ClearRemoteVisualSync",
         "side": "服务端",
         "comment": "清除远距离视觉同步配置",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "IsSleeping",
         "side": "服务端",
         "comment": "查询刚体休眠状态",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "WakeUp",
         "side": "服务端",
         "comment": "唤醒刚体",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "PutToSleep",
         "side": "服务端",
         "comment": "令刚体进入休眠",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "SetCMassLocalPose",
         "side": "服务端",
         "comment": "设置质心局部位置",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "GetMassSpaceInertiaTensor",
         "side": "服务端",
         "comment": "获取质量空间惯性张量",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "CreateFixedJoint",
         "side": "服务端",
         "comment": "创建固定关节",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "CreateDistanceJoint",
         "side": "服务端",
         "comment": "创建距离关节",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "CreateSphericalJoint",
         "side": "服务端",
         "comment": "创建球形关节",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "CreateRevoluteJoint",
         "side": "服务端",
         "comment": "创建旋转关节",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "CreatePrismaticJoint",
         "side": "服务端",
         "comment": "创建滑动关节",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "DestroyJoint",
         "side": "服务端",
         "comment": "销毁关节",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "DestroyJointsForEntity",
         "side": "服务端",
         "comment": "销毁实体关联的关节",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "DestroyAllJoints",
         "side": "服务端",
         "comment": "销毁全部关节",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "SetJointCollisionEnabled",
         "side": "服务端",
         "comment": "设置相连刚体是否相互碰撞",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "IsJointBroken",
         "side": "服务端",
         "comment": "查询关节断裂状态",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "GetRevoluteJointAngle",
         "side": "服务端",
         "comment": "获取旋转关节角度",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "GetRevoluteJointVelocity",
         "side": "服务端",
         "comment": "获取旋转关节角速度",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "GetJointFrames",
         "side": "服务端",
         "comment": "获取关节两端的本地和世界 frame",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "SetDistanceJointParams",
         "side": "服务端",
         "comment": "设置距离关节参数",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "SetSphericalJointLimitCone",
         "side": "服务端",
         "comment": "设置球形关节锥形限制",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "SetRevoluteJointLimit",
         "side": "服务端",
         "comment": "设置旋转关节角度限制",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "SetPrismaticJointLimit",
         "side": "服务端",
         "comment": "设置滑动关节行程限制",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "SetRevoluteJointDrive",
         "side": "服务端",
         "comment": "设置旋转关节电机",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "SetActorBlockGeometryRotationQuat",
         "side": "客户端",
         "comment": "使用四元数设置实体的方块几何体模型的旋转",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "LookupBlocksByBlockTag",
         "side": "客户端",
         "comment": "根据方块tag查找方块列表",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "GetTextureAtlasUV",
         "side": "客户端",
         "comment": "获取方块纹理在atlas.terrain图集中的UV坐标位置与尺寸信息",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "SpawnDestroyParticleEffect",
         "side": "客户端",
         "comment": "在指定位置播放指定方块的破坏爆发粒子效果",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "GetWorldRayFromScreenPoint",
         "side": "客户端",
         "comment": "屏幕坐标转世界射线，返回射线原点（近平面上的点）与单位方向向量",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "WorldToScreenPoint",
         "side": "客户端",
         "comment": "世界坐标转屏幕坐标，返回屏幕坐标、归一化深度与是否在屏幕可见范围内",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "GetViewMatrix",
         "side": "客户端",
         "comment": "获取视图矩阵，返回GameRenderer每帧缓存的mLastLevelViewMatrix",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "GetProjectionMatrix",
         "side": "客户端",
         "comment": "获取投影矩阵，返回GameRenderer每帧缓存的mLastLevelProjMatrix",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "GetNearFarPlane",
         "side": "客户端",
         "comment": "获取近远裁剪面距离",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "GetAspectRatio",
         "side": "客户端",
         "comment": "获取画面宽高比",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "LookupItemsByItemTag",
         "side": "客户端",
         "comment": "根据物品tag查找物品列表",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "GetIconInfo",
         "side": "客户端",
         "comment": "获取物品图标纹理在图集中的UV坐标位置与尺寸信息",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "GetLinearVelocity",
         "side": "客户端",
         "comment": "获取自定义刚体线速度",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "GetAngularVelocity",
         "side": "客户端",
         "comment": "获取自定义刚体角速度",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "RemoveShape",
         "side": "客户端",
         "comment": "删除客户端本地碰撞 shape",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "AddBoxGeometry",
         "side": "客户端",
         "comment": "给客户端本地自定义刚体增加盒形碰撞体",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "GetShapeCount",
         "side": "客户端",
         "comment": "获取客户端本地碰撞 shape 数量",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "GetShapeInfo",
         "side": "客户端",
         "comment": "获取客户端本地碰撞 shape 信息",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "RemoveShapeByUserData",
         "side": "客户端",
         "comment": "按 userData 删除客户端本地碰撞 shape",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "SetGlobalPose",
         "side": "客户端",
         "comment": "设置客户端本地自定义刚体变换",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "PhysXPreSimulateServerEvent",
         "side": "服务端",
         "comment": "服务端 PhysX 模拟前回调",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "PhysXPostSimulateServerEvent",
         "side": "服务端",
         "comment": "服务端 PhysX 模拟后回调",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "RoomHostChangedServerEvent",
         "side": "服务端",
         "comment": "房主变更事件",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "PhysXPreSimulateClientEvent",
         "side": "客户端",
         "comment": "客户端 PhysX 模拟前回调",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "新增",
         "name": "PhysXPostSimulateClientEvent",
         "side": "客户端",
         "comment": "客户端 PhysX 模拟后回调",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "调整",
         "name": "AddBoxGeometry",
         "side": "服务端",
         "comment": "支持给已有自定义刚体动态增加盒形碰撞体",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "调整",
         "name": "AddCapsuleGeometry",
         "side": "服务端",
         "comment": "支持给已有自定义刚体动态增加胶囊形碰撞体",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "调整",
         "name": "AddSphereGeometry",
         "side": "服务端",
         "comment": "支持给已有自定义刚体动态增加球形碰撞体",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "调整",
         "name": "AddBoxTrigger",
         "side": "服务端",
         "comment": "支持给已有自定义刚体动态增加盒子形触发器",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "调整",
         "name": "AddForce",
         "side": "服务端",
         "comment": "明确不同PxForceMode的输入单位；非法枚举值返回False",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "调整",
         "name": "AddTorque",
         "side": "服务端",
         "comment": "运动学刚体调用返回 False，不再传入 PhysX",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "调整",
         "name": "SetJointBreakForce",
         "side": "服务端",
         "comment": "-1 映射为不可断裂；有限阈值必须为非负有限数",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "调整",
         "name": "GetJointBreakForce",
         "side": "服务端",
         "comment": "无效或已销毁的关节返回 None",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "调整",
         "name": "GetJointType",
         "side": "服务端",
         "comment": "增加 4=Prismatic 滑动关节类型",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "调整",
         "name": "CombineBlockPaletteToGeometry",
         "side": "客户端",
         "comment": "新增支持 自定义方块实体外观、国际版方块外观(minecraft:geometry组件)、花盆、钟、潮涌核心、旗帜、铜箱、铜傀儡像、水方块、火方块",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "调整",
         "name": "CombineBlockBetweenPosToGeometry",
         "side": "客户端",
         "comment": "新增支持 自定义方块实体外观、国际版方块外观(minecraft:geometry组件)、花盆、钟、潮涌核心、旗帜、铜箱、铜傀儡像、水方块、火方块",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "调整",
         "name": "CombineBlockFromPosListToGeometry",
         "side": "客户端",
         "comment": "新增支持 自定义方块实体外观、国际版方块外观(minecraft:geometry组件)、花盆、钟、潮涌核心、旗帜、铜箱、铜傀儡像、水方块、火方块",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       },
       {
         "operation": "调整",
         "name": "PhysXJointBreakServerEvent",
         "side": "服务端",
         "comment": "断裂事件补充 breakForce、breakTorque，并支持 4=Prismatic",
-        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
+        "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF/3.10.html"
       }
     ],
     "summary": {
@@ -6111,8 +5737,9 @@
   "caveats": [
     "按端侧、类路径和名称计数，双端方法分别计数；官网重复分类引用已去重。",
     "索引新出现不等于 SDK 首次引入；更新日志分类、两版快照差异与旧仓库资料分别保留。",
-    "3.10 当前为 Beta；官方计划稳定版时间不代表已经发布。",
+    "当前文档版本 3.10、状态 stable，以本次核验的官方频道为准；计划发布日期不能单独证明发布。",
     "分类页迁移与历史更新页的频道差异不代表接口删除。",
+    "官网稳定版频道会滚动更新；旧版签名以冻结基线正文为准，历史来源链接当前内容不能替代旧版证据。",
     "教程为非版本化官方页面，只能证明当前公开配置，不能直接归因于 3.9→3.10。",
     "文档、构建和文件核对不构成游戏功能验收。"
   ],
@@ -6941,32 +6568,32 @@
         {
           "name": "GetFishingLineColor",
           "side": "客户端",
-          "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物品.html#getfishinglinecolor"
+          "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物品.html#getfishinglinecolor"
         },
         {
           "name": "GetFishingLineMax",
           "side": "客户端",
-          "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物品.html#getfishinglinemax"
+          "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物品.html#getfishinglinemax"
         },
         {
           "name": "GetFishingLineColor",
           "side": "服务端",
-          "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物品.html#getfishinglinecolor"
+          "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物品.html#getfishinglinecolor"
         },
         {
           "name": "GetFishingLineMax",
           "side": "服务端",
-          "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物品.html#getfishinglinemax"
+          "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物品.html#getfishinglinemax"
         },
         {
           "name": "SetFishingLineColor",
           "side": "服务端",
-          "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物品.html#setfishinglinecolor"
+          "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物品.html#setfishinglinecolor"
         },
         {
           "name": "SetFishingLineMax",
           "side": "服务端",
-          "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/物品.html#setfishinglinemax"
+          "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/物品.html#setfishinglinemax"
         }
       ]
     },
@@ -7005,5 +6632,5 @@
       "index_additions_already_in_repository": []
     }
   },
-  "retrieved_at": "2026-10-19T10:27:02Z"
+  "retrieved_at": "2026-11-03T07:48:59Z"
 }

@@ -2,9 +2,9 @@
   "schema_version": "1.0",
   "source_id": "netease-python-module-whitelist",
   "source_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcguide/36-%E5%AE%A1%E6%A0%B8%E4%B8%8E%E4%B8%8B%E6%9E%B6/%E8%AF%BE%E7%A8%8B07-Python%E6%A8%A1%E5%9D%97%E7%99%BD%E5%90%8D%E5%8D%95.html",
-  "retrieved_at": "2026-10-19T10:27:02Z",
-  "last_modified": "2026-09-24T12:01:38Z",
-  "source_sha256": "69fc86156d6755f07ea417fe7d8e04aa800837308817de6659c5a8428ce72eb7",
+  "retrieved_at": "2026-11-03T07:48:59Z",
+  "last_modified": "2026-10-28T10:10:38Z",
+  "source_sha256": "5b9cbfb98ec68271dadddbdd256af4ddbc27352df12ff9f128c00d4787eb8b02",
   "modules_sha256": "78680424721feda31860ef4a454f1e24639425adb4ae5335add8f54be8fbcd44",
   "module_count": 456,
   "normalization": {

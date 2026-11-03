@@ -1,6 +1,6 @@
 ---
-source_url: "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/%E6%8E%A5%E5%8F%A3/%E8%87%AA%E5%AE%9A%E4%B9%89UI/UI%E6%8E%A7%E4%BB%B6.html"
-last_modified: "Thu, 24 Sep 2026 12:01:38 GMT"
+source_url: "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%8E%A5%E5%8F%A3/%E8%87%AA%E5%AE%9A%E4%B9%89UI/UI%E6%8E%A7%E4%BB%B6.html"
+last_modified: "Wed, 28 Oct 2026 10:10:37 GMT"
 synced_from: "NetEase developer official website"
 ---
 
@@ -2408,9 +2408,9 @@ method in mod.client.ui.controls.neteasePaperDollUIControl.NeteasePaperDollUICon
 
 - 备注
 
-- 网格体模型使用[CombineBlockPaletteToGeometry](https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/方块/方块几何体模型.html#combineblockpalettetogeometry)生成
+- 网格体模型使用[CombineBlockPaletteToGeometry](https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/方块/方块几何体模型.html#combineblockpalettetogeometry)生成
 
-- 每次进入游戏需要重新调用本接口渲染网格体模型，可使用[SerializeBlockPalette](https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/方块/方块调色板.html#serializeblockpalette)和[DeserializeBlockPalette](https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta/接口/方块/方块调色板.html#deserializeblockpalette)实现调色板保存并重载调色板，重新生成网格体模型进行渲染。
+- 每次进入游戏需要重新调用本接口渲染网格体模型，可使用[SerializeBlockPalette](https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/方块/方块调色板.html#serializeblockpalette)和[DeserializeBlockPalette](https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/接口/方块/方块调色板.html#deserializeblockpalette)实现调色板保存并重载调色板，重新生成网格体模型进行渲染。
 
 - RenderBlockGeometryModel参数params说明：
 params参数解释如下：

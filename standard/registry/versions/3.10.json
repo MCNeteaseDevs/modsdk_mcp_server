@@ -1,12 +1,11 @@
 {
   "version": "3.10",
   "bedrock_version": "1.21.130",
-  "status": "beta",
-  "released_at": "2026-09-24",
-  "scheduled_stable_at": "2026-10-28",
+  "status": "stable",
+  "released_at": "2026-10-28",
   "scheduled_rollout_at": "2026-10-30",
   "previous_version": "3.9",
-  "docs_base_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI-beta",
+  "docs_base_url": "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI",
   "runtime_evidence_status": "unreviewed",
   "source_ids": [
     "netease-modsdk-310-release",
@@ -21,5 +20,5 @@
     "current",
     "latest"
   ],
-  "source_boundary": "尚无可读的 ModSDK 3.10 Python 运行时源码复核；官方文档当前为 Beta，不代表稳定版或游戏实机验收"
+  "source_boundary": "尚无可读的 ModSDK 3.10 Python 运行时源码复核；官方稳定版文档不代表游戏实机验收"
 }
