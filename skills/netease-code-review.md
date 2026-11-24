@@ -25,7 +25,7 @@
 - import 不在官方精确白名单，且调用方没有通过 `project_modules` 声明为项目模块。
 - ServerSystem 导入客户端 API，或 ClientSystem 导入服务端 API。
 - 使用禁止的动态导入方式，或使用已由官方事件文档证实的错误字段。
-- JSON 无法解析、缺少相应内容类型的标识符，或 format_version 与组件形状明确冲突。
+- JSON 无法解析、存在重复键、`manifest.json` 缺少 `format_version: 2` 或 UUID 冲突、缺少相应内容类型的标识符、网易 `1.10` 物品混用国际版 `1.16.100+` 组件或端侧错位，以及方块 `format_version` 与组件形状/光照值域冲突。
 
 `review_code` 只审查显式传入的文本，不接受工作区路径，也不扫描目录。
 

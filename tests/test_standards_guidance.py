@@ -52,9 +52,9 @@ class StandardsRegistryTest(unittest.TestCase):
     def test_registry_schema_and_references_are_valid(self):
         summary = validate_registry()
         self.assertEqual(summary["schema_version"], "1.0")
-        self.assertEqual(summary["rule_count"], 45)
-        self.assertEqual(summary["source_count"], 5)
-        self.assertEqual(summary["version_count"], 1)
+        self.assertEqual(summary["rule_count"], 61)
+        self.assertEqual(summary["source_count"], 6)
+        self.assertEqual(summary["version_count"], 2)
         self.assertEqual(summary["python_module_count"], 456)
 
         required = set(self.manifest["required_rule_fields"])
@@ -86,7 +86,12 @@ class StandardsRegistryTest(unittest.TestCase):
             profile["source_boundary"],
             "尚无可读的 ModSDK 3.9 Python 运行时源码复核",
         )
-        self.assertEqual(get_version_profile("current")["version"], "3.9")
+        current_profile = get_version_profile("current")
+        self.assertEqual(current_profile["version"], "3.10")
+        self.assertEqual(current_profile["bedrock_version"], "1.21.130")
+        self.assertEqual(current_profile["status"], "stable")
+        self.assertEqual(current_profile["released_at"], "2026-10-28")
+        self.assertEqual(current_profile["runtime_evidence_status"], "unreviewed")
 
     def test_python_whitelist_is_exact_immutable_snapshot(self):
         whitelist = get_python_module_whitelist()
@@ -351,6 +356,16 @@ class GuidanceTest(unittest.TestCase):
             self.assertIsInstance(step["arguments"], dict)
             self.assertIsInstance(step["purpose"], str)
             self.assertTrue(step["purpose"])
+
+    def test_new_addon_package_guidance_hits_package_and_manifest_rules(self):
+        guidance = build_guidance(
+            "新建组件包目录结构与 manifest.json 清单配置",
+            version="current",
+            limit=8,
+        )
+        hit_ids = {rule["id"] for rule in guidance["rules"]}
+        self.assertIn("ARCH-PACKAGE-001", hit_ids)
+        self.assertIn("JSON-MANIFEST-001", hit_ids)
 
 
 if __name__ == "__main__":

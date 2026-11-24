@@ -33,8 +33,10 @@
 - `runtime_identifier` 是否必需应按实体目标和当前官方详情核对，不能从旧示例推广为所有实体的硬规则
 - 支持行为组件、寻路组件、战斗组件等
 
-### 4. 其他 JSON 生成
-- `generate_recipe_json` - 配方（有序/无序/熔炼/酿造）
+### 4. 清单、UI 与其他 JSON 生成
+- `generate_manifest_json` - 双包最新标准 `manifest.json`（`format_version: 2`）
+- `generate_ui_json` - 自定义 JSON UI、`ui/_ui_defs.json` 与 `ScreenNode` 客户端控制器
+- `generate_recipe_json` - 配方（有序/无序/熔炉，位于 `netease_recipes/`）
 - `generate_loot_table_json` - 战利品表
 - `generate_spawn_rules_json` - 生成规则
 
@@ -53,95 +55,102 @@
 
 ## 组件知识库
 
-### 物品组件（22个）
+### 网易 1.10 支持的原版物品组件
 ```
-minecraft:max_stack_size    最大堆叠大小
-minecraft:hand_equipped     手持装备
-minecraft:damage            伤害
-minecraft:durability        耐久
-minecraft:armor             盔甲
-minecraft:food              食物
-minecraft:weapon            武器
-minecraft:digger            挖掘器
-minecraft:wearable          可穿戴
-minecraft:throwable         可投掷
-minecraft:projectile        弹射物
-minecraft:shooter           发射器
-minecraft:cooldown          冷却
-minecraft:repairable        可修复
-minecraft:enchantable       可附魔
-minecraft:fuel              燃料
-minecraft:block_placer      方块放置器
-minecraft:entity_placer     实体放置器
-...
+minecraft:max_stack_size    最大堆叠数量（行为包）
+minecraft:max_damage        最大耐久度（行为包，严禁与 stacked_by_data 共存）
+minecraft:hand_equipped     手持武器渲染（行为包）
+minecraft:stacked_by_data   按附加值分堆叠（行为包）
+minecraft:foil              附魔光效（行为包）
+minecraft:use_duration      最大使用时长（行为包，整数 tick）
+minecraft:food              食物组件（行为包）
+minecraft:seed              农作物种子（行为包）
+minecraft:tags              原版物品标签（行为包）
+minecraft:icon              物品贴图图标（资源包 netease_items_res）
+minecraft:use_animation     使用动画（资源包 netease_items_res）
+minecraft:hover_text_color  悬浮名称颜色（资源包 netease_items_res）
 ```
 
-### 方块组件（22个）
+### 方块组件
 ```
-minecraft:destructible_by_mining    可挖掘破坏
-minecraft:destructible_by_explosion 可爆炸破坏
+minecraft:destructible_by_mining    可挖掘破坏（1.19.20+ 默认推荐）
+minecraft:destructible_by_explosion 可爆炸破坏（1.19.20+ 默认推荐）
+minecraft:light_emission            发光等级 0-15（1.19.20+ 默认推荐）
+minecraft:light_dampening           遮光等级 0-15（1.19.20+ 默认推荐）
 minecraft:friction                  摩擦力
 minecraft:flammable                 可燃性
 minecraft:geometry                  几何体
 minecraft:material_instances        材质实例
 minecraft:collision_box             碰撞箱
-minecraft:on_interact               交互事件
-minecraft:on_step_on                踩踏事件
-minecraft:random_ticking            随机刻
-minecraft:queued_ticking            计划刻
-...
+minecraft:selection_box             选择箱
+minecraft:loot                      战利品表
 ```
 
 ### 网易特有组件
 ```
+netease:weapon              自定义武器与工具（type: sword/pickaxe/hatchet/shovel/hoe）
+netease:armor               自定义盔甲（armor_slot: 0~3，需配套 attachables）
+netease:projectile          右键投掷抛射物（配合 projectile_item）
+netease:cooldown            物品冷却
+netease:fuel                熔炉燃料
 netease:customtips          自定义提示
-netease:frame_animation     帧动画
+netease:frame_animation     蓄力序列帧动画（资源包）
 netease:show_in_hand        手持显示
+netease:liquid_clipped      流体点击检测
 netease:aabb                方块碰撞箱
 netease:tier                挖掘等级
 netease:block_entity        方块实体
 netease:random_tick         随机刻
 netease:redstone            红石信号
-...
 ```
 
 ## 格式版本规范
 
 | 内容类型 | format_version | 说明 |
 |----------|----------------|------|
-| 基础物品 | 1.10 | 网易官方基础物品格式 |
-| 方块 | 1.10.0 / 1.16.0 / 1.19.20 | 分别对应对象组件、标量组件、现代组件；按 profile 选择 |
-| 实体 | 1.10.0 | 网易 ModSDK 兼容 |
-| 配方 | 1.12.0 | 标准基岩版 |
-| 战利品表 | 1.12.0 | 标准基岩版 |
-| 生成规则 | 1.8.0 | 标准基岩版 |
+| 包清单 `manifest.json` | `2`（整数） | 最新标准，避免 3.8+ 生物蛋贴图异常 |
+| 物品 | `"1.10"` | 网易官方物品格式（严禁混用 1.16.100+ 国际版组件） |
+| 方块 | `"1.19.20"`（默认）/ `"1.16.0"` / `"1.10.0"` | 默认推荐 `modern_1_19_20`；旧档 `block_light_emission` 仅限 `[0.0, 1.0]` |
+| 实体 | `"1.10.0"`（模型 `"1.12.0"`） | 配套生成 `models/entity/*.geo.json` |
+| 盔甲穿戴 | `"1.8.0"` | `resource_pack/attachables/*.json` |
+| 配方 | `"1.12"` | 必须放在 `behavior_pack/netease_recipes/` |
+| 生成规则 | `"1.8.0"` | `behavior_pack/spawn_rules/` |
 
-## 项目结构
+## 标准双包项目结构
 
 ```
-{mod_id}_Script/
-├── __init__.py
-├── modMain.py
-└── scripts/
-    └── {mod_id}/
-        ├── server.py
-        └── client.py
-
 behavior_pack/
+├── manifest.json             # format_version: 2（绑定 resource_pack 依赖）
+├── entities/                 # 实体定义（中国版必选目录）
+├── {mod_id}_Script/          # Python 脚本根目录（直接位于 behavior_pack 下）
+│   ├── __init__.py
+│   ├── modConfig.py
+│   ├── modMain.py
+│   ├── serverSystem.py
+│   └── clientSystem.py
 ├── netease_items_beh/        # 物品行为定义
-├── netease_blocks/           # 方块定义
-├── entities/                 # 实体定义
-├── recipes/                  # 配方
+├── netease_blocks/           # 方块行为定义
+├── netease_recipes/          # 合成与烧炼配方
 ├── loot_tables/              # 战利品表
 └── spawn_rules/              # 生成规则
 
 resource_pack/
+├── manifest.json             # format_version: 2
+├── blocks.json               # 方块渲染与音效注册
 ├── netease_items_res/        # 物品资源定义
-├── textures/
-│   ├── items/                # 物品纹理
-│   └── blocks/               # 方块纹理
+├── attachables/              # 盔甲穿戴渲染定义
+├── entity/                   # 实体客户端表现定义
+├── models/entity/            # 实体与盔甲几何体 (*.geo.json)
+├── ui/                       # JSON UI 与 _ui_defs.json
+├── textures/                 # 中国版必选目录
+│   ├── item_texture.json     # 物品贴图映射表
+│   ├── terrain_texture.json  # 方块贴图映射表
+│   ├── items/                # 物品纹理 PNG
+│   ├── blocks/               # 方块纹理 PNG
+│   └── entity/               # 实体纹理 PNG
 └── texts/
-    └── zh_CN.lang            # 本地化
+    ├── languages.json        # ["zh_CN"]
+    └── zh_CN.lang            # 中文本地化词条
 ```
 
 ## 使用示例
@@ -184,7 +193,7 @@ resource_pack/
 
 ## 版本信息
 
-- MCP Server 版本: 1.0.0
+- MCP Server 版本: 1.1.0
 - 当前 ModSDK 版本: 3.10（稳定版）
 - 对应基岩版版本: 1.21.130
-- MCP 工具总数: 38 个
+- MCP 工具总数: 41 个

@@ -196,50 +196,53 @@ python "<PROJECT_ROOT>/start_mcp.py" --sse
 | `get_version_changes` | 查询接口、事件、枚举、正文及发布日志差异，支持筛选和分页 |
 | `get_development_guidance` | 按目标、领域、端侧和版本返回最相关规则与验证建议 |
 
-### 代码生成
+### 代码与项目骨架生成
 
 | 工具 | 描述 |
 |------|------|
-| `generate_mod_project` | 生成完整 Mod 项目模板（含入口、服务端、客户端） |
+| `generate_mod_project` | 生成完整可运行双包 AddOn 项目骨架（`behavior_pack` + `resource_pack`、双端 `manifest.json`、`entities/`、`textures/`、Python 脚本包与语言文件） |
+| `generate_manifest_json` | 生成符合最新规范的 `manifest.json`（`format_version: 2`，支持双包互绑依赖） |
+| `generate_ui_json` | 生成 JSON UI、`ui/_ui_defs.json` 与配套 `ScreenNode` 客户端脚本 |
 | `generate_server_system` | 生成服务端系统代码 |
 | `generate_client_system` | 生成客户端系统代码 |
 | `generate_event_listener` | 生成事件监听器代码 |
 | `generate_custom_command` | 生成自定义命令代码 |
-| `generate_custom_item` | 生成自定义物品代码和 JSON |
-| `generate_custom_block` | 生成自定义方块代码和 JSON |
+| `generate_custom_item` | 生成自定义物品服务端脚本及全套 1.10 资源/行为包配置 |
+| `generate_custom_block` | 生成自定义方块服务端脚本及全套 1.19.20 资源/行为包配置 |
 
 ### JSON 生成
 
 | 工具 | 描述 |
 |------|------|
-| `generate_item_json` | 生成物品 JSON（行为包 + 资源包） |
-| `generate_block_json` | 生成方块 JSON |
-| `generate_recipe_json` | 生成合成配方 JSON（有序/无序/熔炉） |
-| `generate_entity_json` | 生成实体 JSON（行为包 + 资源包） |
+| `generate_item_json` | 生成物品全套 JSON（`netease_items_beh` + `netease_items_res` + `item_texture.json` + 语言文件） |
+| `generate_block_json` | 生成方块全套 JSON（默认现代 `modern_1_19_20`，含 `blocks.json` + `terrain_texture.json`） |
+| `generate_recipe_json` | 生成合成配方 JSON（有序/无序/熔炉，位于 `netease_recipes/`） |
+| `generate_entity_json` | 生成实体全套 JSON（行为包 + 资源包 + `.geo.json` 基础几何体模型 + 语言文件） |
 | `generate_loot_table_json` | 生成战利品表 JSON |
 | `generate_spawn_rules_json` | 生成生成规则 JSON |
 
-### 一键生成工具 & 武器
+### 一键生成工具 & 武器（严格遵循网易 1.10 官方组件规范）
 
 | 工具 | 描述 |
 |------|------|
-| `generate_sword_json` | 自定义剑（伤害、耐久、附魔、修复） |
-| `generate_pickaxe_json` | 自定义镐（挖掘速度、耐久） |
-| `generate_axe_json` | 自定义斧（伤害、挖掘速度） |
-| `generate_shovel_json` | 自定义锹 |
-| `generate_hoe_json` | 自定义锄 |
-| `generate_bow_json` | 自定义弓（蓄力时间、耐久） |
-| `generate_food_json` | 自定义食物（饥饿值、饱和度、药水效果） |
-| `generate_armor_json` | 自定义盔甲（护甲值、槽位） |
-| `generate_throwable_json` | 自定义可投掷物品 |
+| `generate_sword_json` | 自定义剑（`netease:weapon` 伤害、耐久、附魔、修复等级） |
+| `generate_pickaxe_json` | 自定义镐（`netease:weapon` 挖掘等级、速度、耐久） |
+| `generate_axe_json` | 自定义斧（`netease:weapon.type="hatchet"`、伤害、挖掘速度） |
+| `generate_shovel_json` | 自定义锹（`netease:weapon` 挖掘速度、耐久） |
+| `generate_hoe_json` | 自定义锄（`netease:weapon` 耕地、耐久） |
+| `generate_bow_json` | 自定义远程蓄力弓（`ranged_weapon` + 3 帧蓄力贴图映射） |
+| `generate_food_json` | 自定义食物（`minecraft:food` + 整数刻时长 + 资源包动画） |
+| `generate_armor_json` | 自定义盔甲（`netease:armor` + `attachables` 穿戴渲染绑定） |
+| `generate_throwable_json` | 自定义投掷物（`projectile_item` + `netease:projectile`） |
 
 ### 代码审查 & 最佳实践
 
 | 工具 | 描述 |
 |------|------|
-| `review_code` | 统一审查显式传入的 Python/JSON 产物 |
+| `review_code` | 统一审查显式传入的 Python/JSON 产物（含重复键、`manifest.json`、1.10 物品组件与方块值域） |
+| `browse_api_category` | 按一级/二级分类目录树浏览 API 与事件 |
 | `get_best_practices` | 获取注册表规则的旧接口兼容投影 |
-| `search_components` | 搜索基岩版组件 |
+| `search_components` | 搜索网易支持的原版与网易特有组件 |
 | `get_component_details` | 获取组件详细信息 |
 | `list_components` | 列出所有可用组件 |
 | `get_architecture_pattern` | 获取并校验核心架构示例 |
@@ -352,4 +355,8 @@ python tools/sync_official_docs.py
 
 新增入口：`get_version_changes`、`modsdk-guidance://changes`、`get_best_practices(category="modsdk_310_migration")`。服务代码升级后需要重启 MCP 连接，单独 `reload_documents` 只重读文档。
 
-制作核对只检查编译、JSON、引用、编码、身份去重和 SHA-256。本次不编写或运行离线单元测试，也没有进行游戏实机功能验收。
+离线测试覆盖规范注册表、统一校验器、MCP 工具契约、SSE 健康检查与官方快照同步契约：
+
+```bash
+python -m unittest discover -s tests -v
+```

@@ -21,6 +21,25 @@
       "detector": "json.parse"
     },
     {
+      "id": "JSON-DUPKEY-001",
+      "title": "JSON 对象禁止出现重复键",
+      "domain": "json_content",
+      "sides": ["common"],
+      "artifact_types": ["behavior_json", "resource_json", "manifest_json", "ui_json", "ui_defs_json"],
+      "versions": ["3.9", "3.10"],
+      "severity": "critical",
+      "enforcement": "block",
+      "authority": "official_doc",
+      "conditions": ["生成或审查任何由游戏加载的 JSON 文件"],
+      "do": ["通过结构化字典序列化生成唯一字段", "合并附加组件时覆盖而非重复拼接同名键"],
+      "avoid": ["通过字符串拼接在同一对象内输出两次 minecraft:max_stack_size 等同名组件"],
+      "positive_examples": ["components 中每个组件键仅出现一次"],
+      "negative_examples": ["同一 components 对象中出现两个 minecraft:max_stack_size"],
+      "keywords": ["重复键", "duplicate", "JSON", "覆盖"],
+      "source_ids": ["netease-modsdk-api-docs"],
+      "detector": "json.duplicate_keys"
+    },
+    {
       "id": "JSON-FORMAT-001",
       "title": "format_version 按具体产物和目标版本选择",
       "domain": "json_content",
@@ -60,7 +79,7 @@
     },
     {
       "id": "JSON-PATH-001",
-      "title": "JSON 文件必须位于对应行为包或资源包目录",
+      "title": "JSON 文件与配套资源注册表必须按网易目录约定成套落盘",
       "domain": "json_content",
       "sides": ["common"],
       "artifact_types": ["behavior_json", "resource_json", "manifest_json", "ui_json", "ui_defs_json"],
@@ -68,33 +87,55 @@
       "severity": "critical",
       "enforcement": "warn",
       "authority": "official_doc",
-      "conditions": ["文件类型由包目录决定加载方式"],
-      "do": ["按官方目录约定放入行为包或资源包", "让引用路径与包内相对路径一致"],
-      "avoid": ["把资源文件放进行为包", "把行为定义放进资源包", "依赖开发工具的工作区路径代替包内路径"],
-      "positive_examples": ["UI 定义和 UI JSON 位于资源包 ui 目录"],
-      "negative_examples": ["把 _ui_defs.json 放在资源包根目录"],
-      "keywords": ["行为包", "资源包", "路径", "ui", "目录"],
+      "conditions": ["文件类型由行为包或资源包专用目录及共享注册表决定加载方式"],
+      "do": [
+        "行为包使用 netease_items_beh、netease_blocks、netease_recipes、entities、loot_tables、spawn_rules",
+        "资源包同步维护配套文件：物品配 netease_items_res 与 textures/item_texture.json，方块配 blocks.json 与 textures/terrain_texture.json，盔甲配 attachables，实体配 entity 与 models/entity/*.geo.json，UI 配 ui/_ui_defs.json，文本配 texts/languages.json 与 zh_CN.lang"
+      ],
+      "avoid": [
+        "把配方放进国际版 recipes 目录而非 netease_recipes",
+        "只生成行为包 JSON 而遗漏资源包贴图映射、几何体或 attachables",
+        "把客户端专用组件或资源文件放进行为包"
+      ],
+      "positive_examples": [
+        "behavior_pack/netease_blocks/demo_ore.json 配套 resource_pack/blocks.json 与 resource_pack/textures/terrain_texture.json"
+      ],
+      "negative_examples": [
+        "把配方写入 behavior_pack/recipes/，或只写 netease_items_beh 而不注册 item_texture.json"
+      ],
+      "keywords": ["行为包", "资源包", "路径", "目录", "配套文件", "netease_items_beh", "netease_blocks", "netease_recipes", "item_texture", "terrain_texture", "attachables"],
       "source_ids": ["netease-modsdk-api-docs"],
       "detector": null
     },
     {
       "id": "JSON-MANIFEST-001",
-      "title": "manifest 模块、依赖和 UUID 必须自洽",
+      "title": "最新包清单统一使用 manifest.json（format_version: 2）且 UUID 自洽",
       "domain": "json_content",
       "sides": ["common"],
       "artifact_types": ["manifest_json"],
       "versions": ["3.9", "3.10"],
       "severity": "critical",
-      "enforcement": "warn",
+      "enforcement": "block",
       "authority": "official_doc",
-      "conditions": ["创建或修改行为包、资源包或脚本模块清单"],
-      "do": ["保证 header 与 modules UUID 唯一", "依赖 UUID 和版本与目标包匹配", "按模块类型填写入口"],
-      "avoid": ["复制示例 UUID 后直接发布", "声明不存在的依赖", "把脚本入口写到错误模块类型"],
-      "positive_examples": ["行为包依赖精确指向配套资源包 header UUID"],
-      "negative_examples": ["header 与 module 使用同一 UUID"],
-      "keywords": ["manifest", "UUID", "dependencies", "modules", "entry"],
+      "conditions": ["创建或修改行为包、资源包清单文件"],
+      "do": [
+        "统一命名为 manifest.json 并设置整数 format_version 为 2（避免 3.8+ 新生物蛋贴图异常）",
+        "保证 header.uuid 与 modules[].uuid 各自独立且为合法 UUID，填写三元整数 version 与 min_engine_version",
+        "双包配套时让行为包 dependencies 指向资源包 header.uuid"
+      ],
+      "avoid": [
+        "新项目继续生成旧版 pack_manifest.json 或 format_version: 1",
+        "header 与 module 复用同一个 UUID，或让 dependencies 指向自身 UUID"
+      ],
+      "positive_examples": [
+        "manifest.json 中 format_version 为 2，header.uuid 与 modules[0].uuid 不同，行为包依赖指向资源包 header.uuid"
+      ],
+      "negative_examples": [
+        "format_version 为 1，或 header 与 module 使用同一 UUID"
+      ],
+      "keywords": ["manifest", "pack_manifest", "清单", "UUID", "dependencies", "modules", "format_version", "新建", "组件包"],
       "source_ids": ["netease-modsdk-api-docs"],
-      "detector": null
+      "detector": "json.manifest"
     },
     {
       "id": "JSON-COMPONENT-001",
@@ -136,26 +177,38 @@
     },
     {
       "id": "JSON-ITEM-FORMAT-001",
-      "title": "基础物品使用官方 1.10 格式结构",
+      "title": "网易物品必须使用 1.10 格式与官方 netease 组件契约",
       "domain": "json_content",
-      "sides": ["common"],
-      "artifact_types": ["behavior_json"],
+      "sides": ["common", "server", "client"],
+      "artifact_types": ["behavior_json", "resource_json"],
       "versions": ["3.9", "3.10"],
       "severity": "critical",
       "enforcement": "block",
       "authority": "official_doc",
       "conditions": ["产物根对象包含 minecraft:item"],
-      "do": ["基础物品使用 format_version 1.10", "在 description 中提供 namespaced identifier"],
-      "avoid": ["把未核验的现代物品结构套用到基础生成器", "省略必需标识符"],
-      "positive_examples": ["format_version 为 1.10 且包含 minecraft:item.description.identifier"],
-      "negative_examples": ["format_version 为 1.19.20 的基础物品产物"],
-      "keywords": ["minecraft:item", "物品", "format_version", "1.10", "identifier"],
+      "do": [
+        "行为包与资源包物品统一使用 format_version \"1.10\" 与小写 namespace:id",
+        "武器/工具使用 custom_item_type: \"weapon\" + netease:weapon（斧头 type 为 \"hatchet\"）+ minecraft:max_damage；盔甲使用 custom_item_type: \"armor\" + netease:armor（armor_slot 0~3）",
+        "将 minecraft:icon、minecraft:use_animation、netease:frame_animation 放入资源包 netease_items_res，行为包 minecraft:use_duration 使用整数游戏刻 tick"
+      ],
+      "avoid": [
+        "混用国际版 1.16.100+ 组件（minecraft:durability、minecraft:digger、minecraft:wearable、minecraft:enchantable、minecraft:shooter、minecraft:throwable 等）",
+        "让 minecraft:max_damage 与 minecraft:stacked_by_data 同时存在",
+        "把资源包专用组件写进行为包，或把秒制小数写进 minecraft:use_duration"
+      ],
+      "positive_examples": [
+        "format_version 为 \"1.10\"，武器声明 custom_item_type: \"weapon\" 与 netease:weapon，不含 stacked_by_data"
+      ],
+      "negative_examples": [
+        "在 1.10 物品中写入 minecraft:durability / minecraft:digger，或在行为包写入 minecraft:use_animation"
+      ],
+      "keywords": ["minecraft:item", "物品", "武器", "盔甲", "netease:weapon", "netease:armor", "max_damage", "format_version", "1.10"],
       "source_ids": ["netease-modsdk-api-docs"],
       "detector": "json.item_format"
     },
     {
       "id": "JSON-BLOCK-FORMAT-001",
-      "title": "方块 format profile 与组件形状必须匹配",
+      "title": "方块 format profile、组件形状与光照值域必须匹配",
       "domain": "json_content",
       "sides": ["common"],
       "artifact_types": ["behavior_json"],
@@ -164,11 +217,21 @@
       "enforcement": "block",
       "authority": "official_doc",
       "conditions": ["产物根对象包含 minecraft:block 且 profile 可确定"],
-      "do": ["在 legacy_1_10、scalar_1_16、modern_1_19_20 中显式选择", "保持版本与组件值形状一致"],
-      "avoid": ["设置全局唯一 format_version", "混用旧式光照字段和现代 destructible 组件"],
-      "positive_examples": ["modern_1_19_20 使用数值 light_emission 与 destructible_by_mining 对象"],
-      "negative_examples": ["1.10 方块使用标量 destroy_time"],
-      "keywords": ["minecraft:block", "方块", "format profile", "legacy_1_10", "modern_1_19_20"],
+      "do": [
+        "新项目优先选择 modern_1_19_20（1.19.20，使用 destructible_by_mining 与 0-15 整数 minecraft:light_emission）",
+        "若使用 legacy_1_10 或 scalar_1_16，保持组件形状一致且 minecraft:block_light_emission 严格落在 [0.0, 1.0] 浮点范围"
+      ],
+      "avoid": [
+        "混用旧式光照/破坏字段与现代 destructible 组件",
+        "在 1.10.0 或 1.16.0 的 minecraft:block_light_emission 中传入大于 1.0 的整数导致引擎升级失败"
+      ],
+      "positive_examples": [
+        "modern_1_19_20 使用整数 15 的 minecraft:light_emission；scalar_1_16 使用 0.5 的 minecraft:block_light_emission"
+      ],
+      "negative_examples": [
+        "1.10.0 方块传入 {\"emission\": 12} 或使用标量 destroy_time"
+      ],
+      "keywords": ["minecraft:block", "方块", "format profile", "legacy_1_10", "modern_1_19_20", "light_emission", "发光"],
       "source_ids": ["netease-modsdk-api-docs"],
       "detector": "json.block_profile"
     },

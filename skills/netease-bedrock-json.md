@@ -13,19 +13,20 @@
 
 ## 核心知识
 
-### 1. NetEase 特有文件夹结构
+### 1. NetEase 标准双包目录结构
 
-NetEase 使用独有的文件夹命名（与国际版不同）：
+默认统一使用无后缀的 `behavior_pack/` 与 `resource_pack/`（若在已有 MCStudio 带后缀工程中工作，可通过工具的 `behavior_pack_dir` / `resource_pack_dir` 参数覆盖）：
 
 ```
-behavior_pack_{ModName}_BP/
-├── manifest.json
+behavior_pack/
+├── manifest.json               # 最新标准清单（format_version: 2）
+├── {mod_id}_Script/            # Python 脚本根目录
 ├── netease_items_beh/          # 物品行为定义（非国际版的 items/）
 │   └── {namespace}_{item_id}.json
 ├── netease_blocks/             # 方块行为定义（非国际版的 blocks/）
 │   └── {namespace}_{block_id}.json
-├── netease_recipes/            # 配方定义
-│   └── {recipe_id}.json
+├── netease_recipes/            # 配方定义（非国际版的 recipes/）
+│   └── {namespace}_{recipe_id}.json
 ├── netease_effects/            # 自定义药水效果
 ├── netease_enchants/           # 自定义附魔
 ├── netease_features/           # 地物生成
@@ -33,24 +34,29 @@ behavior_pack_{ModName}_BP/
 ├── netease_tab/                # 创造模式标签页
 ├── netease_group/              # 物品组
 ├── loot_tables/                # 战利品表
-└── entities/                   # 实体定义
+├── spawn_rules/                # 生物生成规则
+└── entities/                   # 实体定义（中国版强制保留目录）
 
-resource_pack_{ModName}_RP/
-├── manifest.json
+resource_pack/
+├── manifest.json               # 最新标准清单（format_version: 2）
 ├── netease_items_res/          # 物品资源定义
 │   └── {namespace}_{item_id}.json
-├── textures/
+├── attachables/                # 盔甲穿戴模型绑定定义
+├── entity/                     # 客户端实体定义 (*.entity.json)
+├── models/
+│   ├── entity/                 # 实体与盔甲几何体 (*.geo.json)
+│   └── blocks/                 # 方块模型
+├── ui/                         # JSON UI 与 _ui_defs.json
+├── textures/                   # 中国版强制保留目录
 │   ├── items/                  # 物品贴图
-│   │   └── {item_texture}.png
 │   ├── blocks/                 # 方块贴图
-│   │   └── {block_texture}.png
+│   ├── entity/                 # 实体贴图
 │   ├── item_texture.json       # 物品贴图映射
 │   └── terrain_texture.json    # 方块贴图映射
-├── models/
-│   └── blocks/                 # 方块模型
 ├── texts/
+│   ├── languages.json          # ["zh_CN"]
 │   └── zh_CN.lang              # 中文本地化
-└── blocks.json                 # 方块渲染定义
+└── blocks.json                 # 方块渲染与音效定义
 ```
 
 ---

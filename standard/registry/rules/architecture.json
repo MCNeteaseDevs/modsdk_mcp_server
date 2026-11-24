@@ -171,6 +171,37 @@
       "keywords": ["联机", "多人", "服务端权威", "定向同步", "广播", "客户端请求"],
       "source_ids": ["netease-modsdk-api-docs"],
       "detector": null
+    },
+    {
+      "id": "ARCH-PACKAGE-001",
+      "title": "新建组件包必须具备完整双包骨架与中国版必选目录",
+      "domain": "architecture",
+      "sides": ["common", "cross_side"],
+      "artifact_types": ["python", "manifest_json", "behavior_json", "resource_json", "mixed"],
+      "versions": ["3.9", "3.10"],
+      "severity": "critical",
+      "enforcement": "warn",
+      "authority": "official_doc",
+      "conditions": ["新建或重组 AddOn 组件包项目目录结构"],
+      "do": [
+        "同时创建行为包与资源包（默认统一为 behavior_pack 与 resource_pack），并各自放置 format_version 为 2 的最新 manifest.json",
+        "保留中国版强制要求的 behavior_pack/entities 目录（避免上传审核错误码 24）与 resource_pack/textures 目录",
+        "将 Python 脚本根目录（{mod_id}_Script）直接放在行为包根目录下，保证 mod_id 为合法小写 Python 标识符且 @Mod.Binding 与系统注册路径自洽"
+      ],
+      "avoid": [
+        "仅输出 Python 脚本目录而缺失双包 manifest.json、entities 或 textures 目录",
+        "把 {mod_id}_Script 放在行为包外部，或在同一项目内混用不同后缀的包目录名",
+        "在 mod_id 中使用连字符等非法 Python 包名字符"
+      ],
+      "positive_examples": [
+        "behavior_pack/manifest.json + behavior_pack/entities/.gitkeep + behavior_pack/demo_Script/modMain.py + resource_pack/manifest.json + resource_pack/textures/item_texture.json"
+      ],
+      "negative_examples": [
+        "只有 behavior_pack_demo/demo_Script/ 而无 manifest.json 和 resource_pack/"
+      ],
+      "keywords": ["新建", "项目", "组件包", "骨架", "目录", "结构", "behavior_pack", "resource_pack", "entities", "textures"],
+      "source_ids": ["netease-modsdk-api-docs"],
+      "detector": null
     }
   ]
 }

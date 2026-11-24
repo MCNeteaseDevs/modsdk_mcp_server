@@ -34,23 +34,25 @@ from .knowledge_base import (
     get_architecture_pattern_artifacts,
 )
 from .templates import (
-    generate_mod_project,
-    generate_server_system,
+    ARMOR_SLOT_SPECS,
+    generate_block_json,
     generate_client_system,
-    generate_event_listener,
+    generate_custom_block,
     generate_custom_command,
     generate_custom_item,
-    generate_custom_block,
-    # Bedrock JSON 生成器
-    generate_item_json,
-    generate_block_json,
-    generate_recipe_json,
     generate_entity_json,
+    generate_event_listener,
+    generate_item_json,
     generate_loot_table_json,
-    generate_simple_loot_table,
+    generate_manifest_json,
+    generate_mod_project,
+    generate_recipe_json,
+    generate_server_system,
     generate_spawn_rules_json,
-    # 统一高级物品生成函数
     generate_typed_item_json,
+    generate_ui_json,
+    get_project_folder_name,
+    render_bundle_markdown,
 )
 from .validation import CURRENT_TARGET_VERSION, Artifact, ValidationReport, get_registered_detectors, validate_artifacts
 from .standards import get_version_profile
@@ -684,36 +686,30 @@ async def list_tools() -> List[Tool]:
             }
         ),
         
-        # 代码生成工具
+        # 代码生成与组件包构建工具
         Tool(
             name="generate_mod_project",
-            description="""生成一个完整的 Mod 项目模板，包含入口文件、服务端系统、客户端系统。
+            description="""生成完整可运行的双包 AddOn 项目骨架（behavior_pack + resource_pack）。
 
-【重要：脚本目录必须直接放在 behavior_pack 下面】
-脚本文件夹直接放在行为包根目录下，这是网易 ModSDK 的强制要求！
+【生成的完整项目结构】
+1. `behavior_pack/manifest.json` — 最新标准清单（`format_version: 2`，含唯一 UUID 并绑定资源包依赖）
+2. `behavior_pack/entities/.gitkeep` — 保留中国版强制要求的 `entities/` 目录（平台审核错误码 24 检查项）
+3. `behavior_pack/{mod_id}_Script/` — 直接位于行为包根目录下的扁平 Python 脚本包（`__init__.py`、`modConfig.py`、`modMain.py`、`serverSystem.py`、`clientSystem.py`），内置双端闭环事件通信
+4. `resource_pack/manifest.json` — 最新标准资源包清单（`format_version: 2`）
+5. `resource_pack/textures/{item_texture.json,terrain_texture.json}` — 满足中国版必选 `textures/` 目录并初始化贴图注册表
+6. `resource_pack/texts/{languages.json,zh_CN.lang}` — 本地化语言注册与条目
 
-【项目结构规范】
-1. 脚本文件夹命名：{mod_id}_Script（如 myMod_Script）
-2. 脚本文件夹必须位于：behavior_pack_{mod_id}/{mod_id}_Script/（直接在行为包根目录下）
-3. 每个 Python 文件夹包含 __init__.py
-4. modMain.py 的 @Mod.Binding(name=...) 与脚本文件夹名同步
-
-【RegisterSystem 路径规范】
-路径必须从脚本根目录开始：
-- 服务端: "{mod_id}_Script.scripts.{mod_id}.server.XxxServerSystem"
-- 客户端: "{mod_id}_Script.scripts.{mod_id}.client.XxxClientSystem"
-
-代码遵循 ModSDK 编码规范（详见系统指令或 get_best_practices 工具）""",
+默认使用无后缀 `behavior_pack` / `resource_pack`；若接入已有带后缀工程（如 MCStudio 目录），可通过 `behavior_pack_dir` / `resource_pack_dir` 指定。""",
             inputSchema={
                 "type": "object",
                 "properties": {
                     "mod_name": {
                         "type": "string",
-                        "description": "Mod 名称，如 '我的第一个Mod'"
+                        "description": "Mod 显示名称，如 '我的第一个Mod'"
                     },
                     "mod_id": {
                         "type": "string",
-                        "description": "Mod ID，用于代码中的标识符，如 'my_first_mod'"
+                        "description": "Mod 标识符与命名空间（小写字母开头，仅含小写字母/数字/下划线，如 'my_first_mod'）"
                     },
                     "author": {
                         "type": "string",
@@ -727,11 +723,123 @@ async def list_tools() -> List[Tool]:
                     },
                     "version": {
                         "type": "string",
-                        "description": "版本号",
+                        "description": "三段式版本号，如 '1.0.0'",
                         "default": "1.0.0"
+                    },
+                    "min_engine_version": {
+                        "type": "array",
+                        "items": {"type": "integer"},
+                        "description": "最低引擎版本三元组，默认 [1, 18, 0]",
+                        "default": [1, 18, 0]
+                    },
+                    "behavior_pack_dir": {
+                        "type": "string",
+                        "description": "行为包目录名，默认 'behavior_pack'",
+                        "default": "behavior_pack"
+                    },
+                    "resource_pack_dir": {
+                        "type": "string",
+                        "description": "资源包目录名，默认 'resource_pack'",
+                        "default": "resource_pack"
                     }
                 },
                 "required": ["mod_name", "mod_id"]
+            }
+        ),
+        Tool(
+            name="generate_manifest_json",
+            description="""生成符合网易最新规范的 `manifest.json` 包清单（严格使用 `manifest.json` 文件名与 `format_version: 2`）。
+
+支持单独生成行为包、资源包清单，或一键生成双包互绑依赖清单（`pack_type="both"`）。""",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "pack_name": {
+                        "type": "string",
+                        "description": "组件包名称"
+                    },
+                    "description": {
+                        "type": "string",
+                        "description": "组件包描述",
+                        "default": ""
+                    },
+                    "pack_type": {
+                        "type": "string",
+                        "enum": ["both", "behavior", "resource"],
+                        "default": "both",
+                        "description": "生成类型：both（双包并自动绑定依赖）、behavior（仅行为包）、resource（仅资源包）"
+                    },
+                    "version": {
+                        "type": "string",
+                        "description": "三段式版本号，如 '1.0.0'",
+                        "default": "1.0.0"
+                    },
+                    "min_engine_version": {
+                        "type": "array",
+                        "items": {"type": "integer"},
+                        "description": "最低引擎版本三元组，默认 [1, 18, 0]",
+                        "default": [1, 18, 0]
+                    },
+                    "resource_pack_uuid": {
+                        "type": "string",
+                        "description": "可选：单独生成 behavior 清单时指定要依赖的资源包 header UUID"
+                    },
+                    "behavior_pack_dir": {
+                        "type": "string",
+                        "description": "行为包目录名，默认 'behavior_pack'",
+                        "default": "behavior_pack"
+                    },
+                    "resource_pack_dir": {
+                        "type": "string",
+                        "description": "资源包目录名，默认 'resource_pack'",
+                        "default": "resource_pack"
+                    }
+                },
+                "required": ["pack_name"]
+            }
+        ),
+        Tool(
+            name="generate_ui_json",
+            description="""生成自定义 JSON UI 配套文件集（`resource_pack/ui/<ui_namespace>.json`、`resource_pack/ui/_ui_defs.json` 及可选 `ScreenNode` 客户端控制器）。""",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "ui_namespace": {
+                        "type": "string",
+                        "description": "UI 命名空间与文件名（小写字母开头，如 'main_hud' 或 'shop_panel'）"
+                    },
+                    "title": {
+                        "type": "string",
+                        "description": "界面标题文本",
+                        "default": "自定义界面"
+                    },
+                    "is_hud": {
+                        "type": "boolean",
+                        "description": "是否为常驻 HUD（True 生成不拦截输入的 HUD 面板；False 生成带关闭按钮的弹窗 Screen）",
+                        "default": False
+                    },
+                    "include_python": {
+                        "type": "boolean",
+                        "description": "是否同时生成配套 ScreenNode Python 客户端脚本",
+                        "default": True
+                    },
+                    "mod_id": {
+                        "type": "string",
+                        "description": "所属 Mod ID（用于生成脚本包路径），默认 'mymod'",
+                        "default": "mymod"
+                    },
+                    "behavior_pack_dir": {
+                        "type": "string",
+                        "description": "行为包目录名，默认 'behavior_pack'",
+                        "default": "behavior_pack"
+                    },
+                    "resource_pack_dir": {
+                        "type": "string",
+                        "description": "资源包目录名，默认 'resource_pack'",
+                        "default": "resource_pack"
+                    }
+                },
+                "required": ["ui_namespace"]
             }
         ),
         Tool(
@@ -778,7 +886,7 @@ async def list_tools() -> List[Tool]:
                 "properties": {
                     "event_name": {
                         "type": "string",
-                        "description": "事件名称，如 'PlayerJoinEvent'"
+                        "description": "事件名称，如 'AddServerPlayerEvent'"
                     },
                     "event_description": {
                         "type": "string",
@@ -820,13 +928,13 @@ async def list_tools() -> List[Tool]:
         ),
         Tool(
             name="generate_custom_item",
-            description="生成自定义物品代码和 JSON 配置。",
+            description="生成自定义物品完整配套文件（服务端交互脚本 + 行为包/资源包 1.10 JSON + item_texture.json + 语言文件）。",
             inputSchema={
                 "type": "object",
                 "properties": {
                     "item_id": {
                         "type": "string",
-                        "description": "物品ID，如 'magic_sword'"
+                        "description": "物品ID，如 'magic_wand'"
                     },
                     "namespace": {
                         "type": "string",
@@ -840,8 +948,23 @@ async def list_tools() -> List[Tool]:
                     },
                     "max_stack": {
                         "type": "integer",
-                        "description": "最大堆叠数量",
+                        "description": "最大堆叠数量 (1-64)",
                         "default": 64
+                    },
+                    "hand_equipped": {
+                        "type": "boolean",
+                        "description": "是否按手持武器方式渲染",
+                        "default": False
+                    },
+                    "behavior_pack_dir": {
+                        "type": "string",
+                        "description": "行为包目录名，默认 'behavior_pack'",
+                        "default": "behavior_pack"
+                    },
+                    "resource_pack_dir": {
+                        "type": "string",
+                        "description": "资源包目录名，默认 'resource_pack'",
+                        "default": "resource_pack"
                     }
                 },
                 "required": ["item_id"]
@@ -849,7 +972,7 @@ async def list_tools() -> List[Tool]:
         ),
         Tool(
             name="generate_custom_block",
-            description="生成自定义方块代码和 JSON 配置。",
+            description="生成自定义方块完整配套文件（服务端交互脚本 + 现代 1.19.20 方块行为 JSON + blocks.json + terrain_texture.json + 语言文件）。",
             inputSchema={
                 "type": "object",
                 "properties": {
@@ -871,50 +994,53 @@ async def list_tools() -> List[Tool]:
                         "type": "number",
                         "description": "爆炸抗性",
                         "default": 1.0
+                    },
+                    "display_name": {
+                        "type": "string",
+                        "description": "显示名称",
+                        "default": "自定义方块"
+                    },
+                    "behavior_pack_dir": {
+                        "type": "string",
+                        "description": "行为包目录名，默认 'behavior_pack'",
+                        "default": "behavior_pack"
+                    },
+                    "resource_pack_dir": {
+                        "type": "string",
+                        "description": "资源包目录名，默认 'resource_pack'",
+                        "default": "resource_pack"
                     }
                 },
                 "required": ["block_id"]
             }
         ),
-        
+
         # ============================================================
-        # Bedrock JSON 生成工具
+        # 数据驱动 JSON 生成工具
         # ============================================================
         Tool(
             name="generate_item_json",
-            description="""生成自定义物品的 JSON 文件（行为包 + 资源包）。
+            description="""生成网易 `1.10` 自定义基础物品完整配套文件集：
+- `behavior_pack/netease_items_beh/<namespace>_<item_id>.json`
+- `resource_pack/netease_items_res/<namespace>_<item_id>.json`
+- `resource_pack/textures/item_texture.json`
+- `resource_pack/texts/languages.json` 与 `zh_CN.lang`
 
-【适用于 NetEase 我的世界数据驱动物品】
-
-【重要】format_version 必须使用 "1.10"，这是网易版的强制要求！
-
-生成内容：
-- 行为包物品 JSON: behavior_pack_<namespace>/netease_items_beh/<namespace>_<item_id>.json
-- 资源包物品 JSON: resource_pack_<namespace>/netease_items_res/<namespace>_<item_id>.json
-
-物品组件支持（1.10 版本格式）：
-- minecraft:max_stack_size - 最大堆叠数（直接数值）
-- minecraft:hand_equipped - 是否手持装备（布尔值）
-- minecraft:food - 食物组件
-- minecraft:max_damage - 耐久度
-- netease:customtips - 网易自定义提示
-等更多 NetEase 特有组件
-
-【注意】资源包的 minecraft:icon 使用字符串格式，不是对象格式""",
+【重要】网易物品必须使用 `format_version: "1.10"` 及官方支持的 1.10/netease 组件（如 `minecraft:max_damage`、`netease:weapon`、`netease:armor`、`netease:customtips`），禁止混入国际版 1.16.100+ 组件（如 `minecraft:durability`、`minecraft:digger`）。""",
             inputSchema={
                 "type": "object",
                 "properties": {
                     "namespace": {
                         "type": "string",
-                        "description": "命名空间（建议使用 mod 简称，全小写，如 'mymod'）"
+                        "description": "命名空间（全小写字母开头，如 'mymod'）"
                     },
                     "item_id": {
                         "type": "string",
-                        "description": "物品ID（全小写+下划线，如 'magic_sword'）"
+                        "description": "物品ID（全小写+下划线，如 'magic_gem'）"
                     },
                     "category": {
                         "type": "string",
-                        "description": "创造栏分类 (items/equipment/construction/nature/none)",
+                        "description": "创造栏分类 (items/equipment/construction/nature/commands/none)",
                         "default": "items"
                     },
                     "max_stack_size": {
@@ -922,9 +1048,24 @@ async def list_tools() -> List[Tool]:
                         "description": "最大堆叠数量 (1-64)",
                         "default": 64
                     },
+                    "display_name": {
+                        "type": "string",
+                        "description": "中文显示名称",
+                        "default": "自定义物品"
+                    },
                     "components": {
                         "type": "object",
-                        "description": "额外物品组件（如 minecraft:food, minecraft:durability 等）"
+                        "description": "额外行为包物品组件（仅限网易 1.10 支持组件，如 minecraft:max_damage, minecraft:food, netease:customtips）"
+                    },
+                    "behavior_pack_dir": {
+                        "type": "string",
+                        "description": "行为包目录名，默认 'behavior_pack'",
+                        "default": "behavior_pack"
+                    },
+                    "resource_pack_dir": {
+                        "type": "string",
+                        "description": "资源包目录名，默认 'resource_pack'",
+                        "default": "resource_pack"
                     }
                 },
                 "required": ["namespace", "item_id"]
@@ -932,26 +1073,13 @@ async def list_tools() -> List[Tool]:
         ),
         Tool(
             name="generate_block_json",
-            description="""生成自定义方块的 JSON 文件。
+            description="""生成自定义方块完整配套文件集：
+- `behavior_pack/netease_blocks/<namespace>_<block_id>.json`
+- `resource_pack/blocks.json`
+- `resource_pack/textures/terrain_texture.json`
+- `resource_pack/texts/languages.json` 与 `zh_CN.lang`
 
-【适用于 NetEase 我的世界数据驱动方块】
-
-通过 format_profile 明确选择官方支持的组件结构；默认 legacy_1_10 保持旧调用兼容。
-
-生成内容：
-- 行为包方块 JSON: behavior_pack_<namespace>/netease_blocks/<namespace>_<block_id>.json
-
-方块格式档：legacy_1_10（对象组件）、scalar_1_16（标量组件）、modern_1_19_20（现代组件）。
-
-旧版组件示例：
-- minecraft:destroy_time - 挖掘时间 {"value": 2.0}
-- minecraft:explosion_resistance - 爆炸抗性 {"value": 10.0}
-- minecraft:block_light_emission - 发光等级 {"emission": 15}
-- minecraft:block_light_absorption - 遮光等级 {"value": 15}
-- minecraft:friction - 摩擦力
-- netease:solid - 是否为固体方块
-- netease:tier - 挖掘等级和工具类型
-等更多网易特有组件""",
+默认采用现代推荐档 `modern_1_19_20`（`format_version: "1.19.20"`，`minecraft:destructible_by_mining`、`minecraft:light_emission` 0-15 整数）；若显式指定旧档 `legacy_1_10` 或 `scalar_1_16`，`light_emission` 会自动归一化至引擎要求的 `[0.0, 1.0]` 浮点区间。""",
             inputSchema={
                 "type": "object",
                 "properties": {
@@ -974,14 +1102,39 @@ async def list_tools() -> List[Tool]:
                         "default": 10.0
                     },
                     "light_emission": {
-                        "type": "integer",
+                        "type": "number",
                         "description": "发光等级 [0-15]",
                         "default": 0
+                    },
+                    "light_dampening": {
+                        "type": "integer",
+                        "description": "遮光等级 [0-15]",
+                        "default": 15
                     },
                     "map_color": {
                         "type": "string",
                         "description": "地图颜色（十六进制，如 '#FF5500'）",
                         "default": "#FFFFFF"
+                    },
+                    "category": {
+                        "type": "string",
+                        "description": "创造栏分类 (Construction/Nature/Equipment/Items)",
+                        "default": "Nature"
+                    },
+                    "register_to_menu": {
+                        "type": "boolean",
+                        "description": "是否注册到创造模式物品栏",
+                        "default": True
+                    },
+                    "sound": {
+                        "type": "string",
+                        "description": "方块音效名（写入 blocks.json，如 'stone'、'wood'、'metal'）",
+                        "default": "stone"
+                    },
+                    "display_name": {
+                        "type": "string",
+                        "description": "中文显示名称",
+                        "default": "自定义方块"
                     },
                     "components": {
                         "type": "object",
@@ -990,8 +1143,18 @@ async def list_tools() -> List[Tool]:
                     "format_profile": {
                         "type": "string",
                         "enum": ["legacy_1_10", "scalar_1_16", "modern_1_19_20"],
-                        "default": "legacy_1_10",
-                        "description": "方块 format_version 与组件形状档"
+                        "default": "modern_1_19_20",
+                        "description": "方块 format_version 与组件形状档（默认推荐 modern_1_19_20）"
+                    },
+                    "behavior_pack_dir": {
+                        "type": "string",
+                        "description": "行为包目录名，默认 'behavior_pack'",
+                        "default": "behavior_pack"
+                    },
+                    "resource_pack_dir": {
+                        "type": "string",
+                        "description": "资源包目录名，默认 'resource_pack'",
+                        "default": "resource_pack"
                     }
                 },
                 "required": ["namespace", "block_id"]
@@ -999,15 +1162,9 @@ async def list_tools() -> List[Tool]:
         ),
         Tool(
             name="generate_recipe_json",
-            description="""生成合成配方 JSON 文件。
+            description="""生成合成配方 JSON 文件（位于 `behavior_pack/netease_recipes/<namespace>_<recipe_id>.json`）。
 
-【配方类型】
-- shaped: 有序合成（工作台）
-- shapeless: 无序合成（工作台）
-- furnace: 熔炉配方
-
-【文件位置】
-behavior_pack_<namespace>/netease_recipes/<recipe_id>.json""",
+支持 `shaped`（有序合成）、`shapeless`（无序合成）、`furnace`（熔炉烧炼）。""",
             inputSchema={
                 "type": "object",
                 "properties": {
@@ -1054,6 +1211,11 @@ behavior_pack_<namespace>/netease_recipes/<recipe_id>.json""",
                         "type": "integer",
                         "description": "结果数量",
                         "default": 1
+                    },
+                    "behavior_pack_dir": {
+                        "type": "string",
+                        "description": "行为包目录名，默认 'behavior_pack'",
+                        "default": "behavior_pack"
                     }
                 },
                 "required": ["recipe_type", "namespace", "recipe_id"]
@@ -1061,24 +1223,11 @@ behavior_pack_<namespace>/netease_recipes/<recipe_id>.json""",
         ),
         Tool(
             name="generate_entity_json",
-            description=f"""生成自定义实体 JSON 文件（行为包 + 资源包）。
-
-【适用于自定义生物/实体】
-遵循 NetEase {MODSDK_LABEL} 官方文档快照
-
-生成内容：
-- 行为包实体 JSON: behavior_pack_<namespace>/entities/<namespace>_<entity_id>.json
-- 资源包实体 JSON: resource_pack_<namespace>/entity/<namespace>_<entity_id>.entity.json
-
-实体组件支持：
-- minecraft:health - 生命值
-- minecraft:movement - 移动速度
-- minecraft:collision_box - 碰撞箱
-- minecraft:type_family - 实体家族
-- minecraft:physics - 物理
-- minecraft:navigation.walk - 寻路
-- runtime_identifier - 基于哪个原版实体构建
-等更多组件""",
+            description=f"""生成自定义实体完整配套文件集（遵循 NetEase {MODSDK_LABEL} 规范）：
+- `behavior_pack/entities/<namespace>_<entity_id>.json`
+- `resource_pack/entity/<namespace>_<entity_id>.entity.json`
+- `resource_pack/models/entity/<namespace>_<entity_id>.geo.json`（配套 1.12.0 几何体模型，避免缺少模型报错）
+- `resource_pack/texts/languages.json` 与 `zh_CN.lang`""",
             inputSchema={
                 "type": "object",
                 "properties": {
@@ -1110,10 +1259,14 @@ behavior_pack_<namespace>/netease_recipes/<recipe_id>.json""",
                         "description": "碰撞箱高度",
                         "default": 1.8
                     },
+                    "family": {
+                        "type": "array",
+                        "items": {"type": "string"},
+                        "description": "实体家族标签列表"
+                    },
                     "runtime_identifier": {
                         "type": "string",
-                        "description": "基于哪个原版实体构建（如 minecraft:pig, minecraft:zombie）。决定实体的基础行为特性。",
-                        "default": "minecraft:{entity_id}"
+                        "description": "基于哪个原版实体构建（如 'minecraft:pig'、'minecraft:zombie'）；不传时按 preset 自动选择合法原版实体"
                     },
                     "spawn_egg_base_color": {
                         "type": "string",
@@ -1127,8 +1280,27 @@ behavior_pack_<namespace>/netease_recipes/<recipe_id>.json""",
                     },
                     "preset": {
                         "type": "string",
-                        "description": "实体预设，自动添加相关行为组件: mount(坐骑:rideable+tameable+follow_owner), pet(宠物:follow_owner+协助攻击), npc(NPC:不可攻击+不移动), hostile(敌对:近战+仇恨)",
+                        "description": "实体预设: mount(坐骑), pet(宠物), npc(NPC), hostile(敌对)",
                         "enum": ["mount", "pet", "npc", "hostile"]
+                    },
+                    "components": {
+                        "type": "object",
+                        "description": "额外实体行为组件"
+                    },
+                    "display_name": {
+                        "type": "string",
+                        "description": "中文显示名称",
+                        "default": "自定义生物"
+                    },
+                    "behavior_pack_dir": {
+                        "type": "string",
+                        "description": "行为包目录名，默认 'behavior_pack'",
+                        "default": "behavior_pack"
+                    },
+                    "resource_pack_dir": {
+                        "type": "string",
+                        "description": "资源包目录名，默认 'resource_pack'",
+                        "default": "resource_pack"
                     }
                 },
                 "required": ["namespace", "entity_id"]
@@ -1136,18 +1308,7 @@ behavior_pack_<namespace>/netease_recipes/<recipe_id>.json""",
         ),
         Tool(
             name="generate_loot_table_json",
-            description="""生成战利品表 JSON 文件。
-
-【适用于】
-- 实体死亡掉落
-- 方块破坏掉落
-- 宝箱战利品
-
-【文件位置】
-behavior_pack_<namespace>/loot_tables/<path>.json
-
-【池（Pool）结构】
-每个池包含多个条目，每次从池中随机抽取""",
+            description="""生成战利品表 JSON 文件（位于 `behavior_pack/loot_tables/<table_name>.json`）。""",
             inputSchema={
                 "type": "object",
                 "properties": {
@@ -1171,6 +1332,16 @@ behavior_pack_<namespace>/loot_tables/<path>.json
                                 }
                             }
                         }
+                    },
+                    "table_name": {
+                        "type": "string",
+                        "description": "战利品表文件名（不含 .json）",
+                        "default": "custom_loot"
+                    },
+                    "behavior_pack_dir": {
+                        "type": "string",
+                        "description": "行为包目录名，默认 'behavior_pack'",
+                        "default": "behavior_pack"
                     }
                 },
                 "required": ["pools"]
@@ -1178,17 +1349,7 @@ behavior_pack_<namespace>/loot_tables/<path>.json
         ),
         Tool(
             name="generate_spawn_rules_json",
-            description="""生成实体生成规则 JSON 文件。
-
-【适用于自然生成的生物】
-
-【文件位置】
-behavior_pack_<namespace>/spawn_rules/<namespace>_<entity_id>.json
-
-【控制项】
-- population_control: 种群控制类型 (animal/monster/water_animal/ambient)
-- spawn_weight: 生成权重
-- herd_size: 群组大小""",
+            description="""生成实体自然生成规则 JSON 文件（位于 `behavior_pack/spawn_rules/<namespace>_<entity_id>.json`）。""",
             inputSchema={
                 "type": "object",
                 "properties": {
@@ -1220,112 +1381,134 @@ behavior_pack_<namespace>/spawn_rules/<namespace>_<entity_id>.json
                         "type": "integer",
                         "description": "最大群组大小",
                         "default": 4
+                    },
+                    "behavior_pack_dir": {
+                        "type": "string",
+                        "description": "行为包目录名，默认 'behavior_pack'",
+                        "default": "behavior_pack"
                     }
                 },
                 "required": ["namespace", "entity_id"]
             }
         ),
-        
+
         # ============================================================
-        # 高级物品生成工具（一键生成复杂物品）
+        # 高级物品生成工具（严格遵循网易 1.10 官方组件规范）
         # ============================================================
         Tool(
             name="generate_sword_json",
-            description="""【一键生成】自定义剑类武器 JSON
-包含：耐久度、武器伤害、附魔、可修复等完整组件配置。""",
+            description="""【一键生成】网易 1.10 自定义剑类武器配套文件集（`custom_item_type: "weapon"` + `netease:weapon` + `minecraft:max_damage` + `item_texture.json` + 语言文件）。""",
             inputSchema={
                 "type": "object",
                 "properties": {
                     "namespace": {"type": "string", "description": "命名空间"},
                     "item_id": {"type": "string", "description": "物品ID"},
                     "damage": {"type": "integer", "description": "攻击伤害", "default": 5},
-                    "durability": {"type": "integer", "description": "耐久值", "default": 131},
-                    "enchantability": {"type": "integer", "description": "附魔等级", "default": 15},
-                    "repair_material": {"type": "string", "description": "修复材料（如 minecraft:iron_ingot）"}
+                    "durability": {"type": "integer", "description": "最大耐久值", "default": 250},
+                    "enchantability": {"type": "integer", "description": "附魔能力值", "default": 14},
+                    "level": {"type": "integer", "description": "武器等级与铁砧修复档位 (0=木/金, 1=石, 2=铁, 3=钻石)", "default": 2},
+                    "repair_material": {"type": "string", "description": "可选：按修复材料推断 level（如 minecraft:diamond -> 3）"},
+                    "display_name": {"type": "string", "description": "显示名称", "default": "自定义剑"},
+                    "behavior_pack_dir": {"type": "string", "default": "behavior_pack"},
+                    "resource_pack_dir": {"type": "string", "default": "resource_pack"}
                 },
                 "required": ["namespace", "item_id"]
             }
         ),
         Tool(
             name="generate_pickaxe_json",
-            description="""【一键生成】自定义镐类工具 JSON
-包含：耐久度、挖掘速度（石头/金属类方块）、附魔、可修复。""",
+            description="""【一键生成】网易 1.10 自定义镐类工具配套文件集（`custom_item_type: "weapon"` + `netease:weapon.type="pickaxe"` + 挖掘等级与速度 + 贴图注册）。""",
             inputSchema={
                 "type": "object",
                 "properties": {
                     "namespace": {"type": "string", "description": "命名空间"},
                     "item_id": {"type": "string", "description": "物品ID"},
-                    "durability": {"type": "integer", "description": "耐久值", "default": 131},
-                    "mining_speed": {"type": "integer", "description": "挖掘速度", "default": 4},
-                    "enchantability": {"type": "integer", "description": "附魔等级", "default": 15},
-                    "repair_material": {"type": "string", "description": "修复材料"}
+                    "durability": {"type": "integer", "description": "最大耐久值", "default": 250},
+                    "mining_speed": {"type": "integer", "description": "基础挖掘速度", "default": 6},
+                    "damage": {"type": "integer", "description": "近战伤害", "default": 2},
+                    "enchantability": {"type": "integer", "description": "附魔能力值", "default": 14},
+                    "level": {"type": "integer", "description": "挖掘等级 (0=木/金, 1=石, 2=铁, 3=钻石)", "default": 2},
+                    "repair_material": {"type": "string", "description": "可选：修复材料映射"},
+                    "display_name": {"type": "string", "description": "显示名称", "default": "自定义镐"},
+                    "behavior_pack_dir": {"type": "string", "default": "behavior_pack"},
+                    "resource_pack_dir": {"type": "string", "default": "resource_pack"}
                 },
                 "required": ["namespace", "item_id"]
             }
         ),
         Tool(
             name="generate_axe_json",
-            description="""【一键生成】自定义斧类工具 JSON
-包含：攻击伤害、耐久度、木头类方块挖掘加速、附魔、可修复。""",
+            description="""【一键生成】网易 1.10 自定义斧类工具配套文件集（使用官方 `netease:weapon.type="hatchet"` + 攻击伤害 + 挖掘速度 + 贴图注册）。""",
             inputSchema={
                 "type": "object",
                 "properties": {
                     "namespace": {"type": "string", "description": "命名空间"},
                     "item_id": {"type": "string", "description": "物品ID"},
                     "damage": {"type": "integer", "description": "攻击伤害", "default": 4},
-                    "durability": {"type": "integer", "description": "耐久值", "default": 131},
-                    "mining_speed": {"type": "integer", "description": "挖掘速度", "default": 4},
-                    "enchantability": {"type": "integer", "description": "附魔等级", "default": 15},
-                    "repair_material": {"type": "string", "description": "修复材料"}
+                    "durability": {"type": "integer", "description": "最大耐久值", "default": 250},
+                    "mining_speed": {"type": "integer", "description": "基础挖掘速度", "default": 6},
+                    "enchantability": {"type": "integer", "description": "附魔能力值", "default": 14},
+                    "level": {"type": "integer", "description": "工具等级 (0=木/金, 1=石, 2=铁, 3=钻石)", "default": 2},
+                    "repair_material": {"type": "string", "description": "可选：修复材料映射"},
+                    "display_name": {"type": "string", "description": "显示名称", "default": "自定义斧"},
+                    "behavior_pack_dir": {"type": "string", "default": "behavior_pack"},
+                    "resource_pack_dir": {"type": "string", "default": "resource_pack"}
                 },
                 "required": ["namespace", "item_id"]
             }
         ),
         Tool(
             name="generate_shovel_json",
-            description="""【一键生成】自定义锹类工具 JSON
-包含：耐久度、泥土/沙子/沙砾类方块挖掘加速、附魔、可修复。""",
+            description="""【一键生成】网易 1.10 自定义锹类工具配套文件集（`netease:weapon.type="shovel"` + 挖掘速度 + 贴图注册）。""",
             inputSchema={
                 "type": "object",
                 "properties": {
                     "namespace": {"type": "string", "description": "命名空间"},
                     "item_id": {"type": "string", "description": "物品ID"},
-                    "durability": {"type": "integer", "description": "耐久值", "default": 131},
-                    "mining_speed": {"type": "integer", "description": "挖掘速度", "default": 4},
-                    "enchantability": {"type": "integer", "description": "附魔等级", "default": 15},
-                    "repair_material": {"type": "string", "description": "修复材料"}
+                    "durability": {"type": "integer", "description": "最大耐久值", "default": 250},
+                    "mining_speed": {"type": "integer", "description": "基础挖掘速度", "default": 6},
+                    "damage": {"type": "integer", "description": "近战伤害", "default": 1},
+                    "enchantability": {"type": "integer", "description": "附魔能力值", "default": 14},
+                    "level": {"type": "integer", "description": "工具等级", "default": 2},
+                    "repair_material": {"type": "string", "description": "可选：修复材料映射"},
+                    "display_name": {"type": "string", "description": "显示名称", "default": "自定义锹"},
+                    "behavior_pack_dir": {"type": "string", "default": "behavior_pack"},
+                    "resource_pack_dir": {"type": "string", "default": "resource_pack"}
                 },
                 "required": ["namespace", "item_id"]
             }
         ),
         Tool(
             name="generate_hoe_json",
-            description="""【一键生成】自定义锄类工具 JSON
-包含：耐久度、附魔、可修复。用于耕地。""",
+            description="""【一键生成】网易 1.10 自定义锄类工具配套文件集（`netease:weapon.type="hoe"` + 耕地功能 + 贴图注册）。""",
             inputSchema={
                 "type": "object",
                 "properties": {
                     "namespace": {"type": "string", "description": "命名空间"},
                     "item_id": {"type": "string", "description": "物品ID"},
-                    "durability": {"type": "integer", "description": "耐久值", "default": 131},
-                    "enchantability": {"type": "integer", "description": "附魔等级", "default": 15},
-                    "repair_material": {"type": "string", "description": "修复材料"}
+                    "durability": {"type": "integer", "description": "最大耐久值", "default": 250},
+                    "enchantability": {"type": "integer", "description": "附魔能力值", "default": 14},
+                    "level": {"type": "integer", "description": "工具等级", "default": 2},
+                    "repair_material": {"type": "string", "description": "可选：修复材料映射"},
+                    "display_name": {"type": "string", "description": "显示名称", "default": "自定义锄"},
+                    "behavior_pack_dir": {"type": "string", "default": "behavior_pack"},
+                    "resource_pack_dir": {"type": "string", "default": "resource_pack"}
                 },
                 "required": ["namespace", "item_id"]
             }
         ),
         Tool(
             name="generate_food_json",
-            description="""【一键生成】自定义食物物品 JSON
-包含：饥饿值、饱和度、可随时食用、药水效果等。""",
+            description="""【一键生成】网易 1.10 自定义食物配套文件集（行为包 `minecraft:food` + 整数刻 `minecraft:use_duration` + 资源包 `minecraft:use_animation`）。""",
             inputSchema={
                 "type": "object",
                 "properties": {
                     "namespace": {"type": "string", "description": "命名空间"},
                     "item_id": {"type": "string", "description": "物品ID"},
-                    "nutrition": {"type": "integer", "description": "饥饿值", "default": 4},
-                    "saturation": {"type": "string", "description": "饱和度(low/normal/good/max)", "default": "normal"},
-                    "can_always_eat": {"type": "boolean", "description": "是否可随时食用", "default": False},
+                    "nutrition": {"type": "integer", "description": "恢复饥饿值", "default": 4},
+                    "saturation": {"type": "string", "description": "饱和度等级 (poor/low/normal/good/max/supernatural)", "default": "normal"},
+                    "can_always_eat": {"type": "boolean", "description": "是否满饥饿也可食用", "default": False},
+                    "use_duration": {"type": "integer", "description": "食用耗时（游戏刻 tick，默认 32）", "default": 32},
                     "effects": {
                         "type": "array",
                         "description": "药水效果列表 [{name, duration, amplifier, chance}]",
@@ -1333,22 +1516,22 @@ behavior_pack_<namespace>/spawn_rules/<namespace>_<entity_id>.json
                             "type": "object",
                             "properties": {
                                 "name": {"type": "string", "description": "效果名称"},
-                                "duration": {"type": "integer", "description": "持续时间(tick)"},
+                                "duration": {"type": "integer", "description": "持续时间(秒)"},
                                 "amplifier": {"type": "integer", "description": "效果等级"},
                                 "chance": {"type": "number", "description": "触发概率(0-1)"}
                             }
                         }
-                    }
+                    },
+                    "display_name": {"type": "string", "description": "显示名称", "default": "自定义食物"},
+                    "behavior_pack_dir": {"type": "string", "default": "behavior_pack"},
+                    "resource_pack_dir": {"type": "string", "default": "resource_pack"}
                 },
                 "required": ["namespace", "item_id"]
             }
         ),
         Tool(
             name="generate_armor_json",
-            description="""【一键生成】自定义盔甲物品 JSON
-包含：护甲值、穿戴槽位、耐久度、附魔、可修复。
-
-槽位选项：slot.armor.head / slot.armor.chest / slot.armor.legs / slot.armor.feet""",
+            description="""【一键生成】网易 1.10 自定义盔甲完整配套文件集（`custom_item_type: "armor"` + `netease:armor` + `resource_pack/attachables/` 穿戴渲染模型绑定 + 贴图注册）。""",
             inputSchema={
                 "type": "object",
                 "properties": {
@@ -1360,53 +1543,61 @@ behavior_pack_<namespace>/spawn_rules/<namespace>_<entity_id>.json
                         "enum": ["slot.armor.head", "slot.armor.chest", "slot.armor.legs", "slot.armor.feet"],
                         "default": "slot.armor.chest"
                     },
-                    "protection": {"type": "integer", "description": "护甲值", "default": 5},
-                    "durability": {"type": "integer", "description": "耐久值", "default": 165},
-                    "enchantability": {"type": "integer", "description": "附魔等级", "default": 9},
-                    "repair_material": {"type": "string", "description": "修复材料"}
+                    "protection": {"type": "integer", "description": "护甲防御值 (defense)", "default": 5},
+                    "durability": {"type": "integer", "description": "最大耐久值", "default": 165},
+                    "enchantability": {"type": "integer", "description": "附魔能力值", "default": 9},
+                    "toughness": {"type": "integer", "description": "可选：盔甲韧性 (0-20)"},
+                    "knockback_resistance": {"type": "number", "description": "可选：击退抗性 (0.0-1.0)"},
+                    "display_name": {"type": "string", "description": "显示名称"},
+                    "behavior_pack_dir": {"type": "string", "default": "behavior_pack"},
+                    "resource_pack_dir": {"type": "string", "default": "resource_pack"}
                 },
                 "required": ["namespace", "item_id"]
             }
         ),
         Tool(
             name="generate_bow_json",
-            description="""【一键生成】自定义弓类武器 JSON
-包含：耐久度、蓄力时间、弓箭发射、附魔。""",
+            description="""【一键生成】网易 1.10 自定义远程蓄力武器配套文件集（`custom_item_type: "ranged_weapon"` + `minecraft:use_duration` + 资源包 `netease:frame_animation` 3 帧蓄力贴图注册）。""",
             inputSchema={
                 "type": "object",
                 "properties": {
                     "namespace": {"type": "string", "description": "命名空间"},
-                    "item_id": {"type": "string", "description": "物品ID"},
-                    "durability": {"type": "integer", "description": "耐久值", "default": 384},
-                    "max_draw_duration": {"type": "number", "description": "最大蓄力时间", "default": 1.0},
-                    "enchantability": {"type": "integer", "description": "附魔等级", "default": 1}
+                    "item_id": {"type": "string", "description": "物品ID（若需第三人称拉弓抬手动画，官方要求填 'bow'）"},
+                    "durability": {"type": "integer", "description": "最大耐久值", "default": 384},
+                    "use_duration": {"type": "integer", "description": "最大蓄力时长（tick，默认 72000）", "default": 72000},
+                    "projectile_entity": {"type": "string", "description": "松手发射的抛射物实体标识", "default": "minecraft:arrow"},
+                    "display_name": {"type": "string", "description": "显示名称", "default": "自定义弓"},
+                    "behavior_pack_dir": {"type": "string", "default": "behavior_pack"},
+                    "resource_pack_dir": {"type": "string", "default": "resource_pack"}
                 },
                 "required": ["namespace", "item_id"]
             }
         ),
         Tool(
             name="generate_throwable_json",
-            description="""【一键生成】自定义可投掷物品 JSON（如雪球、末影珍珠）
-包含：投掷组件、弹射物实体、发射力度。""",
+            description="""【一键生成】网易 1.10 自定义投掷物配套文件集（`custom_item_type: "projectile_item"` + `netease:projectile` + 贴图注册）。""",
             inputSchema={
                 "type": "object",
                 "properties": {
                     "namespace": {"type": "string", "description": "命名空间"},
                     "item_id": {"type": "string", "description": "物品ID"},
-                    "projectile_entity": {"type": "string", "description": "投掷出的实体ID"},
-                    "max_draw_duration": {"type": "number", "description": "最大蓄力时间", "default": 0.0},
-                    "launch_power": {"type": "number", "description": "发射力度", "default": 1.0}
+                    "projectile_entity": {"type": "string", "description": "右键发射的抛射物实体 identifier（如 'minecraft:snowball'）"},
+                    "max_stack_size": {"type": "integer", "description": "最大堆叠数量 (1-64)", "default": 16},
+                    "cooldown_ticks": {"type": "integer", "description": "可选冷却时间", "default": 0},
+                    "display_name": {"type": "string", "description": "显示名称", "default": "自定义投掷物"},
+                    "behavior_pack_dir": {"type": "string", "default": "behavior_pack"},
+                    "resource_pack_dir": {"type": "string", "default": "resource_pack"}
                 },
                 "required": ["namespace", "item_id", "projectile_entity"]
             }
         ),
-        
+
         # 代码审查工具
         Tool(
             name="review_code",
             description="""审查显式传入的 Python/JSON 文本，检测确定性兼容问题、架构违规和带证据边界的工程风险。
 
-确定性阻断包括：UTF-8 声明、Python 2.7 语法、真实 u/U/ur/ru 前缀、精确导入白名单、跨端导入、动态导入、已证实事件字段，以及 JSON 解析、必需标识和版本—组件形状冲突。只有上下文明确的高频 print 刷屏会警告；其他工程范式交由 guidance 或人工验收。""",
+确定性阻断包括：UTF-8 声明、Python 2.7 语法、真实 u/U/ur/ru 前缀、精确导入白名单、跨端导入、动态导入、已证实事件字段，以及 JSON 解析、重复键、manifest.json 规范、必需标识、网易 1.10 物品组件合法性和方块版本—组件形状冲突。""",
             inputSchema={
                 "type": "object",
                 "properties": {
@@ -1421,7 +1612,7 @@ behavior_pack_<namespace>/spawn_rules/<namespace>_<entity_id>.json
                     },
                     "artifact_type": {
                         "type": "string",
-                        "enum": ["auto", "python", "json", "json_ui"],
+                        "enum": ["auto", "python", "json", "json_ui", "item", "block", "manifest_json"],
                         "default": "auto"
                     },
                     "side": {
@@ -1442,19 +1633,19 @@ behavior_pack_<namespace>/spawn_rules/<namespace>_<entity_id>.json
                 "required": ["code"]
             }
         ),
-        
+
         # ============================================================
         # 知识库查询工具
         # ============================================================
         Tool(
             name="search_components",
-            description="""搜索基岩版组件（物品/方块/实体/网易特有）。
+            description="""搜索组件定义（网易支持的原版物品组件 / 方块组件 / 实体组件 / 网易特有组件）。
 
 【支持的组件类型】
-- item: 物品组件（minecraft:food, minecraft:durability 等）
-- block: 方块组件（minecraft:friction, minecraft:geometry 等）
+- item: 网易 1.10 支持的原版物品组件（minecraft:food, minecraft:max_damage 等）
+- block: 方块组件（minecraft:destructible_by_mining, minecraft:light_emission 等）
 - entity: 实体组件（minecraft:health, minecraft:movement 等）
-- netease: 网易特有组件（netease:customtips, netease:tier 等）
+- netease: 网易特有组件（netease:weapon, netease:armor, netease:tier 等）
 - all: 搜索所有类型（默认）
 
 【使用场景】
@@ -1594,36 +1785,98 @@ behavior_pack_<namespace>/spawn_rules/<namespace>_<entity_id>.json
 # ============================================================================
 
 ADVANCED_ITEM_TOOLS = {
-    "generate_sword_json":     ("sword",     "⚔️ 自定义剑类武器",  "自定义剑"),
-    "generate_pickaxe_json":   ("pickaxe",   "⛏️ 自定义镐类工具",  "自定义镐"),
-    "generate_axe_json":       ("axe",       "🪓 自定义斧类工具",  "自定义斧"),
-    "generate_shovel_json":    ("shovel",    "🥄 自定义锹类工具",  "自定义锹"),
-    "generate_hoe_json":       ("hoe",       "🌾 自定义锄类工具",  "自定义锄"),
-    "generate_food_json":      ("food",      "🍎 自定义食物",      "自定义食物"),
-    "generate_armor_json":     ("armor",     "🛡️ 自定义盔甲",     "自定义盔甲"),
-    "generate_bow_json":       ("bow",       "🏹 自定义弓",        "自定义弓"),
-    "generate_throwable_json": ("throwable", "🎯 自定义投掷物",    "自定义投掷物"),
+    "generate_sword_json":     ("sword",     "自定义剑类武器"),
+    "generate_pickaxe_json":   ("pickaxe",   "自定义镐类工具"),
+    "generate_axe_json":       ("axe",       "自定义斧类工具"),
+    "generate_shovel_json":    ("shovel",    "自定义锹类工具"),
+    "generate_hoe_json":       ("hoe",       "自定义锄类工具"),
+    "generate_food_json":      ("food",      "自定义食物"),
+    "generate_armor_json":     ("armor",     "自定义盔甲"),
+    "generate_bow_json":       ("bow",       "自定义远程弓"),
+    "generate_throwable_json": ("throwable", "自定义投掷物"),
 }
 
-# 盔甲槽位名称映射（用于盔甲类型的个性化显示）
-_ARMOR_SLOT_NAMES = {
-    "slot.armor.head": "头盔",
-    "slot.armor.chest": "胸甲",
-    "slot.armor.legs": "护腿",
-    "slot.armor.feet": "靴子",
-}
+_SHARED_MERGE_NOTE = (
+    "共享注册与语言文件（如 `item_texture.json`、`terrain_texture.json`、`blocks.json`、"
+    "`_ui_defs.json`、`languages.json`、`zh_CN.lang`）：若项目中已存在同名文件，请将新增键值/词条合并进现有文件，勿直接覆盖已有条目。"
+)
 
 
-def _format_item_result(result: Dict[str, str], namespace: str, item_id: str, display_label: str, lang_name: str) -> str:
-    """格式化高级物品生成结果为统一的 Markdown 输出"""
-    pack_id = namespace
-    output = f"## {display_label}: {namespace}:{item_id}\n\n"
-    output += f"### 行为包文件: `behavior_pack_{pack_id}/netease_items_beh/{namespace}_{item_id}.json`\n\n"
-    output += f"```json\n{result['behavior']}\n```\n\n"
-    output += f"### 资源包文件: `resource_pack_{pack_id}/netease_items_res/{namespace}_{item_id}.json`\n\n"
-    output += f"```json\n{result['resource']}\n```\n\n"
-    output += f"### 📝 本地化条目 (texts/zh_CN.lang)\n\n```\nitem.{namespace}:{item_id}.name={lang_name}\n```"
-    return output
+def _artifacts_from_files(
+    files: Dict[str, str],
+    project_modules: tuple = (),
+    block_format_profile: Optional[str] = None,
+) -> List[Artifact]:
+    """将生成包中的路径到内容映射转换为结构化待校验 Artifact 列表。"""
+    artifacts: List[Artifact] = []
+    for filepath, content in files.items():
+        norm = filepath.replace("\\", "/")
+        lower = norm.lower()
+        basename = norm.rsplit("/", 1)[-1].lower()
+        if basename == ".gitkeep" or lower.endswith(".lang"):
+            continue
+        if lower.endswith(".py"):
+            if basename == "modmain.py":
+                side = "cross_side"
+            elif (
+                basename in {"serversystem.py", "server.py", "custom_command.py"}
+                or basename.startswith(("item_", "block_"))
+            ):
+                side = "server"
+            elif basename in {"clientsystem.py", "client.py"} or ("/ui/" in lower and basename != "__init__.py"):
+                side = "client"
+            else:
+                side = "common"
+            artifacts.append(
+                Artifact(
+                    content=content,
+                    filename=norm,
+                    artifact_type="python",
+                    side=side,
+                    target_version=CURRENT_TARGET_VERSION,
+                    project_modules=project_modules,
+                )
+            )
+        elif lower.endswith(".json"):
+            if basename in {"manifest.json", "pack_manifest.json"}:
+                artifact_type = "manifest_json"
+                side = "common"
+                fmt_profile = None
+            elif "/netease_items_beh/" in lower:
+                artifact_type = "item"
+                side = "server"
+                fmt_profile = None
+            elif "/netease_items_res/" in lower:
+                artifact_type = "item"
+                side = "client"
+                fmt_profile = None
+            elif "/netease_blocks/" in lower:
+                artifact_type = "block"
+                side = "common"
+                fmt_profile = block_format_profile
+            elif "/ui/" in lower and basename != "_ui_defs.json":
+                artifact_type = "json_ui"
+                side = "client"
+                fmt_profile = None
+            else:
+                artifact_type = "json"
+                is_client = any(
+                    marker in lower
+                    for marker in ("/textures/", "/entity/", "/models/", "/attachables/", "/texts/", "/ui/", "/blocks.json")
+                )
+                side = "client" if is_client else "common"
+                fmt_profile = None
+            artifacts.append(
+                Artifact(
+                    content=content,
+                    filename=norm,
+                    artifact_type=artifact_type,
+                    side=side,
+                    target_version=CURRENT_TARGET_VERSION,
+                    format_profile=fmt_profile,
+                )
+            )
+    return artifacts
 
 
 def _render_validation_report(report: ValidationReport) -> str:
@@ -1981,58 +2234,123 @@ async def call_tool(name: str, arguments: Dict[str, Any]) -> List[TextContent]:
             return _blocked_report("GUIDANCE_REQUEST_INVALID", str(exc))
         return [TextContent(type="text", text=guidance)]
     
-    # 代码生成工具
+    # 代码与组件包生成工具
     elif name == "generate_mod_project":
         mod_id = arguments.get("mod_id")
-        files = generate_mod_project(
-            mod_name=arguments.get("mod_name"),
-            mod_id=mod_id,
-            author=arguments.get("author", "Author"),
-            description=arguments.get("description", "A Minecraft mod"),
-            version=arguments.get("version", "1.0.0")
-        )
-        
-        output = "## 生成的 Mod 项目文件\n\n"
-        for filename, content in files.items():
-            output += f"### `{filename}`\n\n```python\n{content}\n```\n\n"
+        try:
+            files = generate_mod_project(
+                mod_name=arguments.get("mod_name"),
+                mod_id=mod_id,
+                author=arguments.get("author", "Author"),
+                description=arguments.get("description", "A Minecraft mod"),
+                version=arguments.get("version", "1.0.0"),
+                min_engine_version=arguments.get("min_engine_version", [1, 18, 0]),
+                behavior_pack_dir=arguments.get("behavior_pack_dir"),
+                resource_pack_dir=arguments.get("resource_pack_dir"),
+            )
+        except (TypeError, ValueError) as exc:
+            return _blocked_report("GENERATOR_INPUT_INVALID", str(exc))
 
-        project_root = "{}_Script".format(mod_id)
-        artifacts = []
-        for filename, content in files.items():
-            if filename.endswith("/server.py"):
-                side = "server"
-            elif filename.endswith("/client.py"):
-                side = "client"
-            elif filename.endswith("/modMain.py"):
-                side = "cross_side"
-            else:
-                side = "common"
-            artifacts.append(Artifact(
-                content=content,
-                filename=filename,
-                artifact_type="python",
-                side=side,
-                target_version=CURRENT_TARGET_VERSION,
-                project_modules=(project_root, mod_id),
-            ))
+        clean_mod_id = str(mod_id).strip()
+        project_root = get_project_folder_name(clean_mod_id)
+        notes = [
+            "完整双包结构：同时包含行为包与资源包的最新 `manifest.json`（`format_version: 2`，行为包 `dependencies` 已绑定资源包 `header.uuid`）。",
+            "中国版必选目录已就绪：`entities/.gitkeep` 保留空实体目录（避免上传错误码 24），`textures/` 已初始化贴图注册表。",
+            "Python 脚本包 `{}` 直接位于行为包根目录下，通过 `modConfig.py` 统一管理双端系统名与跨端事件名。".format(project_root),
+        ]
+        output = render_bundle_markdown(
+            "生成的 Mod 双包项目骨架 ({})".format(clean_mod_id),
+            files,
+            notes=notes,
+        )
+        artifacts = _artifacts_from_files(files, project_modules=(project_root, clean_mod_id))
         return _validated_generated_response(output, artifacts)
-    
+
+    elif name == "generate_manifest_json":
+        try:
+            files = generate_manifest_json(
+                pack_name=arguments.get("pack_name", ""),
+                description=arguments.get("description", ""),
+                pack_type=arguments.get("pack_type", "both"),
+                version=arguments.get("version", "1.0.0"),
+                min_engine_version=arguments.get("min_engine_version", [1, 18, 0]),
+                behavior_pack_dir=arguments.get("behavior_pack_dir"),
+                resource_pack_dir=arguments.get("resource_pack_dir"),
+                resource_pack_uuid=arguments.get("resource_pack_uuid"),
+            )
+        except (TypeError, ValueError) as exc:
+            return _blocked_report("GENERATOR_INPUT_INVALID", str(exc))
+
+        output = render_bundle_markdown(
+            "生成的组件包清单 (manifest.json)",
+            files,
+            notes=[
+                "严格使用最新标准 `manifest.json` 与 `format_version: 2`（避免 3.8+ 自定义生物蛋贴图异常）。",
+                "所有 `header.uuid` 与 `modules[].uuid` 均已生成独立 UUID4，后续版本升级时请仅递增 `version` 而不要改动 UUID。",
+            ],
+        )
+        return _validated_generated_response(output, _artifacts_from_files(files))
+
+    elif name == "generate_ui_json":
+        mod_id = arguments.get("mod_id", "mymod")
+        try:
+            bundle = generate_ui_json(
+                ui_namespace=arguments.get("ui_namespace", ""),
+                title=arguments.get("title", "自定义界面"),
+                is_hud=bool(arguments.get("is_hud", False)),
+                include_python=bool(arguments.get("include_python", True)),
+                mod_id=mod_id,
+                behavior_pack_dir=arguments.get("behavior_pack_dir"),
+                resource_pack_dir=arguments.get("resource_pack_dir"),
+            )
+        except (TypeError, ValueError) as exc:
+            return _blocked_report("GENERATOR_INPUT_INVALID", str(exc))
+
+        clean_mod_id = str(mod_id).strip()
+        project_root = get_project_folder_name(clean_mod_id)
+        reg_snippet = (
+            "```python\n"
+            "# 在客户端系统的 UiInitFinished 事件回调中先完成注册：\n"
+            "clientApi.RegisterUI('{mod_id}', '{ui_ns}', '{proj}.ui.{cls}.{cls}', '{ui_def}')\n"
+            "# 注册成功后再按模式创建：\n"
+            "clientApi.CreateUI('{mod_id}', '{ui_ns}', {{'isHud': {hud_flag}}})\n"
+            "```"
+        ).format(
+            mod_id=clean_mod_id,
+            ui_ns=arguments.get("ui_namespace", "").strip().lower(),
+            proj=project_root,
+            cls=bundle["screen_class"],
+            ui_def=bundle["ui_screen_def"],
+            hud_flag=1 if arguments.get("is_hud", False) else 0,
+        )
+        output = render_bundle_markdown(
+            "自定义 JSON UI 配套文件: {}".format(bundle["ui_screen_def"]),
+            bundle["files"],
+            notes=[
+                "遵循 `UI-LIFE-001` / `UI-HUD-001`：必须先 `RegisterUI` 再 `CreateUI`/`PushScreen`，HUD 层级需在 `CreateUI` 时通过 `isHud` 指定。",
+                _SHARED_MERGE_NOTE,
+            ],
+            extra_sections=[("客户端系统注册调用示例", reg_snippet)],
+        )
+        artifacts = _artifacts_from_files(bundle["files"], project_modules=(project_root, clean_mod_id))
+        return _validated_generated_response(output, artifacts)
+
     elif name == "generate_server_system":
         code = generate_server_system(
-            mod_name=arguments.get("mod_name"),
-            class_name=arguments.get("class_name")
+            mod_name=arguments.get("mod_name", "MyMod"),
+            class_name=arguments.get("class_name", "MyMod"),
         )
         output = f"## 服务端系统代码\n\n```python\n{code}\n```"
-        return _validated_generated_response(output, [Artifact(code, "server.py", "python", "server", CURRENT_TARGET_VERSION)])
-    
+        return _validated_generated_response(output, [Artifact(code, "serverSystem.py", "python", "server", CURRENT_TARGET_VERSION)])
+
     elif name == "generate_client_system":
         code = generate_client_system(
-            mod_name=arguments.get("mod_name"),
-            class_name=arguments.get("class_name")
+            mod_name=arguments.get("mod_name", "MyMod"),
+            class_name=arguments.get("class_name", "MyMod"),
         )
         output = f"## 客户端系统代码\n\n```python\n{code}\n```"
-        return _validated_generated_response(output, [Artifact(code, "client.py", "python", "client", CURRENT_TARGET_VERSION)])
-    
+        return _validated_generated_response(output, [Artifact(code, "clientSystem.py", "python", "client", CURRENT_TARGET_VERSION)])
+
     elif name == "generate_event_listener":
         event_name = arguments.get("event_name")
         event_kind = arguments.get("event_kind", "official")
@@ -2098,234 +2416,289 @@ async def call_tool(name: str, arguments: Dict[str, Any]) -> List[TextContent]:
         )
         output = f"## 事件监听器代码\n\n```python\n{code}\n```"
         return _validated_generated_response(output, [Artifact(code, "event_listener.py", "python", selected_side, CURRENT_TARGET_VERSION)])
-    
+
     elif name == "generate_custom_command":
-        code = generate_custom_command(
-            command_name=arguments.get("command_name")
-        )
+        try:
+            code = generate_custom_command(
+                command_name=arguments.get("command_name", "")
+            )
+        except (TypeError, ValueError) as exc:
+            return _blocked_report("GENERATOR_INPUT_INVALID", str(exc))
         output = f"## 自定义命令代码\n\n```python\n{code}\n```"
         return _validated_generated_response(output, [Artifact(code, "custom_command.py", "python", "server", CURRENT_TARGET_VERSION)])
-    
-    elif name == "generate_custom_item":
-        code = generate_custom_item(
-            item_id=arguments.get("item_id"),
-            namespace=arguments.get("namespace", "mymod"),
-            display_name=arguments.get("display_name", "自定义物品"),
-            max_stack=arguments.get("max_stack", 64)
-        )
-        output = f"## 自定义物品代码\n\n```python\n{code}\n```"
-        return _validated_generated_response(output, [Artifact(code, "custom_item.py", "python", "server", CURRENT_TARGET_VERSION)])
-    
-    elif name == "generate_custom_block":
-        code = generate_custom_block(
-            block_id=arguments.get("block_id"),
-            namespace=arguments.get("namespace", "mymod"),
-            destroy_time=arguments.get("destroy_time", 1.0),
-            explosion_resistance=arguments.get("explosion_resistance", 1.0)
-        )
-        output = f"## 自定义方块代码\n\n```python\n{code}\n```"
-        return _validated_generated_response(output, [Artifact(code, "custom_block.py", "python", "server", CURRENT_TARGET_VERSION)])
-    
-    # ============================================================
-    # Bedrock JSON 生成工具处理
-    # ============================================================
-    
-    elif name == "generate_item_json":
-        namespace = arguments.get("namespace")
-        item_id = arguments.get("item_id")
-        category = arguments.get("category", "items")
-        max_stack_size = arguments.get("max_stack_size", 64)
-        components = arguments.get("components")
-        
-        result = generate_item_json(
-            namespace=namespace,
-            item_id=item_id,
-            category=category,
-            max_stack_size=max_stack_size,
-            components=components
-        )
-        
-        pack_id = namespace
-        output = f"## 自定义物品 JSON: {namespace}:{item_id}\n\n"
-        output += f"### 行为包文件: `behavior_pack_{pack_id}/netease_items_beh/{namespace}_{item_id}.json`\n\n"
-        output += f"```json\n{result['behavior']}\n```\n\n"
-        output += f"### 资源包文件: `resource_pack_{pack_id}/netease_items_res/{namespace}_{item_id}.json`\n\n"
-        output += f"```json\n{result['resource']}\n```\n\n"
-        output += f"### 本地化条目 (texts/zh_CN.lang)\n\n```\nitem.{namespace}:{item_id}.name=物品显示名称\n```"
 
-        artifacts = [
-            Artifact(result["behavior"], "{}_{}.json".format(namespace, item_id), "item", "common", CURRENT_TARGET_VERSION),
-            Artifact(result["resource"], "{}_{}.resource.json".format(namespace, item_id), "item", "client", CURRENT_TARGET_VERSION),
-        ]
-        return _validated_generated_response(output, artifacts)
-    
+    elif name == "generate_custom_item":
+        namespace = arguments.get("namespace", "mymod")
+        item_id = arguments.get("item_id", "")
+        try:
+            bundle = generate_custom_item(
+                item_id=item_id,
+                namespace=namespace,
+                display_name=arguments.get("display_name", "自定义物品"),
+                max_stack=arguments.get("max_stack", 64),
+                hand_equipped=bool(arguments.get("hand_equipped", False)),
+                behavior_pack_dir=arguments.get("behavior_pack_dir"),
+                resource_pack_dir=arguments.get("resource_pack_dir"),
+            )
+        except (TypeError, ValueError) as exc:
+            return _blocked_report("GENERATOR_INPUT_INVALID", str(exc))
+
+        clean_ns = str(namespace).strip()
+        project_root = get_project_folder_name(clean_ns)
+        output = render_bundle_markdown(
+            "自定义物品完整开发包: {}:{}".format(clean_ns, str(item_id).strip().lower()),
+            bundle["files"],
+            notes=[
+                "已同步生成服务端事件脚本、行为包 `netease_items_beh`、资源包 `netease_items_res`、`textures/item_texture.json` 及中文语言文件。",
+                "请将贴图 PNG 放置于 `resource_pack/textures/items/{}.png`。".format(str(item_id).strip().lower()),
+                _SHARED_MERGE_NOTE,
+            ],
+        )
+        return _validated_generated_response(
+            output,
+            _artifacts_from_files(bundle["files"], project_modules=(project_root, clean_ns)),
+        )
+
+    elif name == "generate_custom_block":
+        namespace = arguments.get("namespace", "mymod")
+        block_id = arguments.get("block_id", "")
+        try:
+            bundle = generate_custom_block(
+                block_id=block_id,
+                namespace=namespace,
+                destroy_time=arguments.get("destroy_time", 1.0),
+                explosion_resistance=arguments.get("explosion_resistance", 1.0),
+                display_name=arguments.get("display_name", "自定义方块"),
+                behavior_pack_dir=arguments.get("behavior_pack_dir"),
+                resource_pack_dir=arguments.get("resource_pack_dir"),
+            )
+        except (TypeError, ValueError) as exc:
+            return _blocked_report("GENERATOR_INPUT_INVALID", str(exc))
+
+        clean_ns = str(namespace).strip()
+        project_root = get_project_folder_name(clean_ns)
+        output = render_bundle_markdown(
+            "自定义方块完整开发包: {}:{}".format(clean_ns, str(block_id).strip().lower()),
+            bundle["files"],
+            notes=[
+                "采用现代推荐档 `modern_1_19_20`（`1.19.20`），并同步生成资源包 `blocks.json`、`textures/terrain_texture.json` 与语言文件。",
+                "请将方块贴图 PNG 放置于 `resource_pack/textures/blocks/{}.png`。".format(str(block_id).strip().lower()),
+                _SHARED_MERGE_NOTE,
+            ],
+        )
+        return _validated_generated_response(
+            output,
+            _artifacts_from_files(
+                bundle["files"],
+                project_modules=(project_root, clean_ns),
+                block_format_profile="modern_1_19_20",
+            ),
+        )
+
+    # ============================================================
+    # 数据驱动 JSON 生成工具处理
+    # ============================================================
+
+    elif name == "generate_item_json":
+        namespace = arguments.get("namespace", "")
+        item_id = arguments.get("item_id", "")
+        try:
+            bundle = generate_item_json(
+                namespace=namespace,
+                item_id=item_id,
+                category=arguments.get("category", "items"),
+                max_stack_size=arguments.get("max_stack_size", 64),
+                components=arguments.get("components"),
+                display_name=arguments.get("display_name", "自定义物品"),
+                behavior_pack_dir=arguments.get("behavior_pack_dir"),
+                resource_pack_dir=arguments.get("resource_pack_dir"),
+            )
+        except (TypeError, ValueError) as exc:
+            return _blocked_report("GENERATOR_INPUT_INVALID", str(exc))
+
+        output = render_bundle_markdown(
+            "自定义物品 JSON 配套集: {}:{}".format(str(namespace).strip(), str(item_id).strip().lower()),
+            bundle["files"],
+            notes=[
+                "请将物品图标贴图放置于 `resource_pack/textures/items/{}.png`。".format(str(item_id).strip().lower()),
+                _SHARED_MERGE_NOTE,
+            ],
+        )
+        return _validated_generated_response(output, _artifacts_from_files(bundle["files"]))
+
     elif name == "generate_block_json":
-        namespace = arguments.get("namespace")
-        block_id = arguments.get("block_id")
-        format_profile = arguments.get("format_profile", "legacy_1_10")
-        
-        result = generate_block_json(
-            namespace=namespace,
-            block_id=block_id,
-            destroy_time=arguments.get("destroy_time", 1.5),
-            explosion_resistance=arguments.get("explosion_resistance", 10.0),
-            light_emission=arguments.get("light_emission", 0),
-            map_color=arguments.get("map_color", "#FFFFFF"),
-            components=arguments.get("components"),
-            format_profile=format_profile,
+        namespace = arguments.get("namespace", "")
+        block_id = arguments.get("block_id", "")
+        format_profile = arguments.get("format_profile", "modern_1_19_20")
+        try:
+            bundle = generate_block_json(
+                namespace=namespace,
+                block_id=block_id,
+                destroy_time=arguments.get("destroy_time", 1.5),
+                explosion_resistance=arguments.get("explosion_resistance", 10.0),
+                light_emission=arguments.get("light_emission", 0),
+                light_dampening=arguments.get("light_dampening", 15),
+                map_color=arguments.get("map_color", "#FFFFFF"),
+                category=arguments.get("category", "Nature"),
+                register_to_menu=arguments.get("register_to_menu", True),
+                sound=arguments.get("sound", "stone"),
+                display_name=arguments.get("display_name", "自定义方块"),
+                components=arguments.get("components"),
+                format_profile=format_profile,
+                behavior_pack_dir=arguments.get("behavior_pack_dir"),
+                resource_pack_dir=arguments.get("resource_pack_dir"),
+            )
+        except (TypeError, ValueError) as exc:
+            return _blocked_report("GENERATOR_INPUT_INVALID", str(exc))
+
+        output = render_bundle_markdown(
+            "自定义方块 JSON 配套集: {}:{} ({})".format(
+                str(namespace).strip(), str(block_id).strip().lower(), format_profile
+            ),
+            bundle["files"],
+            notes=[
+                "已同步生成资源包 `blocks.json` 与 `textures/terrain_texture.json`，请将贴图放置于 `resource_pack/textures/blocks/{}.png`。".format(
+                    str(block_id).strip().lower()
+                ),
+                _SHARED_MERGE_NOTE,
+            ],
         )
-        
-        pack_id = namespace
-        output = f"## 自定义方块 JSON: {namespace}:{block_id}\n\n"
-        output += f"### 行为包文件: `behavior_pack_{pack_id}/netease_blocks/{namespace}_{block_id}.json`\n\n"
-        output += f"```json\n{result}\n```\n\n"
-        output += f"### 本地化条目 (texts/zh_CN.lang)\n\n```\ntile.{namespace}:{block_id}.name=方块显示名称\n```"
-        
-        artifact = Artifact(
-            result,
-            "{}_{}.json".format(namespace, block_id),
-            "block",
-            "common",
-            CURRENT_TARGET_VERSION,
-            format_profile,
+        return _validated_generated_response(
+            output,
+            _artifacts_from_files(bundle["files"], block_format_profile=format_profile),
         )
-        return _validated_generated_response(output, [artifact])
-    
+
     elif name == "generate_recipe_json":
         recipe_type = arguments.get("recipe_type")
-        namespace = arguments.get("namespace")
-        recipe_id = arguments.get("recipe_id")
-        
-        if recipe_type == "shaped":
-            result = generate_recipe_json(
-                recipe_type="shaped",
+        namespace = arguments.get("namespace", "")
+        recipe_id = arguments.get("recipe_id", "")
+        if recipe_type not in {"shaped", "shapeless", "furnace"}:
+            return _blocked_report("RECIPE_TYPE_INVALID", "未知的配方类型: {!r}".format(recipe_type))
+
+        try:
+            bundle = generate_recipe_json(
+                recipe_type=recipe_type,
                 namespace=namespace,
                 recipe_id=recipe_id,
+                behavior_pack_dir=arguments.get("behavior_pack_dir"),
                 pattern=arguments.get("pattern", ["   ", "   ", "   "]),
                 keys=arguments.get("keys", {}),
-                result_item=arguments.get("result_item", "minecraft:air"),
-                result_count=arguments.get("result_count", 1)
-            )
-        elif recipe_type == "shapeless":
-            result = generate_recipe_json(
-                recipe_type="shapeless",
-                namespace=namespace,
-                recipe_id=recipe_id,
                 ingredients=arguments.get("ingredients", []),
-                result_item=arguments.get("result_item", "minecraft:air"),
-                result_count=arguments.get("result_count", 1)
-            )
-        elif recipe_type == "furnace":
-            result = generate_recipe_json(
-                recipe_type="furnace",
-                namespace=namespace,
-                recipe_id=recipe_id,
                 input_item=arguments.get("input_item", "minecraft:air"),
-                output_item=arguments.get("output_item", "minecraft:air")
+                output_item=arguments.get("output_item", "minecraft:air"),
+                result_item=arguments.get("result_item", "minecraft:air"),
+                result_count=arguments.get("result_count", 1),
             )
-        else:
-            return [TextContent(type="text", text=f"未知的配方类型: {recipe_type}")]
-        
-        pack_id = namespace
-        output = f"## {recipe_type.capitalize()} 配方 JSON: {namespace}:{recipe_id}\n\n"
-        output += f"### 文件: `behavior_pack_{pack_id}/netease_recipes/{recipe_id}.json`\n\n"
-        output += f"```json\n{result}\n```"
-        
-        return _validated_generated_response(
-            output,
-            [Artifact(result, "{}.json".format(recipe_id), "json", "common", CURRENT_TARGET_VERSION)],
+        except (TypeError, ValueError) as exc:
+            return _blocked_report("GENERATOR_INPUT_INVALID", str(exc))
+
+        output = render_bundle_markdown(
+            "{} 配方 JSON: {}:{}".format(
+                recipe_type.capitalize(), str(namespace).strip(), str(recipe_id).strip().lower()
+            ),
+            bundle["files"],
+            notes=["网易版合成配方目录固定为行为包下的 `netease_recipes/`（而非国际版的 `recipes/`）。"],
         )
-    
+        return _validated_generated_response(output, _artifacts_from_files(bundle["files"]))
+
     elif name == "generate_entity_json":
-        namespace = arguments.get("namespace")
-        entity_id = arguments.get("entity_id")
-        
-        result = generate_entity_json(
-            namespace=namespace,
-            entity_id=entity_id,
-            health=arguments.get("health", 20),
-            movement_speed=arguments.get("movement_speed", 0.25),
-            collision_width=arguments.get("collision_width", 0.6),
-            collision_height=arguments.get("collision_height", 1.8),
-            runtime_identifier=arguments.get("runtime_identifier"),
-            spawn_egg_base_color=arguments.get("spawn_egg_base_color", "#FFFFFF"),
-            spawn_egg_overlay_color=arguments.get("spawn_egg_overlay_color", "#000000"),
-            preset=arguments.get("preset")
+        namespace = arguments.get("namespace", "")
+        entity_id = arguments.get("entity_id", "")
+        try:
+            bundle = generate_entity_json(
+                namespace=namespace,
+                entity_id=entity_id,
+                health=arguments.get("health", 20),
+                movement_speed=arguments.get("movement_speed", 0.25),
+                collision_width=arguments.get("collision_width", 0.6),
+                collision_height=arguments.get("collision_height", 1.8),
+                family=arguments.get("family"),
+                runtime_identifier=arguments.get("runtime_identifier"),
+                components=arguments.get("components"),
+                preset=arguments.get("preset"),
+                spawn_egg_base_color=arguments.get("spawn_egg_base_color", "#FFFFFF"),
+                spawn_egg_overlay_color=arguments.get("spawn_egg_overlay_color", "#000000"),
+                display_name=arguments.get("display_name", "自定义生物"),
+                behavior_pack_dir=arguments.get("behavior_pack_dir"),
+                resource_pack_dir=arguments.get("resource_pack_dir"),
+            )
+        except (TypeError, ValueError) as exc:
+            return _blocked_report("GENERATOR_INPUT_INVALID", str(exc))
+
+        output = render_bundle_markdown(
+            "自定义实体 JSON 配套集: {}:{}".format(str(namespace).strip(), str(entity_id).strip().lower()),
+            bundle["files"],
+            notes=[
+                "已同步生成 `models/entity/{}_{}.geo.json` 基础几何体模型，避免客户端缺少几何体报错；请将实体贴图放置于 `resource_pack/textures/entity/{}.png`。".format(
+                    str(namespace).strip(), str(entity_id).strip().lower(), str(entity_id).strip().lower()
+                ),
+                _SHARED_MERGE_NOTE,
+            ],
         )
-        
-        pack_id = namespace
-        output = f"## 自定义实体 JSON: {namespace}:{entity_id}\n\n"
-        output += f"### 行为包文件: `behavior_pack_{pack_id}/entities/{namespace}_{entity_id}.json`\n\n"
-        output += f"```json\n{result['behavior']}\n```\n\n"
-        output += f"### 资源包文件: `resource_pack_{pack_id}/entity/{namespace}_{entity_id}.entity.json`\n\n"
-        output += f"```json\n{result['resource']}\n```\n\n"
-        output += f"### 本地化条目 (texts/zh_CN.lang)\n\n```\nentity.{namespace}:{entity_id}.name=实体显示名称\n```"
-        
-        artifacts = [
-            Artifact(result["behavior"], "{}_{}.entity.json".format(namespace, entity_id), "json", "common", CURRENT_TARGET_VERSION),
-            Artifact(result["resource"], "{}_{}.client_entity.json".format(namespace, entity_id), "json", "client", CURRENT_TARGET_VERSION),
-        ]
-        return _validated_generated_response(output, artifacts)
-    
+        return _validated_generated_response(output, _artifacts_from_files(bundle["files"]))
+
     elif name == "generate_loot_table_json":
-        pools = arguments.get("pools", [])
-        
-        result = generate_loot_table_json(pools)
-        
-        output = "## 战利品表 JSON\n\n"
-        output += "### 文件: `behavior_pack_<ID>/loot_tables/xxx.json`\n\n"
-        output += f"```json\n{result}\n```"
-        
-        return _validated_generated_response(
-            output,
-            [Artifact(result, "loot_table.json", "json", "common", CURRENT_TARGET_VERSION)],
-        )
-    
+        try:
+            bundle = generate_loot_table_json(
+                pools=arguments.get("pools", []),
+                table_name=arguments.get("table_name", "custom_loot"),
+                behavior_pack_dir=arguments.get("behavior_pack_dir"),
+            )
+        except (TypeError, ValueError) as exc:
+            return _blocked_report("GENERATOR_INPUT_INVALID", str(exc))
+
+        output = render_bundle_markdown("战利品表 JSON", bundle["files"])
+        return _validated_generated_response(output, _artifacts_from_files(bundle["files"]))
+
     elif name == "generate_spawn_rules_json":
-        namespace = arguments.get("namespace")
-        entity_id = arguments.get("entity_id")
-        
-        result = generate_spawn_rules_json(
-            namespace=namespace,
-            entity_id=entity_id,
-            population_control=arguments.get("population_control", "animal"),
-            spawn_weight=arguments.get("spawn_weight", 8),
-            min_size=arguments.get("min_size", 2),
-            max_size=arguments.get("max_size", 4)
+        namespace = arguments.get("namespace", "")
+        entity_id = arguments.get("entity_id", "")
+        try:
+            bundle = generate_spawn_rules_json(
+                namespace=namespace,
+                entity_id=entity_id,
+                population_control=arguments.get("population_control", "animal"),
+                spawn_weight=arguments.get("spawn_weight", 8),
+                min_size=arguments.get("min_size", 2),
+                max_size=arguments.get("max_size", 4),
+                behavior_pack_dir=arguments.get("behavior_pack_dir"),
+            )
+        except (TypeError, ValueError) as exc:
+            return _blocked_report("GENERATOR_INPUT_INVALID", str(exc))
+
+        output = render_bundle_markdown(
+            "实体生成规则 JSON: {}:{}".format(str(namespace).strip(), str(entity_id).strip().lower()),
+            bundle["files"],
         )
-        
-        pack_id = namespace
-        output = f"## 生成规则 JSON: {namespace}:{entity_id}\n\n"
-        output += f"### 文件: `behavior_pack_{pack_id}/spawn_rules/{namespace}_{entity_id}.json`\n\n"
-        output += f"```json\n{result}\n```"
-        
-        return _validated_generated_response(
-            output,
-            [Artifact(result, "{}_{}.spawn_rules.json".format(namespace, entity_id), "json", "server", CURRENT_TARGET_VERSION)],
-        )
-    
+        return _validated_generated_response(output, _artifacts_from_files(bundle["files"]))
+
     # ============================================================
-    # 高级物品生成工具处理（统一处理 9 种物品类型）
+    # 高级物品生成工具处理（统一处理 9 种网易 1.10 物品类型）
     # ============================================================
-    
+
     elif name in ADVANCED_ITEM_TOOLS:
-        item_type, display_label, default_lang_name = ADVANCED_ITEM_TOOLS[name]
-        namespace = arguments.get("namespace")
-        item_id = arguments.get("item_id")
+        item_type, display_label = ADVANCED_ITEM_TOOLS[name]
+        namespace = arguments.get("namespace", "")
+        item_id = arguments.get("item_id", "")
         kwargs = {k: v for k, v in arguments.items() if k not in ("namespace", "item_id")}
-        result = generate_typed_item_json(item_type, namespace, item_id, **kwargs)
-        # 盔甲类型：根据槽位个性化显示标签和本地化名称
+        try:
+            bundle = generate_typed_item_json(item_type, namespace, item_id, **kwargs)
+        except (TypeError, ValueError) as exc:
+            return _blocked_report("GENERATOR_INPUT_INVALID", str(exc))
+
         if item_type == "armor":
-            slot_name = _ARMOR_SLOT_NAMES.get(arguments.get("slot", "slot.armor.chest"), "盔甲")
-            display_label = f"🛡️ 自定义{slot_name}"
-            default_lang_name = f"自定义{slot_name}"
-        output = _format_item_result(result, namespace, item_id, display_label, default_lang_name)
-        artifacts = [
-            Artifact(result["behavior"], "{}_{}.json".format(namespace, item_id), "item", "common", CURRENT_TARGET_VERSION),
-            Artifact(result["resource"], "{}_{}.resource.json".format(namespace, item_id), "item", "client", CURRENT_TARGET_VERSION),
-        ]
-        return _validated_generated_response(output, artifacts)
-    
+            slot_spec = ARMOR_SLOT_SPECS.get(str(arguments.get("slot", "slot.armor.chest")), {})
+            display_label = "自定义{}".format(slot_spec.get("label", "盔甲"))
+
+        notes = list(bundle.get("notes") or [])
+        notes.append(_SHARED_MERGE_NOTE)
+        output = render_bundle_markdown(
+            "{}: {}:{}".format(display_label, str(namespace).strip(), str(item_id).strip().lower()),
+            bundle["files"],
+            notes=notes,
+        )
+        return _validated_generated_response(output, _artifacts_from_files(bundle["files"]))
+
     # 代码审查工具
     elif name == "review_code":
         from .standards import get_python_module_whitelist, get_version_profile
@@ -2336,7 +2709,7 @@ async def call_tool(name: str, arguments: Dict[str, Any]) -> List[TextContent]:
         side = arguments.get("side", "auto")
         target_version = arguments.get("target_version", "current")
         project_modules = arguments.get("project_modules", [])
-        if artifact_type not in {"auto", "python", "json", "json_ui"}:
+        if artifact_type not in {"auto", "python", "json", "json_ui", "item", "block", "manifest_json"}:
             return _blocked_report("ARTIFACT_TYPE_INVALID", "artifact_type 不受支持：{}".format(artifact_type))
         if side not in {"auto", "client", "server", "common", "cross_side"}:
             return _blocked_report("SIDE_INVALID", "side 不受支持：{}".format(side))
