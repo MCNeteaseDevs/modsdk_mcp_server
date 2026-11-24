@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "registry_version": "2026.11.03",
+  "registry_version": "2026.11.25",
   "default_version": "3.10",
   "source_file": "sources.json",
   "version_files": {
@@ -135,8 +135,10 @@
   "detectors": [
     "json.biome_namespace",
     "json.block_profile",
+    "json.duplicate_keys",
     "json.identifier",
     "json.item_format",
+    "json.manifest",
     "json.parse",
     "python.cross_side_import",
     "python.dynamic_import",

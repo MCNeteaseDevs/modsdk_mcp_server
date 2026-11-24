@@ -82,10 +82,16 @@ class McpContractTest(unittest.TestCase):
     def setUpClass(cls):
         cls.tools = run(list_tools())
 
-    def test_legacy_37_tools_and_guidance_make_38(self):
+    def test_all_41_tools_are_registered(self):
         names = {tool.name for tool in self.tools}
-        self.assertEqual(38, len(names))
-        self.assertEqual(LEGACY_TOOL_NAMES, names - {"get_development_guidance"})
+        expected_extra = {
+            "get_development_guidance",
+            "get_version_changes",
+            "generate_manifest_json",
+            "generate_ui_json",
+        }
+        self.assertEqual(41, len(names))
+        self.assertEqual(LEGACY_TOOL_NAMES, names - expected_extra)
 
     def test_every_array_schema_has_items(self):
         for tool in self.tools:
@@ -94,9 +100,9 @@ class McpContractTest(unittest.TestCase):
     def test_health_payload_reports_current_offline_snapshot(self):
         payload = _health_payload()
         self.assertEqual("ok", payload["status"])
-        self.assertEqual("3.9", payload["modsdk_version"])
-        self.assertEqual("1.21.120", payload["bedrock_version"])
-        self.assertEqual(45, payload["rule_count"])
+        self.assertEqual("3.10", payload["modsdk_version"])
+        self.assertEqual("1.21.130", payload["bedrock_version"])
+        self.assertEqual(61, payload["rule_count"])
         self.assertGreater(payload["detector_count"], 0)
         self.assertGreater(payload["document_count"], 0)
         self.assertTrue(payload["snapshot_time"])
@@ -116,7 +122,7 @@ class McpContractTest(unittest.TestCase):
             list(payload),
         )
         self.assertLessEqual(len(payload["rules"]), 3)
-        self.assertEqual("3.9", payload["target"]["version"])
+        self.assertEqual("3.10", payload["target"]["version"])
 
         unknown = first_payload(run(call_tool("get_development_guidance", {
             "goal": "测试",
@@ -271,6 +277,8 @@ class McpContractTest(unittest.TestCase):
     def test_all_generators_return_non_blocked_representative_output(self):
         samples = {
             "generate_mod_project": {"mod_name": "Demo", "mod_id": "demo"},
+            "generate_manifest_json": {"pack_name": "Demo Pack"},
+            "generate_ui_json": {"ui_namespace": "demo_panel", "mod_id": "demo"},
             "generate_server_system": {"mod_name": "Demo", "class_name": "Demo"},
             "generate_client_system": {"mod_name": "Demo", "class_name": "Demo"},
             "generate_event_listener": {"event_name": "ServerItemUseOnEvent", "side": "server"},
@@ -352,6 +360,95 @@ class McpContractTest(unittest.TestCase):
 
         legacy = run(call_tool("get_best_practices", {"category": "modsdk_38_migration"}))
         self.assertIn("3.8 历史迁移入口", legacy[0].text)
+
+    def test_mod_project_generates_complete_dual_pack_and_rejects_bad_mod_id(self):
+        contents = run(call_tool("generate_mod_project", {
+            "mod_name": "星辉组件",
+            "mod_id": "starlight_mod",
+            "version": "1.2.3",
+        }))
+        text = contents[0].text
+        for required_path in (
+            "behavior_pack/manifest.json",
+            "behavior_pack/entities/.gitkeep",
+            "behavior_pack/starlight_mod_Script/__init__.py",
+            "behavior_pack/starlight_mod_Script/modConfig.py",
+            "behavior_pack/starlight_mod_Script/modMain.py",
+            "behavior_pack/starlight_mod_Script/serverSystem.py",
+            "behavior_pack/starlight_mod_Script/clientSystem.py",
+            "resource_pack/manifest.json",
+            "resource_pack/textures/item_texture.json",
+            "resource_pack/textures/terrain_texture.json",
+            "resource_pack/texts/languages.json",
+            "resource_pack/texts/zh_CN.lang",
+        ):
+            self.assertIn(required_path, text)
+        self.assertNotIn("pack_manifest.json", text)
+
+        custom_dirs = run(call_tool("generate_mod_project", {
+            "mod_name": "StudioMod",
+            "mod_id": "studio_mod",
+            "behavior_pack_dir": "behavior_pack_abc123",
+            "resource_pack_dir": "resource_pack_def456",
+        }))[0].text
+        self.assertIn("behavior_pack_abc123/manifest.json", custom_dirs)
+        self.assertIn("resource_pack_def456/manifest.json", custom_dirs)
+
+        bad_mod_id = first_payload(run(call_tool("generate_mod_project", {
+            "mod_name": "Bad",
+            "mod_id": "bad-hyphen-id",
+        })))
+        self.assertEqual("blocked", bad_mod_id["status"])
+
+    def test_advanced_items_and_blocks_emit_complete_netease_bundles(self):
+        axe_text = run(call_tool("generate_axe_json", {
+            "namespace": "demo",
+            "item_id": "ruby_axe",
+            "damage": 7,
+            "mining_speed": 8,
+            "durability": 500,
+        }))[0].text
+        self.assertIn('"custom_item_type": "weapon"', axe_text)
+        self.assertIn('"type": "hatchet"', axe_text)
+        self.assertIn("resource_pack/textures/item_texture.json", axe_text)
+        self.assertNotIn('"minecraft:durability":', axe_text)
+        self.assertNotIn('"minecraft:stacked_by_data":', axe_text)
+
+        armor_text = run(call_tool("generate_armor_json", {
+            "namespace": "demo",
+            "item_id": "ruby_helmet",
+            "slot": "slot.armor.head",
+            "protection": 4,
+        }))[0].text
+        self.assertIn('"netease:armor"', armor_text)
+        self.assertIn('"armor_slot": 0', armor_text)
+        self.assertIn("resource_pack/attachables/demo_ruby_helmet.json", armor_text)
+
+        default_block = run(call_tool("generate_block_json", {
+            "namespace": "demo",
+            "block_id": "glow_stone_ex",
+            "light_emission": 12,
+        }))[0].text
+        self.assertIn('"format_version": "1.19.20"', default_block)
+        self.assertIn('"minecraft:light_emission": 12', default_block)
+        self.assertIn("resource_pack/blocks.json", default_block)
+        self.assertIn("resource_pack/textures/terrain_texture.json", default_block)
+
+        legacy_lit_block = run(call_tool("generate_block_json", {
+            "namespace": "demo",
+            "block_id": "legacy_glow",
+            "light_emission": 12,
+            "format_profile": "legacy_1_10",
+        }))
+        self.assertFalse(first_payload(legacy_lit_block) and first_payload(legacy_lit_block).get("status") == "blocked")
+        self.assertIn('"emission": 0.8', legacy_lit_block[0].text)
+
+        entity_text = run(call_tool("generate_entity_json", {
+            "namespace": "demo",
+            "entity_id": "spirit_fox",
+        }))[0].text
+        self.assertIn("resource_pack/models/entity/demo_spirit_fox.geo.json", entity_text)
+        self.assertIn('"runtime_identifier": "minecraft:pig"', entity_text)
 
 
 if __name__ == "__main__":

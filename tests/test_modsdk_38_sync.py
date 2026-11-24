@@ -52,7 +52,8 @@ class ModSdk38SyncTest(unittest.TestCase):
     def test_synced_documents_are_readable(self):
         for doc_path in [
             "更新信息/3.8.md",
-            "接口/物品/钓鱼线.md",
+            "更新信息/3.10.md",
+            "接口/物品.md",
             "枚举值/AttributeModifierOperation.md",
         ]:
             doc = self.get_doc(doc_path)
@@ -60,14 +61,13 @@ class ModSdk38SyncTest(unittest.TestCase):
             self.assertIn("source_url", doc.metadata)
             self.assertGreater(len(doc.content), 100)
 
-    def test_deprecated_aliases_remain_searchable(self):
-        detail = self.reader.get_api_detail("PlayerDestoryBlock")
-        self.assertIsNotNone(detail)
-        self.assertIn("PlayerDestroyBlock", detail["desc"])
-
-        detail = self.reader.get_api_detail("EntityUseItemToPos")
-        self.assertIsNotNone(detail)
-        self.assertIn("UseItemToPos", detail["desc"])
+    def test_canonical_replacements_and_reconciliation_are_recorded(self):
+        destroy_detail = self.reader.get_api_detail("PlayerDestroyBlock")
+        self.assertIsNotNone(destroy_detail)
+        use_item_detail = self.reader.get_api_detail("UseItemToPos")
+        self.assertIsNotNone(use_item_detail)
+        # 已从当前官网索引下线的旧拼写不再混入当前 API，而是在版本归档快照中明确记录
+        self.assertIsNone(self.reader.get_api_detail("PlayerDestoryBlock"))
 
     def test_38_component_knowledge(self):
         detail = get_component_info("netease:liquid_clipped")

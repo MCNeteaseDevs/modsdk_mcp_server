@@ -8,6 +8,7 @@ import io
 import json
 import re
 import tokenize
+import uuid
 from collections import OrderedDict
 from dataclasses import dataclass, field
 from typing import Any, Callable, Dict, FrozenSet, Iterable, List, Mapping, Optional, Sequence, Tuple, Union
@@ -86,6 +87,7 @@ BLOCK_FORMAT_PROFILES: Mapping[str, str] = {
 # 这里只收录文档能够明确判定的字段错配，不猜测自定义事件载荷。
 EVENT_FIELD_CORRECTIONS: Mapping[str, Mapping[str, str]] = {
     "AddServerPlayerEvent": {"playerId": "id"},
+    "ClientLoadAddonsFinishServerEvent": {"id": "playerId"},
     "DelServerPlayerEvent": {"playerId": "id"},
     "ServerItemUseOnEvent": {"playerId": "entityId", "cancel": "ret"},
     "PlayerDieEvent": {"playerId": "id"},
@@ -118,7 +120,17 @@ class Artifact:
         artifact_type = (self.artifact_type or "auto").lower()
         if artifact_type in {"python", "py"}:
             return "python"
-        if artifact_type in {"json", "json_ui", "item", "block"}:
+        if artifact_type in {
+            "json",
+            "json_ui",
+            "item",
+            "block",
+            "manifest_json",
+            "behavior_json",
+            "resource_json",
+            "ui_json",
+            "ui_defs_json",
+        }:
             return "json"
         if artifact_type != "auto":
             return artifact_type
@@ -1286,10 +1298,63 @@ def _detect_json_parse(artifact: Artifact, context: ValidationContext) -> Iterab
     return []
 
 
+@register_detector("json.duplicate_keys", ("json",))
+def _detect_json_duplicate_keys(artifact: Artifact, context: ValidationContext) -> Iterable[ValidationIssue]:
+    text = context.text(artifact)
+    duplicates: List[str] = []
+
+    def check_pairs(pairs: List[Tuple[str, Any]]) -> Dict[str, Any]:
+        seen = set()
+        result: Dict[str, Any] = {}
+        for key, value in pairs:
+            if key in seen:
+                duplicates.append(key)
+            else:
+                seen.add(key)
+            result[key] = value
+        return result
+
+    try:
+        json.loads(text, object_pairs_hook=check_pairs)
+    except json.JSONDecodeError:
+        return []
+
+    issues: List[ValidationIssue] = []
+    seen_counts: Dict[str, int] = {}
+    for dup_key in duplicates:
+        occurrence = seen_counts.get(dup_key, 1) + 1
+        seen_counts[dup_key] = occurrence
+        matches = list(re.finditer(r'"' + re.escape(dup_key) + r'"\s*:', text))
+        if len(matches) >= occurrence:
+            pos = matches[occurrence - 1].start()
+            line = text.count("\n", 0, pos) + 1
+            column = pos - text.rfind("\n", 0, pos)
+        else:
+            line, column = _json_location(text, dup_key)
+        issues.append(_issue(
+            artifact,
+            "JSON_DUPLICATE_KEY",
+            "JSON 对象存在重复键 {!r}（后写键会静默覆盖先写键）".format(dup_key),
+            "json.duplicate_keys",
+            line=line,
+            column=column,
+            suggestion="合并或移除重复的 {!r} 字段".format(dup_key),
+            details={"key": dup_key},
+        ))
+    return issues
+
+
+def _json_basename(artifact: Artifact) -> str:
+    return (artifact.filename or "").replace("\\", "/").rsplit("/", 1)[-1].lower()
+
+
 def _json_root_type(data: Any, artifact: Artifact) -> str:
     requested = (artifact.artifact_type or "auto").lower()
-    if requested in {"item", "block"}:
+    if requested in {"item", "block", "manifest_json"}:
         return requested
+    basename = _json_basename(artifact)
+    if basename in {"manifest.json", "pack_manifest.json"}:
+        return "manifest_json"
     if not isinstance(data, dict):
         return "json"
     if "minecraft:item" in data:
@@ -1299,11 +1364,249 @@ def _json_root_type(data: Any, artifact: Artifact) -> str:
     return "json"
 
 
+def _is_valid_uuid_str(value: Any) -> bool:
+    if not isinstance(value, str) or not value.strip():
+        return False
+    try:
+        parsed = uuid.UUID(value)
+    except (ValueError, AttributeError, TypeError):
+        return False
+    return str(parsed) == value.lower()
+
+
+def _is_semver_int_list(value: Any) -> bool:
+    return (
+        isinstance(value, list)
+        and len(value) == 3
+        and all(type(part) is int and part >= 0 for part in value)
+    )
+
+
+@register_detector("json.manifest", ("json",))
+def _detect_json_manifest(artifact: Artifact, context: ValidationContext) -> Iterable[ValidationIssue]:
+    try:
+        data = context.json_value(artifact)
+    except json.JSONDecodeError:
+        return []
+    if _json_root_type(data, artifact) != "manifest_json" or not isinstance(data, dict):
+        return []
+
+    text = context.text(artifact)
+    basename = _json_basename(artifact)
+    issues: List[ValidationIssue] = []
+
+    if basename == "pack_manifest.json":
+        issues.append(_issue(
+            artifact,
+            "JSON_MANIFEST_LEGACY_FILENAME",
+            "pack_manifest.json 为旧版命名，最新规范请统一使用 manifest.json",
+            "json.manifest",
+            severity=SEVERITY_WARNING,
+            suggestion="将清单文件重命名为 manifest.json",
+        ))
+
+    fv = data.get("format_version")
+    if type(fv) is not int or fv != 2:
+        line, column = _json_location(text, "format_version")
+        issues.append(_issue(
+            artifact,
+            "JSON_MANIFEST_FORMAT_VERSION",
+            "最新包清单 manifest.json 必须设置整数 \"format_version\": 2，当前为 {!r}（ModSDK 3.8+ 使用 1 会导致新生物蛋贴图异常）".format(fv),
+            "json.manifest",
+            line=line,
+            column=column,
+            suggestion='设置 "format_version": 2',
+        ))
+
+    header = data.get("header")
+    header_uuid_norm: Optional[str] = None
+    if not isinstance(header, dict):
+        issues.append(_issue(
+            artifact,
+            "JSON_MANIFEST_HEADER_MISSING",
+            "manifest.json 缺少有效的 header 对象",
+            "json.manifest",
+        ))
+    else:
+        raw_h_uuid = header.get("uuid")
+        if not _is_valid_uuid_str(raw_h_uuid):
+            line, column = _json_location(text, "uuid")
+            issues.append(_issue(
+                artifact,
+                "JSON_MANIFEST_UUID_INVALID",
+                "header.uuid 必须是合法的标准 UUID 字符串：{!r}".format(raw_h_uuid),
+                "json.manifest",
+                line=line,
+                column=column,
+            ))
+        else:
+            header_uuid_norm = raw_h_uuid.lower()
+
+        if not _is_semver_int_list(header.get("version")):
+            line, column = _json_location(text, "version")
+            issues.append(_issue(
+                artifact,
+                "JSON_MANIFEST_VERSION_INVALID",
+                "header.version 必须是包含 3 个非负整数的数组（如 [1, 0, 0]）",
+                "json.manifest",
+                line=line,
+                column=column,
+            ))
+
+        if not _is_semver_int_list(header.get("min_engine_version")):
+            line, column = _json_location(text, "min_engine_version")
+            issues.append(_issue(
+                artifact,
+                "JSON_MANIFEST_MIN_ENGINE_VERSION",
+                "format_version 2 的 header.min_engine_version 必须是 3 个非负整数的数组（如 [1, 18, 0]）",
+                "json.manifest",
+                line=line,
+                column=column,
+            ))
+
+    modules = data.get("modules")
+    seen_uuids = {header_uuid_norm} if header_uuid_norm else set()
+    allowed_module_types = {"data", "resources", "client_data", "script", "skin_pack", "world_template"}
+    if not isinstance(modules, list) or not modules:
+        line, column = _json_location(text, "modules")
+        issues.append(_issue(
+            artifact,
+            "JSON_MANIFEST_MODULES_MISSING",
+            "manifest.json 必须包含非空 modules 数组",
+            "json.manifest",
+            line=line,
+            column=column,
+        ))
+    else:
+        for mod in modules:
+            if not isinstance(mod, dict):
+                issues.append(_issue(
+                    artifact,
+                    "JSON_MANIFEST_MODULES_MISSING",
+                    "modules 数组元素必须是对象",
+                    "json.manifest",
+                ))
+                continue
+            m_type = mod.get("type")
+            if m_type not in allowed_module_types:
+                line, column = _json_location(text, "type", m_type if isinstance(m_type, str) else None)
+                issues.append(_issue(
+                    artifact,
+                    "JSON_MANIFEST_MODULE_TYPE",
+                    "modules[].type 不受支持：{!r}".format(m_type),
+                    "json.manifest",
+                    line=line,
+                    column=column,
+                ))
+            m_uuid = mod.get("uuid")
+            if not _is_valid_uuid_str(m_uuid):
+                line, column = _json_location(text, "uuid")
+                issues.append(_issue(
+                    artifact,
+                    "JSON_MANIFEST_UUID_INVALID",
+                    "modules[].uuid 必须是合法的标准 UUID 字符串：{!r}".format(m_uuid),
+                    "json.manifest",
+                    line=line,
+                    column=column,
+                ))
+            else:
+                norm_m_uuid = m_uuid.lower()
+                if norm_m_uuid in seen_uuids:
+                    line, column = _json_location(text, "uuid", m_uuid)
+                    issues.append(_issue(
+                        artifact,
+                        "JSON_MANIFEST_UUID_DUPLICATE",
+                        "header.uuid 与 modules[].uuid 必须各自全局唯一，禁止重复使用 {!r}".format(m_uuid),
+                        "json.manifest",
+                        line=line,
+                        column=column,
+                    ))
+                seen_uuids.add(norm_m_uuid)
+
+            if not _is_semver_int_list(mod.get("version")):
+                line, column = _json_location(text, "version")
+                issues.append(_issue(
+                    artifact,
+                    "JSON_MANIFEST_VERSION_INVALID",
+                    "modules[].version 必须是包含 3 个非负整数的数组",
+                    "json.manifest",
+                    line=line,
+                    column=column,
+                ))
+
+    if "dependencies" in data:
+        deps = data.get("dependencies")
+        if not isinstance(deps, list):
+            line, column = _json_location(text, "dependencies")
+            issues.append(_issue(
+                artifact,
+                "JSON_MANIFEST_DEPENDENCIES_INVALID",
+                "dependencies 必须是数组",
+                "json.manifest",
+                line=line,
+                column=column,
+            ))
+        else:
+            for dep in deps:
+                if not isinstance(dep, dict):
+                    issues.append(_issue(
+                        artifact,
+                        "JSON_MANIFEST_DEPENDENCIES_INVALID",
+                        "dependencies 元素必须是对象",
+                        "json.manifest",
+                    ))
+                    continue
+                dep_uuid = dep.get("uuid")
+                if not _is_valid_uuid_str(dep_uuid):
+                    line, column = _json_location(text, "dependencies")
+                    issues.append(_issue(
+                        artifact,
+                        "JSON_MANIFEST_UUID_INVALID",
+                        "dependencies[].uuid 必须是合法的标准 UUID 字符串：{!r}".format(dep_uuid),
+                        "json.manifest",
+                        line=line,
+                        column=column,
+                    ))
+                elif header_uuid_norm and dep_uuid.lower() == header_uuid_norm:
+                    line, column = _json_location(text, "uuid", dep_uuid)
+                    issues.append(_issue(
+                        artifact,
+                        "JSON_MANIFEST_SELF_DEPENDENCY",
+                        "dependencies[].uuid 不能指向当前包自身的 header.uuid",
+                        "json.manifest",
+                        line=line,
+                        column=column,
+                    ))
+                if not _is_semver_int_list(dep.get("version")):
+                    line, column = _json_location(text, "dependencies")
+                    issues.append(_issue(
+                        artifact,
+                        "JSON_MANIFEST_VERSION_INVALID",
+                        "dependencies[].version 必须是包含 3 个非负整数的数组",
+                        "json.manifest",
+                        line=line,
+                        column=column,
+                    ))
+
+    return issues
+
+
 @register_detector("json.identifier", ("json",))
 def _detect_json_identifier(artifact: Artifact, context: ValidationContext) -> Iterable[ValidationIssue]:
     try:
         data = context.json_value(artifact)
     except json.JSONDecodeError:
+        return []
+    if _json_basename(artifact) == "languages.json":
+        if not isinstance(data, list) or not data or any(not isinstance(item, str) or not item.strip() for item in data):
+            return [
+                _issue(
+                    artifact,
+                    "JSON_LANGUAGES_INVALID",
+                    "texts/languages.json 根节点必须是非空语言代码字符串数组（如 [\"zh_CN\"]）",
+                    "json.identifier",
+                )
+            ]
         return []
     if not isinstance(data, dict):
         return [
@@ -1362,6 +1665,53 @@ def _detect_json_identifier(artifact: Artifact, context: ValidationContext) -> I
     return issues
 
 
+_UNSUPPORTED_116_ITEM_COMPONENTS: Mapping[str, str] = {
+    "minecraft:durability": "请改用网易 1.10 支持的 \"minecraft:max_damage\": <整数>",
+    "minecraft:damage": "请改用 \"netease:weapon\" 中的 \"attack_damage\" 字段（并设 custom_item_type 为 \"weapon\"）",
+    "minecraft:digger": "请改用 \"netease:weapon\"（设置 type、level、speed）",
+    "minecraft:weapon": "请改用 \"netease:weapon\"（并设 description.custom_item_type 为 \"weapon\"）",
+    "minecraft:armor": "请改用 \"netease:armor\"（并设 description.custom_item_type 为 \"armor\"）",
+    "minecraft:wearable": "请改用 \"netease:armor\" + 资源包 attachables 定义",
+    "minecraft:enchantable": "请改用 \"netease:weapon.enchantment\" 或 \"netease:armor.enchantment\"",
+    "minecraft:repairable": "请改用 \"netease:weapon.level\" 指定铁砧修复等级",
+    "minecraft:shooter": "请改用 description.custom_item_type: \"ranged_weapon\" + \"minecraft:use_duration\" + 服务端事件发射抛射物",
+    "minecraft:chargeable": "请改用 description.custom_item_type: \"ranged_weapon\" + \"minecraft:use_duration\"",
+    "minecraft:throwable": "请改用 description.custom_item_type: \"projectile_item\" + \"netease:projectile\"",
+    "minecraft:projectile": "请改用 \"netease:projectile\": \"<实体identifier>\"（并设 custom_item_type 为 \"projectile_item\"）",
+    "minecraft:cooldown": "请改用 \"netease:cooldown\"（食物冷却则配置在 \"minecraft:food\" 内）",
+    "minecraft:fuel": "请改用 \"netease:fuel\": {\"duration\": <秒>}",
+    "minecraft:display_name": "网易 1.10 物品名称请在资源包 texts/zh_CN.lang 中配置 item.<identifier>.name",
+    "minecraft:block_placer": "网易 1.10 不支持国际版 1.16.100+ block_placer 组件，请使用方块物品或脚本放置",
+    "minecraft:entity_placer": "请改用 description.custom_item_type: \"egg\" + \"netease:egg\"",
+}
+
+_CLIENT_ONLY_ITEM_COMPONENTS: FrozenSet[str] = frozenset({
+    "minecraft:icon",
+    "minecraft:use_animation",
+    "minecraft:hover_text_color",
+    "netease:frame_animation",
+    "netease:frame_anim_in_scene",
+})
+
+_SERVER_ONLY_ITEM_COMPONENTS: FrozenSet[str] = frozenset({
+    "minecraft:max_stack_size",
+    "minecraft:max_damage",
+    "minecraft:hand_equipped",
+    "minecraft:stacked_by_data",
+    "minecraft:food",
+    "minecraft:seed",
+    "minecraft:use_duration",
+    "netease:weapon",
+    "netease:armor",
+    "netease:projectile",
+    "netease:cooldown",
+    "netease:fuel",
+    "netease:egg",
+    "netease:bucket",
+    "netease:shield",
+})
+
+
 @register_detector("json.item_format", ("json",))
 def _detect_item_format(artifact: Artifact, context: ValidationContext) -> Iterable[ValidationIssue]:
     try:
@@ -1370,12 +1720,13 @@ def _detect_item_format(artifact: Artifact, context: ValidationContext) -> Itera
         return []
     if _json_root_type(data, artifact) != "item" or not isinstance(data, dict):
         return []
+
+    text = context.text(artifact)
+    issues: List[ValidationIssue] = []
     version = data.get("format_version")
-    if version == "1.10":
-        return []
-    line, column = _json_location(context.text(artifact), "format_version")
-    return [
-        _issue(
+    if version != "1.10":
+        line, column = _json_location(text, "format_version")
+        issues.append(_issue(
             artifact,
             "JSON_ITEM_FORMAT_VERSION",
             "网易物品 JSON 必须使用 format_version \"1.10\"，当前为 {!r}".format(version),
@@ -1383,8 +1734,155 @@ def _detect_item_format(artifact: Artifact, context: ValidationContext) -> Itera
             line=line,
             column=column,
             suggestion='设置 "format_version": "1.10"',
-        )
-    ]
+        ))
+        return issues
+
+    item_obj = data.get("minecraft:item")
+    if not isinstance(item_obj, dict):
+        return issues
+
+    description = item_obj.get("description") if isinstance(item_obj.get("description"), dict) else {}
+    components = item_obj.get("components")
+    if components is None:
+        return issues
+    if not isinstance(components, dict):
+        line, column = _json_location(text, "components")
+        issues.append(_issue(
+            artifact,
+            "JSON_ITEM_COMPONENTS_SHAPE",
+            "minecraft:item.components 必须是对象",
+            "json.item_format",
+            line=line,
+            column=column,
+        ))
+        return issues
+
+    norm_path = (artifact.filename or "").replace("\\", "/").lower()
+    explicit_side = (artifact.side or "auto").lower()
+    is_resource_item = explicit_side == "client" or "/netease_items_res/" in norm_path or norm_path.endswith(".resource.json")
+    is_behavior_item = explicit_side == "server" or "/netease_items_beh/" in norm_path
+
+    for comp_key, hint in _UNSUPPORTED_116_ITEM_COMPONENTS.items():
+        if comp_key in components:
+            line, column = _json_location(text, comp_key)
+            issues.append(_issue(
+                artifact,
+                "JSON_ITEM_UNSUPPORTED_COMPONENT",
+                "网易 1.10 物品不支持国际版 1.16.100+ 组件 {}（实机会被引擎静默忽略）".format(comp_key),
+                "json.item_format",
+                line=line,
+                column=column,
+                suggestion=hint,
+                details={"component": comp_key},
+            ))
+
+    if "minecraft:max_damage" in components and components.get("minecraft:stacked_by_data") is True:
+        line, column = _json_location(text, "minecraft:stacked_by_data")
+        issues.append(_issue(
+            artifact,
+            "JSON_ITEM_DAMAGE_STACKED_CONFLICT",
+            "网易官方规范禁止 minecraft:stacked_by_data 与耐久组件 minecraft:max_damage 同时存在",
+            "json.item_format",
+            line=line,
+            column=column,
+            suggestion="删除 minecraft:stacked_by_data，并将最大堆叠数设为 1",
+        ))
+
+    has_server_comps = bool(_SERVER_ONLY_ITEM_COMPONENTS.intersection(components))
+    if is_behavior_item or (not is_resource_item and has_server_comps):
+        for client_comp in sorted(_CLIENT_ONLY_ITEM_COMPONENTS.intersection(components)):
+            line, column = _json_location(text, client_comp)
+            issues.append(_issue(
+                artifact,
+                "JSON_ITEM_CLIENT_COMPONENT_IN_BEHAVIOR",
+                "{} 属于资源包专用组件，不能写在行为包物品 JSON 中".format(client_comp),
+                "json.item_format",
+                line=line,
+                column=column,
+                suggestion="将该组件移至 resource_pack/netease_items_res/ 对应的物品 JSON 中",
+                details={"component": client_comp},
+            ))
+
+    if is_resource_item:
+        for server_comp in sorted(_SERVER_ONLY_ITEM_COMPONENTS.intersection(components)):
+            line, column = _json_location(text, server_comp)
+            issues.append(_issue(
+                artifact,
+                "JSON_ITEM_SERVER_COMPONENT_IN_RESOURCE",
+                "{} 属于行为包组件，不能写在资源包 netease_items_res 物品 JSON 中".format(server_comp),
+                "json.item_format",
+                line=line,
+                column=column,
+                suggestion="将该组件移至 behavior_pack/netease_items_beh/ 对应的物品 JSON 中",
+                details={"component": server_comp},
+            ))
+
+    if "minecraft:use_duration" in components:
+        dur_val = components["minecraft:use_duration"]
+        if type(dur_val) is not int or dur_val <= 0:
+            line, column = _json_location(text, "minecraft:use_duration")
+            issues.append(_issue(
+                artifact,
+                "JSON_ITEM_USE_DURATION_TICKS",
+                "网易 1.10 的 minecraft:use_duration 必须是正整数游戏刻 tick（如 32 表示 1.6 秒），当前为 {!r}".format(dur_val),
+                "json.item_format",
+                line=line,
+                column=column,
+                suggestion="将小数秒换算为整数游戏刻（秒 × 20，如 32）",
+            ))
+
+    if "netease:weapon" in components:
+        weapon = components["netease:weapon"]
+        if description.get("custom_item_type") != "weapon":
+            line, column = _json_location(text, "netease:weapon")
+            issues.append(_issue(
+                artifact,
+                "JSON_ITEM_WEAPON_CONTRACT",
+                "使用 netease:weapon 时必须在 description 中声明 \"custom_item_type\": \"weapon\"",
+                "json.item_format",
+                line=line,
+                column=column,
+            ))
+        allowed_weapon_types = {"sword", "pickaxe", "hatchet", "shovel", "hoe"}
+        if not isinstance(weapon, dict) or weapon.get("type") not in allowed_weapon_types:
+            w_type = weapon.get("type") if isinstance(weapon, dict) else None
+            line, column = _json_location(text, "netease:weapon")
+            hint = '斧头在 netease:weapon.type 中必须写为 "hatchet"（而非 "axe"）' if w_type == "axe" else "可选值：sword / pickaxe / hatchet / shovel / hoe"
+            issues.append(_issue(
+                artifact,
+                "JSON_ITEM_WEAPON_CONTRACT",
+                "netease:weapon.type 无效：{!r}".format(w_type),
+                "json.item_format",
+                line=line,
+                column=column,
+                suggestion=hint,
+            ))
+
+    if "netease:armor" in components:
+        armor = components["netease:armor"]
+        if description.get("custom_item_type") != "armor":
+            line, column = _json_location(text, "netease:armor")
+            issues.append(_issue(
+                artifact,
+                "JSON_ITEM_ARMOR_CONTRACT",
+                "使用 netease:armor 时必须在 description 中声明 \"custom_item_type\": \"armor\"",
+                "json.item_format",
+                line=line,
+                column=column,
+            ))
+        slot_val = armor.get("armor_slot") if isinstance(armor, dict) else None
+        if type(slot_val) is not int or slot_val not in {0, 1, 2, 3}:
+            line, column = _json_location(text, "netease:armor")
+            issues.append(_issue(
+                artifact,
+                "JSON_ITEM_ARMOR_CONTRACT",
+                "netease:armor.armor_slot 必须为整数枚举 0(头盔)/1(胸甲)/2(护腿)/3(鞋子)，当前为 {!r}".format(slot_val),
+                "json.item_format",
+                line=line,
+                column=column,
+            ))
+
+    return issues
 
 
 def _walk_json_values(value: Any) -> Iterable[Tuple[str, Any]]:
@@ -1529,13 +2027,37 @@ def _detect_block_profile(artifact: Artifact, context: ValidationContext) -> Ite
             value = components[component]
             if not isinstance(value, dict) or not _is_number(value.get(value_key)):
                 add_shape(component, "{} 在 legacy_1_10 中必须是包含数值 {} 的对象".format(component, value_key))
+            elif component == "minecraft:block_light_emission" and not (0.0 <= float(value[value_key]) <= 1.0):
+                line, column = _json_location(text, component)
+                issues.append(_issue(
+                    artifact,
+                    "JSON_BLOCK_LIGHT_EMISSION_RANGE",
+                    "legacy_1_10 的 minecraft:block_light_emission.emission 必须在 [0.0, 1.0] 浮点范围内，当前为 {!r}（整数 0-15 请改用 modern_1_19_20 的 minecraft:light_emission）".format(value[value_key]),
+                    "json.block_profile",
+                    line=line,
+                    column=column,
+                    details={"profile": profile, "emission": value[value_key]},
+                ))
         for component in modern_components:
             if component in components:
                 add_shape(component, "{} 属于 modern_1_19_20，不能用于 legacy_1_10".format(component))
     elif profile == "scalar_1_16":
         for component in legacy_shapes:
-            if component in components and not _is_number(components[component]):
+            if component not in components:
+                continue
+            if not _is_number(components[component]):
                 add_shape(component, "{} 在 scalar_1_16 中必须是数值".format(component))
+            elif component == "minecraft:block_light_emission" and not (0.0 <= float(components[component]) <= 1.0):
+                line, column = _json_location(text, component)
+                issues.append(_issue(
+                    artifact,
+                    "JSON_BLOCK_LIGHT_EMISSION_RANGE",
+                    "scalar_1_16 的 minecraft:block_light_emission 必须在 [0.0, 1.0] 浮点范围内，当前为 {!r}（整数 0-15 请改用 modern_1_19_20 的 minecraft:light_emission）".format(components[component]),
+                    "json.block_profile",
+                    line=line,
+                    column=column,
+                    details={"profile": profile, "emission": components[component]},
+                ))
         for component in modern_components:
             if component in components:
                 add_shape(component, "{} 属于 modern_1_19_20，不能用于 scalar_1_16".format(component))

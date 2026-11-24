@@ -11,136 +11,89 @@ from typing import Dict, List, Any
 # ============================================================================
 
 ITEM_COMPONENTS = {
-    # 基础组件
+    # 网易 1.10 行为包支持的官方原版物品组件（参考《1-自定义基础物品.md》）
     "minecraft:max_stack_size": {
-        "name": "最大堆叠大小",
+        "name": "最大堆叠数量",
         "type": "integer",
-        "description": "决定物品的最大堆叠数目，范围 1-64",
+        "description": "设置物品最大堆叠数量（行为包 netease_items_beh），范围 1-64；带耐久武器/工具/盔甲应设为 1",
         "example": 64
     },
+    "minecraft:max_damage": {
+        "name": "最大耐久度",
+        "type": "integer",
+        "description": "使网易 1.10 物品拥有耐久度（行为包 netease_items_beh），范围 [0, 32767]；严禁与 minecraft:stacked_by_data 共存",
+        "example": 250
+    },
     "minecraft:hand_equipped": {
-        "name": "手持装备",
+        "name": "手持武器渲染",
         "type": "boolean",
-        "description": "是否是手持装备，影响渲染方向",
+        "description": "使手持物品按武器/工具方式竖直握持渲染（行为包 netease_items_beh）",
         "example": True
     },
     "minecraft:stacked_by_data": {
-        "name": "按数据值堆叠",
+        "name": "按附加值分堆叠",
         "type": "boolean",
-        "description": "是否按照不同数据值分别堆叠",
+        "description": "设置不同 aux 值的物品是否分别堆叠（行为包 netease_items_beh）；不能与 minecraft:max_damage 共存",
         "example": True
     },
-    "minecraft:damage": {
-        "name": "伤害",
-        "type": "integer",
-        "description": "物品的攻击伤害值",
-        "example": 5
+    "minecraft:foil": {
+        "name": "附魔光效",
+        "type": "boolean",
+        "description": "使物品默认拥有附魔流光效果（行为包 netease_items_beh）",
+        "example": True
     },
     "minecraft:use_duration": {
-        "name": "使用时长",
-        "type": "float",
-        "description": "物品使用时的时间长度（秒）",
-        "example": 1.6
-    },
-    "minecraft:use_animation": {
-        "name": "使用动画",
-        "type": "string",
-        "description": "物品的使用动画类型",
-        "values": ["eat", "drink", "bow", "crossbow", "spear", "block", "camera"],
-        "example": "eat"
-    },
-    # 功能组件
-    "minecraft:durability": {
-        "name": "耐久",
-        "type": "object",
-        "description": "物品的耐久度",
-        "properties": {
-            "max_durability": "最大耐久值",
-            "damage_chance": "损坏概率"
-        }
-    },
-    "minecraft:armor": {
-        "name": "盔甲",
-        "type": "object",
-        "description": "物品的护甲值",
-        "properties": {"protection": "护甲值"}
+        "name": "最大使用时长",
+        "type": "integer",
+        "description": "设置食物食用或蓄力物品的最大时长（行为包 netease_items_beh，单位为游戏刻 tick，如 32 tick = 1.6 秒）",
+        "example": 32
     },
     "minecraft:food": {
-        "name": "食物",
+        "name": "食物组件",
         "type": "object",
-        "description": "允许物品被玩家食用",
+        "description": "定义可食用物品的饥饿值、饱和度与食用效果（行为包 netease_items_beh），需配合资源包 minecraft:use_animation",
         "properties": {
-            "nutrition": "饥饿值",
-            "saturation_modifier": "饱和度",
-            "can_always_eat": "是否可随时食用"
+            "nutrition": "恢复饥饿值（整数）",
+            "saturation_modifier": "饱和度等级（poor/low/normal/good/max/supernatural）",
+            "can_always_eat": "满饱食度下是否仍可食用",
+            "using_converts_to": "食用后转化的容器物品（如 bowl）",
+            "effects": "食用后附加的状态效果列表"
         }
     },
-    "minecraft:weapon": {
-        "name": "武器",
+    "minecraft:seed": {
+        "name": "农作物种子",
         "type": "object",
-        "description": "允许物品作为武器"
+        "description": "设置物品种植方块属性（行为包 netease_items_beh）",
+        "properties": {
+            "crop_result": "种植放置出的作物方块标识符",
+            "plant_at": "允许被种植的土壤方块列表（格式需统一）"
+        }
     },
-    "minecraft:digger": {
-        "name": "挖掘器",
+    "minecraft:tags": {
+        "name": "物品原版标签",
         "type": "object",
-        "description": "物品的挖掘属性",
-        "properties": {"destroy_speeds": "挖掘速度列表"}
+        "description": "设置物品逻辑判断标签（行为包 netease_items_beh）",
+        "properties": {"tags": "标签字符串列表"}
     },
-    "minecraft:wearable": {
-        "name": "可穿戴",
-        "type": "object",
-        "description": "允许物品被实体穿戴",
-        "properties": {"slot": "穿戴槽位"}
+    # 网易 1.10 资源包专用组件（netease_items_res）
+    "minecraft:icon": {
+        "name": "物品贴图图标（资源包）",
+        "type": "string",
+        "description": "资源包专用组件（定义在 resource_pack/netease_items_res），值对应 textures/item_texture.json 中的资源键名",
+        "example": "\"mymod:magic_sword\""
     },
-    "minecraft:throwable": {
-        "name": "可投掷",
-        "type": "object",
-        "description": "允许物品作为投掷物"
+    "minecraft:use_animation": {
+        "name": "使用动画（资源包）",
+        "type": "string",
+        "description": "资源包专用组件（定义在 resource_pack/netease_items_res），定义右键使用物品时播放的动作与音效",
+        "values": ["eat", "drink", "bow", "block", "camera", "crossbow", "brush"],
+        "example": "\"eat\""
     },
-    "minecraft:projectile": {
-        "name": "弹射物",
-        "type": "object",
-        "description": "允许物品发射弹射物"
-    },
-    "minecraft:shooter": {
-        "name": "发射器",
-        "type": "object",
-        "description": "允许物品发射实体（如弓）"
-    },
-    "minecraft:cooldown": {
-        "name": "冷却",
-        "type": "object",
-        "description": "物品使用后的冷却时间"
-    },
-    "minecraft:repairable": {
-        "name": "可修复",
-        "type": "object",
-        "description": "允许物品被修复"
-    },
-    "minecraft:enchantable": {
-        "name": "可附魔",
-        "type": "object",
-        "description": "物品的附魔属性"
-    },
-    "minecraft:fuel": {
-        "name": "燃料",
-        "type": "object",
-        "description": "允许物品在熔炉中作为燃料"
-    },
-    "minecraft:block_placer": {
-        "name": "方块放置器",
-        "type": "object",
-        "description": "允许物品放置方块"
-    },
-    "minecraft:entity_placer": {
-        "name": "实体放置器",
-        "type": "object",
-        "description": "允许物品放置实体（如刷怪蛋）"
-    },
-    "minecraft:record": {
-        "name": "唱片",
-        "type": "object",
-        "description": "允许物品作为唱片播放"
+    "minecraft:hover_text_color": {
+        "name": "悬浮名称颜色（资源包）",
+        "type": "string",
+        "description": "资源包专用组件（定义在 resource_pack/netease_items_res），设置物品悬浮提示标题颜色",
+        "example": "\"gold\""
     },
 }
 
@@ -149,18 +102,30 @@ ITEM_COMPONENTS = {
 # ============================================================================
 
 BLOCK_COMPONENTS = {
-    # 基础属性
+    # 现代 1.19.20 基础属性（推荐默认档 modern_1_19_20）
     "minecraft:destructible_by_mining": {
         "name": "可挖掘破坏",
-        "type": "object",
-        "description": "方块的挖掘时间",
+        "type": "object/boolean",
+        "description": "方块的挖掘耗时（format_version 1.19.20+ 推荐组件）",
         "properties": {"seconds_to_destroy": "破坏时间（秒）"}
     },
     "minecraft:destructible_by_explosion": {
         "name": "可爆炸破坏",
-        "type": "object",
-        "description": "方块的爆炸抗性",
+        "type": "object/boolean",
+        "description": "方块的爆炸抗性（format_version 1.19.20+ 推荐组件）",
         "properties": {"explosion_resistance": "抗性值"}
+    },
+    "minecraft:light_emission": {
+        "name": "发光等级（1.19.20+）",
+        "type": "integer",
+        "description": "现代方块（format_version 1.19.20+）发光等级，整数范围 0-15",
+        "example": 15
+    },
+    "minecraft:light_dampening": {
+        "name": "遮光等级（1.19.20+）",
+        "type": "integer",
+        "description": "现代方块（format_version 1.19.20+）遮光过滤等级，整数范围 0-15",
+        "example": 15
     },
     "minecraft:friction": {
         "name": "摩擦力",
@@ -179,28 +144,28 @@ BLOCK_COMPONENTS = {
     "minecraft:map_color": {
         "name": "地图颜色",
         "type": "string",
-        "description": "方块在地图上的颜色（十六进制）"
+        "description": "方块在地图上的颜色（十六进制，如 #FFFFFF）"
     },
     "minecraft:block_light_emission": {
-        "name": "光照发射",
-        "type": "float",
-        "description": "方块发光等级（0.0-1.0，对应0-15）"
+        "name": "旧版光照发射（1.10/1.16）",
+        "type": "float/object",
+        "description": "仅用于旧版 1.10.0（对象 {\"emission\": 0.0~1.0}）或 1.16.0（浮点 0.0~1.0）；超出 1.0 会导致引擎升级失败，新项目请改用 1.19.20 的 minecraft:light_emission"
     },
-    "minecraft:block_light_filter": {
-        "name": "光照过滤",
-        "type": "integer",
-        "description": "光照过滤等级（0-15）"
+    "minecraft:block_light_absorption": {
+        "name": "旧版光照吸收（1.10/1.16）",
+        "type": "integer/object",
+        "description": "旧版 1.10.0/1.16.0 光照遮挡等级（0-15）"
     },
     # 几何与渲染
     "minecraft:geometry": {
         "name": "几何体",
         "type": "string/object",
-        "description": "方块的自定义几何体"
+        "description": "方块的自定义几何体标识符（如 geometry.custom_block）"
     },
     "minecraft:material_instances": {
         "name": "材质实例",
         "type": "object",
-        "description": "方块的材质和渲染方法"
+        "description": "方块的材质、贴图与渲染方法"
     },
     "minecraft:unit_cube": {
         "name": "单位立方体",
@@ -209,71 +174,28 @@ BLOCK_COMPONENTS = {
     },
     "minecraft:collision_box": {
         "name": "碰撞箱",
-        "type": "object",
-        "description": "方块的碰撞箱"
+        "type": "object/boolean",
+        "description": "方块的实体碰撞箱"
     },
     "minecraft:selection_box": {
         "name": "选择箱",
-        "type": "object",
-        "description": "方块的选择框"
+        "type": "object/boolean",
+        "description": "方块的准星射线选择框"
     },
-    # 事件触发
-    "minecraft:on_interact": {
-        "name": "交互事件",
-        "type": "object",
-        "description": "玩家与方块交互时触发"
-    },
-    "minecraft:on_step_on": {
-        "name": "踩踏事件",
-        "type": "object",
-        "description": "实体踩到方块时触发"
-    },
-    "minecraft:on_step_off": {
-        "name": "离开事件",
-        "type": "object",
-        "description": "实体离开方块时触发"
-    },
-    "minecraft:on_fall_on": {
-        "name": "掉落事件",
-        "type": "object",
-        "description": "实体掉落到方块时触发"
-    },
-    "minecraft:on_placed": {
-        "name": "放置事件",
-        "type": "object",
-        "description": "方块被放置时触发"
-    },
-    "minecraft:on_player_destroyed": {
-        "name": "玩家破坏事件",
-        "type": "object",
-        "description": "玩家破坏方块时触发"
-    },
-    # Tick 相关
-    "minecraft:random_ticking": {
-        "name": "随机刻",
-        "type": "object",
-        "description": "方块随机刻事件"
-    },
-    "minecraft:queued_ticking": {
-        "name": "计划刻",
-        "type": "object",
-        "description": "方块计划刻事件"
-    },
-    # 其他
     "minecraft:crafting_table": {
         "name": "工作台",
         "type": "object",
-        "description": "使方块作为工作台"
+        "description": "使方块具备自定义工作台合成界面能力"
     },
     "minecraft:placement_filter": {
         "name": "放置过滤",
         "type": "object",
-        "description": "方块的放置条件"
+        "description": "方块的合法放置条件"
     },
     "minecraft:loot": {
         "name": "战利品表",
         "type": "string",
-        "description": "方块破坏时的掉落物"
+        "description": "方块被破坏时的战利品表路径（如 loot_tables/blocks/my_block.json）"
     },
 }
 
@@ -282,17 +204,127 @@ BLOCK_COMPONENTS = {
 # ============================================================================
 
 NETEASE_ITEM_COMPONENTS = {
+    "netease:weapon": {
+        "name": "自定义武器与工具",
+        "type": "object",
+        "description": "网易 1.10 武器/工具核心组件（需配合 description.custom_item_type = 'weapon'）",
+        "properties": {
+            "type": "类型：sword(剑) / pickaxe(镐) / hatchet(斧) / shovel(铲) / hoe(锄)",
+            "level": "挖掘与铁砧修复等级：0(木/金) / 1(石) / 2(铁) / 3(钻石)",
+            "speed": "采集工具基础挖掘速度（整数）",
+            "attack_damage": "近战攻击伤害（整数）",
+            "enchantment": "附魔能力值（整数）"
+        }
+    },
+    "netease:armor": {
+        "name": "自定义盔甲",
+        "type": "object",
+        "description": "网易 1.10 盔甲核心组件（需配合 description.custom_item_type = 'armor' 及资源包 attachables）",
+        "properties": {
+            "defense": "护甲防御值（整数）",
+            "enchantment": "附魔能力值（整数）",
+            "armor_slot": "穿戴槽位枚举：0(头盔) / 1(胸甲) / 2(护腿) / 3(鞋子)",
+            "toughness": "盔甲韧性（0-20，可选）",
+            "knockback_resistance": "击退抗性（0.0-1.0，可选）"
+        }
+    },
+    "netease:projectile": {
+        "name": "右键投掷抛射物",
+        "type": "string",
+        "description": "定义右键发射的抛射物实体 identifier（需配合 description.custom_item_type = 'projectile_item'）",
+        "example": "\"minecraft:snowball\""
+    },
+    "netease:cooldown": {
+        "name": "物品冷却",
+        "type": "object",
+        "description": "定义非食物物品的使用冷却时间（食物冷却请配置在 minecraft:food 内）",
+        "properties": {
+            "category": "冷却分组名称（同组共享冷却）",
+            "duration": "冷却时长"
+        }
+    },
+    "netease:fuel": {
+        "name": "熔炉燃料",
+        "type": "object",
+        "description": "允许物品作为熔炉燃料燃烧",
+        "properties": {"duration": "燃烧时长（秒）"}
+    },
     "netease:customtips": {
         "name": "自定义提示",
-        "description": "物品的自定义悬停提示文本"
+        "type": "object",
+        "description": "物品的自定义悬停提示文本",
+        "properties": {"value": "提示文本字符串"}
+    },
+    "netease:allow_offhand": {
+        "name": "允许副手持有",
+        "type": "object",
+        "description": "设置物品是否可放入副手槽位（注意格式包含 value 键）",
+        "properties": {"value": "布尔值"}
+    },
+    "netease:fire_resistant": {
+        "name": "防火抗岩浆",
+        "type": "object",
+        "description": "设置掉落物是否如合金装备般不被火焰或岩浆销毁",
+        "properties": {"value": "布尔值"}
+    },
+    "netease:enchant_material": {
+        "name": "附魔台材料",
+        "type": "object",
+        "description": "允许物品作为附魔台辅助材料",
+        "properties": {"value": "布尔值"}
+    },
+    "netease:compostable": {
+        "name": "堆肥概率",
+        "type": "integer",
+        "description": "设置物品在堆肥桶中的堆肥成功百分比（1-100）",
+        "example": 48
+    },
+    "netease:egg": {
+        "name": "自定义生物蛋",
+        "type": "object",
+        "description": "自定义刷怪蛋生成生物（需配合 custom_item_type = 'egg'）",
+        "properties": {"entity": "目标实体 identifier"}
+    },
+    "netease:bucket": {
+        "name": "自定义流体桶",
+        "type": "object",
+        "description": "自定义桶盛放流体（需配合 custom_item_type = 'bucket'）",
+        "properties": {"fill_liquid": "目标流体方块名"}
+    },
+    "netease:shield": {
+        "name": "自定义盾牌",
+        "type": "object",
+        "description": "自定义盾牌防御规则（需配合 custom_item_type = 'shield'）"
+    },
+    "netease:initial_user_data": {
+        "name": "初始 NBT 数据",
+        "type": "object",
+        "description": "定义物品自带的初始 userData（如死亡不掉落、初始附魔、Lore 等）"
+    },
+    "netease:render_offsets": {
+        "name": "右手渲染偏移",
+        "type": "object",
+        "description": "调整手持物品的位置、旋转与缩放"
     },
     "netease:frame_animation": {
-        "name": "帧动画",
-        "description": "物品的帧动画"
+        "name": "蓄力序列帧动画（资源包）",
+        "type": "object",
+        "description": "资源包专用组件（netease_items_res），配置弓弩等蓄力物品的帧动画",
+        "properties": {
+            "frame_count": "蓄力动画总帧数",
+            "texture_name": "item_texture.json 中对应的帧列表键名",
+            "animate_in_toolbar": "快捷栏中是否同步播放动画"
+        }
+    },
+    "netease:frame_anim_in_scene": {
+        "name": "场景序列帧贴图（资源包）",
+        "type": "object",
+        "description": "资源包专用组件（netease_items_res），使物品贴图支持常驻动态序列帧"
     },
     "netease:show_in_hand": {
         "name": "手持显示",
-        "description": "物品的手持显示设置"
+        "type": "object",
+        "description": "物品拿在手上时是否渲染显示（包含 value 布尔字段）"
     },
     "netease:liquid_clipped": {
         "name": "流体点击检测",

@@ -639,6 +639,133 @@ class JsonValidationTest(unittest.TestCase):
         self.assertNotIn("JSON_BLOCK_COMPONENT_SHAPE_CONFLICT", issue_codes(report))
         self.assertFalse(report.blocked)
 
+    def test_duplicate_json_keys_are_blocked(self):
+        raw_dup = (
+            '{\n'
+            '  "format_version": "1.10",\n'
+            '  "minecraft:item": {\n'
+            '    "description": {"identifier": "demo:dup_item"},\n'
+            '    "components": {\n'
+            '      "minecraft:max_stack_size": 64,\n'
+            '      "minecraft:max_stack_size": 1\n'
+            '    }\n'
+            '  }\n'
+            '}'
+        )
+        report = validate_json(raw_dup, artifact_type="item")
+        self.assertIn("JSON_DUPLICATE_KEY", issue_codes(report))
+        self.assertTrue(report.blocked)
+
+    def test_languages_json_accepts_non_empty_string_array(self):
+        valid = validate_json('["zh_CN", "en_US"]', filename="resource_pack/texts/languages.json")
+        invalid_empty = validate_json("[]", filename="resource_pack/texts/languages.json")
+
+        self.assertFalse(valid.blocked)
+        self.assertEqual([], issue_codes(valid))
+        self.assertIn("JSON_LANGUAGES_INVALID", issue_codes(invalid_empty))
+
+    def test_manifest_json_enforces_format_version_2_and_unique_uuids(self):
+        valid_manifest = json.dumps({
+            "format_version": 2,
+            "header": {
+                "name": "Demo Pack",
+                "description": "Demo",
+                "uuid": "54bdabed-493c-49fa-b7fe-c2b6a026226b",
+                "version": [1, 0, 0],
+                "min_engine_version": [1, 18, 0],
+            },
+            "modules": [
+                {
+                    "type": "data",
+                    "uuid": "d5a4a945-948a-4b48-81a8-f1341ff29f73",
+                    "version": [1, 0, 0],
+                }
+            ],
+        })
+        self.assertFalse(validate_json(valid_manifest, filename="behavior_pack/manifest.json").blocked)
+
+        legacy_name = validate_json(valid_manifest, filename="behavior_pack/pack_manifest.json")
+        self.assertFalse(legacy_name.blocked)
+        self.assertIn("JSON_MANIFEST_LEGACY_FILENAME", issue_codes(legacy_name))
+
+        old_fv = json.loads(valid_manifest)
+        old_fv["format_version"] = 1
+        self.assertIn(
+            "JSON_MANIFEST_FORMAT_VERSION",
+            issue_codes(validate_json(json.dumps(old_fv), filename="manifest.json")),
+        )
+
+        dup_uuid = json.loads(valid_manifest)
+        dup_uuid["modules"][0]["uuid"] = dup_uuid["header"]["uuid"]
+        self.assertIn(
+            "JSON_MANIFEST_UUID_DUPLICATE",
+            issue_codes(validate_json(json.dumps(dup_uuid), filename="manifest.json")),
+        )
+
+    def test_item_110_rejects_bedrock_116_components_and_side_conflicts(self):
+        bad_116 = json.dumps({
+            "format_version": "1.10",
+            "minecraft:item": {
+                "description": {"identifier": "demo:bad_sword"},
+                "components": {
+                    "minecraft:durability": {"max_durability": 200},
+                    "minecraft:digger": {"use_efficiency": True},
+                },
+            },
+        })
+        self.assertIn("JSON_ITEM_UNSUPPORTED_COMPONENT", issue_codes(validate_json(bad_116, artifact_type="item")))
+
+        stack_conflict = json.dumps({
+            "format_version": "1.10",
+            "minecraft:item": {
+                "description": {"identifier": "demo:conflict_sword"},
+                "components": {
+                    "minecraft:max_damage": 250,
+                    "minecraft:stacked_by_data": True,
+                },
+            },
+        })
+        self.assertIn("JSON_ITEM_DAMAGE_STACKED_CONFLICT", issue_codes(validate_json(stack_conflict, artifact_type="item")))
+
+        client_in_beh = json.dumps({
+            "format_version": "1.10",
+            "minecraft:item": {
+                "description": {"identifier": "demo:bad_food"},
+                "components": {
+                    "minecraft:food": {"nutrition": 4, "saturation_modifier": "normal"},
+                    "minecraft:use_animation": "eat",
+                    "minecraft:use_duration": 1.6,
+                },
+            },
+        })
+        beh_codes = issue_codes(validate_json(client_in_beh, filename="behavior_pack/netease_items_beh/demo_bad_food.json", artifact_type="item"))
+        self.assertIn("JSON_ITEM_CLIENT_COMPONENT_IN_BEHAVIOR", beh_codes)
+        self.assertIn("JSON_ITEM_USE_DURATION_TICKS", beh_codes)
+
+        bad_axe_type = json.dumps({
+            "format_version": "1.10",
+            "minecraft:item": {
+                "description": {"identifier": "demo:bad_axe", "custom_item_type": "weapon"},
+                "components": {
+                    "netease:weapon": {"type": "axe", "level": 2, "speed": 6, "attack_damage": 4, "enchantment": 10},
+                },
+            },
+        })
+        self.assertIn("JSON_ITEM_WEAPON_CONTRACT", issue_codes(validate_json(bad_axe_type, artifact_type="item")))
+
+    def test_legacy_block_light_emission_above_one_is_blocked(self):
+        legacy_overflow = validate_json(
+            block_source("1.10.0", {"minecraft:block_light_emission": {"emission": 12}}),
+            artifact_type="block",
+        )
+        scalar_overflow = validate_json(
+            block_source("1.16.0", {"minecraft:block_light_emission": 15}),
+            artifact_type="block",
+        )
+
+        self.assertIn("JSON_BLOCK_LIGHT_EMISSION_RANGE", issue_codes(legacy_overflow))
+        self.assertIn("JSON_BLOCK_LIGHT_EMISSION_RANGE", issue_codes(scalar_overflow))
+
 
 if __name__ == "__main__":
     unittest.main()
